@@ -13,12 +13,12 @@ public class BaseEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public BigInteger id;
 
-	@Column(name = "created_date")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss dd/MM/yyyy", timezone = "GMT+07")
+	@Column(name = "created_time")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT+07")
 	protected Date createdDate;
 
-	@Column(name = "created_date")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss dd/MM/yyyy", timezone = "GMT+07")
+	@Column(name = "updated_time")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT+07")
 	protected Date updatedDate;
 
 	@Column(name = "deleted")

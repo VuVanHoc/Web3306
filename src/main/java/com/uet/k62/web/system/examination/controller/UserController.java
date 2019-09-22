@@ -7,13 +7,10 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "users")
+@RequestMapping(value = "user")
 public class UserController {
 	public static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -28,5 +25,12 @@ public class UserController {
 	public ResponseEntity registerAccount(@RequestBody UserFormRegistrationDTO userFormRegistrationDTO) {
 		RestBody restBody = userService.registerAccount(userFormRegistrationDTO);
 		return ResponseEntity.ok(restBody);
+	}
+	
+	@ApiOperation(value = "Get all users", response = RestBody.class)
+	@GetMapping(value = "getAllUsers")
+	public ResponseEntity getAllUser() {
+		RestBody restBody = userService.getAllUser();
+		return  ResponseEntity.ok(restBody);
 	}
 }

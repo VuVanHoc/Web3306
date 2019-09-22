@@ -5,4 +5,6 @@ import com.uet.k62.web.system.examination.model.dtos.UserFormRegistrationDTO;
 
 public interface UserService {
 	RestBody registerAccount(UserFormRegistrationDTO userFormRegistrationDTO);
+	
+	RestBody getAllUser();
 }

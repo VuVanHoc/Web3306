@@ -6,12 +6,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Data
-@Entity(name = "log_history")
-public class LogHistory extends BaseEntity {
-
+@Entity(name = "course")
+public class Course extends BaseEntity {
+	
+	@Column(name = "type_id")
+	private int typeId;
+	
 	@Column(name = "user_id")
 	private int userId;
 	
-	@Column(name = "action")
-	private String action;
+	@Column(name = "schedule_id")
+	private int scheduleId;
+	
+	
 }

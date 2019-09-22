@@ -7,6 +7,8 @@ import com.uet.k62.web.system.examination.repository.UserRepository;
 import com.uet.k62.web.system.examination.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
@@ -20,4 +22,12 @@ public class UserServiceImpl implements UserService {
 //		User user = userRepository.findById()
 		return null;
 	}
+	
+	@Override
+	public RestBody getAllUser() {
+		List<User> users = userRepository.findAllByDeletedIsFalse();
+		return RestBody.success(users);
+	}
+	
+	
 }

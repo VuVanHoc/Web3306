@@ -23,6 +23,7 @@ public class UserController {
 	@ApiOperation(value = "Register a new account", response = RestBody.class)
 	@PostMapping(value = "createAccount")
 	public ResponseEntity registerAccount(@RequestBody UserFormRegistrationDTO userFormRegistrationDTO) {
+//		LOGGER.info(userFormRegistrationDTO.toString());
 		RestBody restBody = userService.registerAccount(userFormRegistrationDTO);
 		return ResponseEntity.ok(restBody);
 	}

@@ -10,7 +10,7 @@ import java.util.Date;
 public class BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public BigInteger id;
 
 	@Column(name = "created_time")

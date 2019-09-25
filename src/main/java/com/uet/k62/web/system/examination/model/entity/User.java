@@ -1,18 +1,20 @@
 package com.uet.k62.web.system.examination.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.math.BigInteger;
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity(name = "user")
 public class User extends BaseEntity {
 	
 	@Column(name = "role_id", nullable = false)
-	private BigInteger roleId;
+	private Integer roleId;
 	
 	@Column(name = "username", nullable = false, length = 50)
 	private String username;
@@ -28,7 +30,7 @@ public class User extends BaseEntity {
 	
 	@Column(name = "phone")
 	private String phone;
-	
+
 	@Column(name = "birthday")
 	private Date birthday;
 	

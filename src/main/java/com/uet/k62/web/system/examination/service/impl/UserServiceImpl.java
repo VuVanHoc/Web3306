@@ -1,6 +1,7 @@
 package com.uet.k62.web.system.examination.service.impl;
 
 import com.uet.k62.web.system.examination.model.RestBody;
+import com.uet.k62.web.system.examination.model.dtos.UserDetailDTO;
 import com.uet.k62.web.system.examination.model.dtos.UserFormRegistrationDTO;
 import com.uet.k62.web.system.examination.model.entity.User;
 import com.uet.k62.web.system.examination.repository.UserRepository;
@@ -13,7 +14,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -42,12 +45,9 @@ public class UserServiceImpl implements UserService {
         newUser.setRoleId(RoleCode.STUDENT_ROLE);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         try {
-            Date date = new Date(Long.parseLong(userFormRegistrationDTO.getBirthday()) * 1000);
-            DateFormat formatter = new SimpleDateFormat(Constant.DATE_FORMAT_PATTERN);
-            String dateString = formatter.format(date);
-            newUser.setBirthday(formatter.parse(dateString));
-        } catch (Exception e) {
-            RestBody.error(e.getMessage());
+            newUser.setBirthday(toDate(userFormRegistrationDTO.getBirthday()));
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
 //        LOGGER.info(newUser.toString());
@@ -56,10 +56,54 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RestBody getAllUser() {
+    public RestBody getAllUsers() {
         List<User> users = userRepository.findAllByDeletedIsFalse();
         return RestBody.success(users);
     }
 
+    @Override
+    public RestBody getUser(BigInteger id) {
+        User user = userRepository.findByIdAndDeletedIsFalse(id);
+        if(user == null){
+            return RestBody.error("This account doesn't exist");
+        }
+        return RestBody.success(user);
+    }
 
+    @Override
+    public RestBody deleteUser(BigInteger id) {
+        return null;
+    }
+
+    @Override
+    public RestBody updateInfoUser(UserDetailDTO userDetailDTO, BigInteger id) {
+
+        User updateUser = userRepository.findByIdAndDeletedIsFalse(id);
+        if(updateUser == null){
+            return RestBody.error("This account doesn't exist");
+        }
+
+        updateUser.setFullName(userDetailDTO.getFullName());
+        try {
+            updateUser.setBirthday(toDate(userDetailDTO.getBirthday()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        updateUser.setEmail(userDetailDTO.getEmail());
+        updateUser.setPhone(userDetailDTO.getPhone());
+        updateUser.setPicture(userDetailDTO.getPicture());
+        updateUser.setUpdatedDate(new Date());
+
+        LOGGER.info(updateUser.toString());
+        userRepository.save(updateUser);
+        return RestBody.success(updateUser);
+    }
+
+    private Date toDate(String timeString) throws ParseException {
+        Date date = new Date(Long.parseLong(timeString) * 1000);
+        DateFormat formatter = new SimpleDateFormat(Constant.DATE_FORMAT_PATTERN);
+        String dateString = formatter.format(date);
+        return formatter.parse(dateString);
+    }
 }
+

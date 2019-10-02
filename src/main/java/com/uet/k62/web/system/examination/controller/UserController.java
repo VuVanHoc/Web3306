@@ -75,9 +75,10 @@ public class UserController {
 	}
 
 	// Method DELETE - Deletes a specific user
-//	@ApiOperation(value = "Deletes a user", response = RestBody.class)
-//	@DeleteMapping(value = "{id}")
-//	public ResponseEntity deleteAccount(@PathVariable BigInteger id){
-//		return null;
-//	}
+	@ApiOperation(value = "Deletes a user", response = RestBody.class)
+	@DeleteMapping(value = "{id}")
+	public ResponseEntity deleteAccount(@PathVariable BigInteger id){
+		RestBody restBody = userService.deleteUser(id);
+		return ResponseEntity.ok(restBody);
+	}
 }

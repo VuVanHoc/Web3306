@@ -72,7 +72,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RestBody deleteUser(BigInteger id) {
-        return null;
+        User deleteUser = userRepository.findByIdAndDeletedIsFalse(id);
+        if(deleteUser == null){
+            return RestBody.error("This account doesn't exist");
+        }
+        deleteUser.setDeleted(true);
+        userRepository.save(deleteUser);
+        return RestBody.success(null);
     }
 
     @Override

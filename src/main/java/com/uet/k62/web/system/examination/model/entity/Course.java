@@ -18,5 +18,4 @@ public class Course extends BaseEntity {
 	@Column(name = "schedule_id")
 	private int scheduleId;
 	
-	
 }

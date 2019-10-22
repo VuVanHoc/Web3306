@@ -7,13 +7,14 @@ import com.uet.k62.web.system.examination.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 
 @RestController
-@RequestMapping(value = "users")
+@RequestMapping(value = "api/users")
 public class UserController {
 	public static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -36,6 +37,7 @@ public class UserController {
 	// Method POST - Create a new user
 	@ApiOperation(value = "Registers a new account", response = RestBody.class)
 	@PostMapping
+//	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity registerAccount(@RequestBody UserFormRegistrationDTO userFormRegistrationDTO) {
 //		LOGGER.info(userFormRegistrationDTO.toString());
 		RestBody restBody = userService.registerAccount(userFormRegistrationDTO);

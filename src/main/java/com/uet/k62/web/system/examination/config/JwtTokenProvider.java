@@ -12,7 +12,6 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenProvider {
 	
-	
 	public String generateToken(CustomUserDetail userDetail) {
 		Date now = new Date();
 		Date expiration = new Date(now.getTime() + SecurityConstant.JWT_EXPIRATION);
@@ -23,7 +22,7 @@ public class JwtTokenProvider {
 				.sign(Algorithm.HMAC512(SecurityConstant.JWT_SECRET));
 	}
 	
-	public String getUsernameFromToken(String token) {
+	String getUsernameFromToken(String token) {
 		return JWT.decode(token).getSubject();
 	}
 	

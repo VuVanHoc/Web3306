@@ -24,11 +24,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors() // chặn request từ domain khác
-				.and().csrf().disable().authorizeRequests()
+		http.cors().and().csrf().disable().authorizeRequests()
 				.antMatchers("/login/**").permitAll()
-				.antMatchers("/api/**").authenticated()
-				.antMatchers("/v2/api-docs",
+				.antMatchers("/api/users/**").permitAll()
+				.antMatchers("/home/**").permitAll()
+				.antMatchers("/api/question-types/**").permitAll()
+				.antMatchers("/api/questions/**").permitAll()
+				.antMatchers("/api/answers/**").permitAll()
+
+				.antMatchers("/js/**").permitAll()
+
+                .antMatchers("/v2/api-docs",
 						"/swagger-resources",
 						"/swagger-resources/**",
 						"/configuration/ui",

@@ -7,11 +7,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, BigInteger> {
-	
-	List<User> findAllBy();
-	
+	List<User> findAllByDeletedIsFalse();
 	User findByUsername(String username);
-	
-	User findById(int id);
-	
+	User findUserById(BigInteger id);
+	User findByIdAndDeletedIsFalse(BigInteger id);
 }

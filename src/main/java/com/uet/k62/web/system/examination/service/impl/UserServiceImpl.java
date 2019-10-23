@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.text.DateFormat;
@@ -52,6 +53,7 @@ public class UserServiceImpl implements UserService {
 
 //        LOGGER.info(newUser.toString());
         userRepository.save(newUser);
+
         return RestBody.success(newUser);
     }
 
@@ -100,8 +102,9 @@ public class UserServiceImpl implements UserService {
         updateUser.setPicture(userDetailDTO.getPicture());
         updateUser.setUpdatedDate(new Date());
 
-        LOGGER.info(updateUser.toString());
+//        LOGGER.info(updateUser.toString());
         userRepository.save(updateUser);
+
         return RestBody.success(updateUser);
     }
 

@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public RestBody getAllUser() {
-		List<User> users = userRepository.findAllByDeletedIsFalse();
+		List<User> users = userRepository.findAllBy();
 		return RestBody.success(users);
 	}
 	

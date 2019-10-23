@@ -10,6 +10,5 @@ public interface QuestionTypeService {
     RestBody updateQuestionType(QuestionTypeDTO dto, BigInteger id);
     RestBody deleteQuestionType(BigInteger id);
     RestBody getQuestionType(BigInteger id);
-    String getNameQuestionType(BigInteger id);
     RestBody getAllQuestionTypes();
 }

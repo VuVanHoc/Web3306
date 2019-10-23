@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface QuestionTypeRepository extends JpaRepository<QuestionType, BigInteger> {
     List<QuestionType> findAllByDeletedIsFalse();
+    QuestionType findByIdAndDeletedIsFalse(int id);
     QuestionType findOneByCode(String code);
     QuestionType findOneByIdAndDeletedIsFalse(BigInteger id);
 }

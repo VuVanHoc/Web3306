@@ -2,14 +2,12 @@ package com.uet.k62.web.system.examination.service.impl;
 
 import com.uet.k62.web.system.examination.error.QuestionNotFoundException;
 import com.uet.k62.web.system.examination.model.RestBody;
-import com.uet.k62.web.system.examination.model.dtos.CorrectAnswerResponseDTO;
-import com.uet.k62.web.system.examination.model.dtos.QuestionAnswerResponseDTO;
-import com.uet.k62.web.system.examination.model.dtos.QuestionRequestDTO;
-import com.uet.k62.web.system.examination.model.dtos.QuestionResponseDTO;
+import com.uet.k62.web.system.examination.model.dtos.*;
 import com.uet.k62.web.system.examination.model.entity.Answer;
 import com.uet.k62.web.system.examination.model.entity.Question;
 import com.uet.k62.web.system.examination.repository.AnswerRepository;
 import com.uet.k62.web.system.examination.repository.QuestionRepository;
+import com.uet.k62.web.system.examination.repository.QuestionTypeRepository;
 import com.uet.k62.web.system.examination.service.QuestionService;
 import com.uet.k62.web.system.examination.service.QuestionTypeService;
 import org.slf4j.Logger;
@@ -23,18 +21,17 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-//@Transactional(rollbackFor = RollBackException.class)
 public class QuestionServiceImpl implements QuestionService {
     public static final Logger LOGGER = LoggerFactory.getLogger(QuestionServiceImpl.class);
 
     private QuestionRepository questionRepository;
     private AnswerRepository answerRepository;
-    private QuestionTypeService questionTypeService;
+    private QuestionTypeRepository questionTypeRepository;
 
-    public QuestionServiceImpl(QuestionRepository questionRepository, AnswerRepository answerRepository, QuestionTypeService questionTypeService) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, AnswerRepository answerRepository, QuestionTypeRepository questionTypeRepository) {
         this.questionRepository = questionRepository;
         this.answerRepository = answerRepository;
-        this.questionTypeService = questionTypeService;
+        this.questionTypeRepository = questionTypeRepository;
     }
 
     @Override
@@ -59,7 +56,11 @@ public class QuestionServiceImpl implements QuestionService {
         BeanUtils.copyProperties(dto, question);
         question.setUpdatedDate(new Date());
         questionRepository.save(question);
-        return RestBody.success(question);
+
+        QuestionResponseDTO questionResponseDTO = new QuestionResponseDTO();
+        BeanUtils.copyProperties(question, questionResponseDTO);
+        questionResponseDTO.setQuestionTypeCode(this.getQuestionTypeCode(BigInteger.valueOf(question.getQuestionTypeId())));
+        return RestBody.success(questionResponseDTO);
     }
 
     @Override
@@ -76,9 +77,16 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public RestBody getAllQuestions() {
+        List<QuestionResponseDTO> questionResponseListDTO = new ArrayList<>();
         List<Question> questions = questionRepository.findAllByDeletedIsFalse();
+        questions.forEach(question -> {
+            QuestionResponseDTO single = new QuestionResponseDTO();
+            BeanUtils.copyProperties(question, single);
+            single.setQuestionTypeCode(this.getQuestionTypeCode(BigInteger.valueOf(question.getQuestionTypeId())));
+            questionResponseListDTO.add(single);
+        });
 
-        return RestBody.success(questions);
+        return RestBody.success(questionResponseListDTO);
     }
 
     @Override
@@ -93,8 +101,9 @@ public class QuestionServiceImpl implements QuestionService {
         answerEntities.forEach(item->answers.add(item.getContent()));
 
         QuestionAnswerResponseDTO responseDTO = new QuestionAnswerResponseDTO();
-        BeanUtils.copyProperties(question, responseDTO);
+        responseDTO.setQuestionTypeCode(this.getQuestionTypeCode(BigInteger.valueOf(question.getQuestionTypeId())));
         responseDTO.setAnswers(answers);
+        BeanUtils.copyProperties(question, responseDTO);
 
         return RestBody.success(responseDTO);
     }
@@ -122,5 +131,9 @@ public class QuestionServiceImpl implements QuestionService {
         responseDTO.setAnswers(answers);
         responseDTO.setCorrectIndex(correctIndex);
         return RestBody.success(responseDTO);
+    }
+
+    private String getQuestionTypeCode(BigInteger questionTypeId){
+        return questionTypeRepository.findOneByIdAndDeletedIsFalse(questionTypeId).getCode();
     }
 }

@@ -66,11 +66,6 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
     }
 
     @Override
-    public String getNameQuestionType(BigInteger id) {
-        return questionTypeRepository.findOneByIdAndDeletedIsFalse(id).getCode();
-    }
-
-    @Override
     public RestBody getAllQuestionTypes() {
         List<QuestionType> questionTypes = questionTypeRepository.findAllByDeletedIsFalse();
         return RestBody.success(questionTypes);

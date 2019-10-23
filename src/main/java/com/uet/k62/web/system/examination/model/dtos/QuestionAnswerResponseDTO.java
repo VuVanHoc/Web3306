@@ -9,7 +9,8 @@ import java.util.List;
 @Data
 public class QuestionAnswerResponseDTO {
     private BigInteger id;
-    private int questionTypeId;
+//    private int questionTypeId;
+    private String questionTypeCode;
     private String content;
     private String imageUrl;
     private Date createdDate;

@@ -8,5 +8,5 @@ import java.math.BigInteger;
 public interface AnswerService {
     RestBody createAnswer(AnswerRequestDTO answerRequestDTO);
     RestBody updateAnswer(AnswerRequestDTO answerRequestDTO);
-    RestBody deleteAnswer(BigInteger questionId);
+    RestBody deleteAnswer(Integer questionId);
 }

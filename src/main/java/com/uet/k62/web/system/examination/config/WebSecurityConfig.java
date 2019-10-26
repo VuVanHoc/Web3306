@@ -40,8 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/configuration/ui",
 						"/configuration/security",
 						"/swagger-ui.html",
-						"/webjars/**").permitAll()
-				.anyRequest().authenticated()
+						"/webjars/**", "/static/**").permitAll()
+				.anyRequest().permitAll()
 				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
 		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

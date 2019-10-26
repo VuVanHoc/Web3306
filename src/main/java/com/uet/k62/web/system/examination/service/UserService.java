@@ -11,9 +11,9 @@ public interface UserService {
 	
 	RestBody getAllUsers();
 
-	RestBody getUser(BigInteger id);
+	RestBody getUser(Integer id);
 
-	RestBody deleteUser(BigInteger id);
+	RestBody deleteUser(Integer id);
 
-	RestBody updateInfoUser(UserDetailDTO userDetailDTO, BigInteger id);
+	RestBody updateInfoUser(UserDetailDTO userDetailDTO, Integer id);
 }

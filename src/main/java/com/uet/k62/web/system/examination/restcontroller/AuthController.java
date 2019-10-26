@@ -1,4 +1,4 @@
-package com.uet.k62.web.system.examination.controller;
+package com.uet.k62.web.system.examination.restcontroller;
 
 import com.uet.k62.web.system.examination.config.JwtTokenProvider;
 import com.uet.k62.web.system.examination.model.dtos.JwtAuthenticationResponse;

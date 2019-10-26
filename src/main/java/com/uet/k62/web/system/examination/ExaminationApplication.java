@@ -26,7 +26,7 @@ public class ExaminationApplication implements CommandLineRunner {
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.uet.k62.web.system.examination.controller"))
+				.apis(RequestHandlerSelectors.basePackage("com.uet.k62.web.system.examination.restcontroller"))
 				.paths(PathSelectors.any())
 				.build();
 	}

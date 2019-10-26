@@ -1,15 +1,11 @@
-package com.uet.k62.web.system.examination.controller;
+package com.uet.k62.web.system.examination.restcontroller;
 
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.QuestionRequestDTO;
 import com.uet.k62.web.system.examination.service.QuestionService;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigInteger;
 
 @RestController
 @RequestMapping(value = "api/questions")
@@ -36,28 +32,28 @@ public class QuestionController {
 
     @ApiOperation(value = "Get a question", response = RestBody.class)
     @GetMapping(value = "{id}")
-    public ResponseEntity getQuestion(@PathVariable BigInteger id){
+    public ResponseEntity getQuestion(@PathVariable Integer id){
         RestBody body = questionService.getQuestion(id);
         return ResponseEntity.ok(body);
     }
 
     @ApiOperation(value = "Update a question", response = RestBody.class)
     @PutMapping(value = "{id}")
-    public ResponseEntity updateQuestion(@PathVariable BigInteger id, @RequestBody QuestionRequestDTO questionRequestDTO){
+    public ResponseEntity updateQuestion(@PathVariable Integer id, @RequestBody QuestionRequestDTO questionRequestDTO){
         RestBody body = questionService.updateQuestion(questionRequestDTO, id);
         return  ResponseEntity.ok(body);
     }
 
     @ApiOperation(value = "Delete a question", response = RestBody.class)
     @DeleteMapping(value = "{id}")
-    public ResponseEntity deleteQuestion(@PathVariable BigInteger id){
+    public ResponseEntity deleteQuestion(@PathVariable Integer id){
         RestBody body = questionService.deleteQuestion(id);
         return ResponseEntity.ok(body);
     }
 
     @ApiOperation(value = "Get correct answer of a question", response = RestBody.class)
     @GetMapping(value = "{id}/answers")
-    public ResponseEntity getCorrectAnswers(@PathVariable BigInteger id){
+    public ResponseEntity getCorrectAnswers(@PathVariable Integer id){
         RestBody body = questionService.getCorrectAnswer(id);
         return ResponseEntity.ok(body);
     }

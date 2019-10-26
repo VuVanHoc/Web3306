@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigInteger;
 
-public interface LogHistoryRepository extends JpaRepository<LogHistory, BigInteger> {
+public interface LogHistoryRepository extends JpaRepository<LogHistory, Integer> {
 }

@@ -14,7 +14,7 @@ public class BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public BigInteger id;
+	public Integer id;
 
 	@Getter
 	@Column(name = "created_time")
@@ -32,7 +32,7 @@ public class BaseEntity {
 	@Column(name = "deleted")
 	protected boolean deleted;
 
-	public BigInteger getId() {
+	public Integer getId() {
 		return this.id;
 	}
 

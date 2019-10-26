@@ -48,7 +48,7 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public RestBody deleteAnswer(BigInteger questionId) {
+    public RestBody deleteAnswer(Integer questionId) {
         List<Answer> answers = answerRepository.findAllByQuestionId(questionId);
         answers.forEach(item->answerRepository.deleteById(item.getId()));
         return RestBody.success("Deleted");

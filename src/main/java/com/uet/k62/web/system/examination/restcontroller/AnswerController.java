@@ -1,4 +1,4 @@
-package com.uet.k62.web.system.examination.controller;
+package com.uet.k62.web.system.examination.restcontroller;
 
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.AnswerRequestDTO;
@@ -8,8 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigInteger;
 
 @RestController
 @RequestMapping(value = "api/answers")
@@ -31,7 +29,7 @@ public class AnswerController {
 
     @ApiOperation(value = "Delete answers of a question", response = RestBody.class)
     @DeleteMapping
-    public ResponseEntity deleteAnswers(@RequestParam(value = "question") BigInteger questionId){
+    public ResponseEntity deleteAnswers(@RequestParam(value = "question") Integer questionId){
         RestBody body = answerService.deleteAnswer(questionId);
         return ResponseEntity.ok(body);
     }

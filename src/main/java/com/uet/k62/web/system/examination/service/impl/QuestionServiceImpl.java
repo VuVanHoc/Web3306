@@ -48,7 +48,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public RestBody updateQuestion(QuestionRequestDTO dto, BigInteger id) {
+    public RestBody updateQuestion(QuestionRequestDTO dto, Integer id) {
         Question question = questionRepository.findOneByIdAndDeletedIsFalse(id);
         if (question == null) {
             throw new QuestionNotFoundException("Question is not found: " + id);
@@ -59,12 +59,12 @@ public class QuestionServiceImpl implements QuestionService {
 
         QuestionResponseDTO questionResponseDTO = new QuestionResponseDTO();
         BeanUtils.copyProperties(question, questionResponseDTO);
-        questionResponseDTO.setQuestionTypeCode(this.getQuestionTypeCode(BigInteger.valueOf(question.getQuestionTypeId())));
+        questionResponseDTO.setQuestionTypeCode(this.getQuestionTypeCode(question.getQuestionTypeId()));
         return RestBody.success(questionResponseDTO);
     }
 
     @Override
-    public RestBody deleteQuestion(BigInteger id) {
+    public RestBody deleteQuestion(Integer id) {
         Question question = questionRepository.findOneByIdAndDeletedIsFalse(id);
         if (question == null) {
             throw new QuestionNotFoundException("Question is not found: " + id);
@@ -82,7 +82,7 @@ public class QuestionServiceImpl implements QuestionService {
         questions.forEach(question -> {
             QuestionResponseDTO single = new QuestionResponseDTO();
             BeanUtils.copyProperties(question, single);
-            single.setQuestionTypeCode(this.getQuestionTypeCode(BigInteger.valueOf(question.getQuestionTypeId())));
+            single.setQuestionTypeCode(this.getQuestionTypeCode(question.getQuestionTypeId()));
             questionResponseListDTO.add(single);
         });
 
@@ -90,7 +90,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public RestBody getQuestion(BigInteger id) {
+    public RestBody getQuestion(Integer id) {
         Question question = questionRepository.findOneByIdAndDeletedIsFalse(id);
         if (question == null) {
             throw new QuestionNotFoundException("Question is not found: " + id);
@@ -101,7 +101,7 @@ public class QuestionServiceImpl implements QuestionService {
         answerEntities.forEach(item->answers.add(item.getContent()));
 
         QuestionAnswerResponseDTO responseDTO = new QuestionAnswerResponseDTO();
-        responseDTO.setQuestionTypeCode(this.getQuestionTypeCode(BigInteger.valueOf(question.getQuestionTypeId())));
+        responseDTO.setQuestionTypeCode(this.getQuestionTypeCode(question.getQuestionTypeId()));
         responseDTO.setAnswers(answers);
         BeanUtils.copyProperties(question, responseDTO);
 
@@ -109,7 +109,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public RestBody getCorrectAnswer(BigInteger id) {
+    public RestBody getCorrectAnswer(Integer id) {
         Question question = questionRepository.findOneByIdAndDeletedIsFalse(id);
         List<Answer> answerEntities = answerRepository.findAllByQuestionId(question.getId());
         List<String> answers = new ArrayList<>();
@@ -133,7 +133,7 @@ public class QuestionServiceImpl implements QuestionService {
         return RestBody.success(responseDTO);
     }
 
-    private String getQuestionTypeCode(BigInteger questionTypeId){
+    private String getQuestionTypeCode(Integer questionTypeId){
         return questionTypeRepository.findOneByIdAndDeletedIsFalse(questionTypeId).getCode();
     }
 }

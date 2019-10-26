@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.math.BigInteger;
 import java.util.List;
 
-public interface AnswerRepository extends JpaRepository<Answer, BigInteger> {
-    List<Answer> findAllByQuestionId(BigInteger questionId);
+public interface AnswerRepository extends JpaRepository<Answer, Integer> {
+    List<Answer> findAllByQuestionId(Integer questionId);
 
     @Override
-    void deleteById(BigInteger bigInteger);
+    void deleteById(Integer integer);
 }

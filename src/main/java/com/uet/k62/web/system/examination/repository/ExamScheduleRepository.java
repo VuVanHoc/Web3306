@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigInteger;
 
-public interface ExamScheduleRepository extends JpaRepository<ExamSchedule, BigInteger> {
+public interface ExamScheduleRepository extends JpaRepository<ExamSchedule, Integer> {
 }

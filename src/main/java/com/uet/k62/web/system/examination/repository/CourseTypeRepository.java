@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigInteger;
 
-public interface CourseTypeRepository extends JpaRepository<CourseType, BigInteger> {
+public interface CourseTypeRepository extends JpaRepository<CourseType, Integer> {
 }

@@ -1,4 +1,4 @@
-package com.uet.k62.web.system.examination.controller;
+package com.uet.k62.web.system.examination.restcontroller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

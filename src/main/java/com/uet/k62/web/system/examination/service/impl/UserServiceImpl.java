@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RestBody getUser(BigInteger id) {
+    public RestBody getUser(Integer id) {
         User user = userRepository.findByIdAndDeletedIsFalse(id);
         if(user == null){
             return RestBody.error("This account doesn't exist");
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RestBody deleteUser(BigInteger id) {
+    public RestBody deleteUser(Integer id) {
         User deleteUser = userRepository.findByIdAndDeletedIsFalse(id);
         if(deleteUser == null){
             return RestBody.error("This account doesn't exist");
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RestBody updateInfoUser(UserDetailDTO userDetailDTO, BigInteger id) {
+    public RestBody updateInfoUser(UserDetailDTO userDetailDTO, Integer id) {
 
         User updateUser = userRepository.findByIdAndDeletedIsFalse(id);
         if(updateUser == null){

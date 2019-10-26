@@ -34,7 +34,7 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
     }
 
     @Override
-    public RestBody updateQuestionType(QuestionTypeDTO dto, BigInteger id) {
+    public RestBody updateQuestionType(QuestionTypeDTO dto, Integer id) {
         QuestionType questionType = questionTypeRepository.findOneByIdAndDeletedIsFalse(id);
         if(questionType == null){
             throw new QuestionTypeNotFoundException("Not found question type: " + id);
@@ -46,7 +46,7 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
     }
 
     @Override
-    public RestBody deleteQuestionType(BigInteger id) {
+    public RestBody deleteQuestionType(Integer id) {
         QuestionType questionType = questionTypeRepository.findOneByIdAndDeletedIsFalse(id);
         if(questionType == null){
             throw new QuestionTypeNotFoundException("Not found question type: " + id);
@@ -57,7 +57,7 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
     }
 
     @Override
-    public RestBody getQuestionType(BigInteger id) {
+    public RestBody getQuestionType(Integer id) {
         QuestionType questionType = questionTypeRepository.findOneByIdAndDeletedIsFalse(id);
         if(questionType == null){
             throw new QuestionTypeNotFoundException("Not found question type: " + id);

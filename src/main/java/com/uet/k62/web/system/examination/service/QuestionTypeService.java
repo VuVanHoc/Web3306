@@ -7,8 +7,8 @@ import java.math.BigInteger;
 
 public interface QuestionTypeService {
     RestBody createQuestionType(QuestionTypeDTO dto);
-    RestBody updateQuestionType(QuestionTypeDTO dto, BigInteger id);
-    RestBody deleteQuestionType(BigInteger id);
-    RestBody getQuestionType(BigInteger id);
+    RestBody updateQuestionType(QuestionTypeDTO dto, Integer id);
+    RestBody deleteQuestionType(Integer id);
+    RestBody getQuestionType(Integer id);
     RestBody getAllQuestionTypes();
 }

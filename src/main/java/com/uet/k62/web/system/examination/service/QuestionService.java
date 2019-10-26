@@ -7,9 +7,9 @@ import java.math.BigInteger;
 
 public interface QuestionService {
     RestBody createQuestion(QuestionRequestDTO dto);
-    RestBody updateQuestion(QuestionRequestDTO dto, BigInteger id);
-    RestBody deleteQuestion(BigInteger id);
+    RestBody updateQuestion(QuestionRequestDTO dto, Integer id);
+    RestBody deleteQuestion(Integer id);
     RestBody getAllQuestions();
-    RestBody getQuestion(BigInteger id);
-    RestBody getCorrectAnswer(BigInteger id);
+    RestBody getQuestion(Integer id);
+    RestBody getCorrectAnswer(Integer id);
 }

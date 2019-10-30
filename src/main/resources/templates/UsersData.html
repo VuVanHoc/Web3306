@@ -7,7 +7,6 @@
 <link href="../CSS/Layout.css" rel="stylesheet"/>
 <link href="../CSS/UsersData.css" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.0.0/css/font-awesome.min.css">
 <title>Quản lý học viên</title>
 </head>
 <body>
@@ -59,7 +58,7 @@
 <div class="content">
 	<div class="content-wrap">
 		<div class="list-users-title clear-fix">
-			<div class="main-title">Danh sách khách hàng</div>
+			<div class="main-title">Danh sách học viên</div>
 			<div class="search">
 				<input autofocus class="inp-search" type="text"/>
 				<button class="btn-search"></button>
@@ -70,12 +69,12 @@
 			<table class="list-users">
 				<thead>
 					<tr>
-						<th fieldName="CustomerID">Mã</th>
-						<th fieldName="CustomerName">Họ tên</th>
-						<th fieldName="Email">Email</th>
-						<th fieldName="Phone">Số điện thoại</th>
-						<th fieldName="Address">Địa chỉ</th>
-						<th fieldName="Action">Hành động</th>
+						<th fieldName="id">ID</th>
+						<th fieldName="fullName">Họ tên</th>
+						<th fieldName="email">Email</th>
+						<th fieldName="phone">Số điện thoại</th>
+						<th fieldName="address">Địa chỉ</th>
+						<th>Hành động</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -95,8 +94,12 @@
 		</div>
 	</div>
 </div>
-<script src="/JS/jquery-3.4.1.min.js"></script>
-<script src="/JS/Base.js"></script>
-<script src="/JS/Layout.js"></script>
+<script src="../JS/jquery-3.4.1.min.js"></script>
+<script src="../JS/Base.js"></script>
+<script>
+	let base = new Base();
+	base.loadAllData("/api/user", "GET");
+	
+</script>
 </body>
 </html> 

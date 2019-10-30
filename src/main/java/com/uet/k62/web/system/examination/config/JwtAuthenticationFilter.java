@@ -1,6 +1,7 @@
 package com.uet.k62.web.system.examination.config;
 
 import com.uet.k62.web.system.examination.service.impl.UserDetailServiceImpl;
+import com.uet.k62.web.system.examination.utils.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 					
 					SecurityContext securityContext = SecurityContextHolder.getContext();
 					securityContext.setAuthentication(authenticationToken);
+					LOGGER.info("Authentication successfully");
 				}
 			}
 		} catch (Exception e) {
@@ -58,8 +60,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	}
 	
 	private String getJwtFromRequest(HttpServletRequest request) {
-		String bearerToken = request.getHeader("Authorization");
-		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+		String bearerToken = request.getHeader(Constant.HEADER_TOKEN);
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(Constant.BEARER_TOKEN)) {
 			return bearerToken.substring(7);
 		}
 		return null;

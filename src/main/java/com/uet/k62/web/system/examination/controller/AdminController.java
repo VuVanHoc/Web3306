@@ -10,6 +10,7 @@ public class AdminController {
 	
 	@GetMapping(value = "/dashboard")
 	public String showDashboard() {
+		System.out.println("ADMIN DASHBOARD");
 		return "Layout";
 	}
 	

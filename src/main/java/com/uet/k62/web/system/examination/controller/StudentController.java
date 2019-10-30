@@ -10,4 +10,11 @@ public class StudentController {
 	public String index() {
 		return "index";
 	}
+	
+	@GetMapping(value = "/student/dashboard")
+	public String showDashboard(){
+		System.out.println("STUDENT DASHBOARD");
+		
+		return "exam";
+	}
 }

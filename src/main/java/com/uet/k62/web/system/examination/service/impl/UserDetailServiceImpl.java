@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,9 +31,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		if (currentUser == null) {
 			throw new UsernameNotFoundException(username);
 		}
-		List<GrantedAuthority> authorities = AuthorityUtils
-				.commaSeparatedStringToAuthorityList(String.valueOf(roleRepository.findById(currentUser.getRoleId())));
-		return new CustomUserDetail(currentUser, authorities);
+		String roleUser = roleRepository.findById(currentUser.getRoleId()).isPresent() ?
+				roleRepository.findById(currentUser.getRoleId()).get().getName() : "";
+		roleUser = "ROLE_".concat(roleUser);
+		List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roleUser);
+		
+		CustomUserDetail customUserDetail = new CustomUserDetail(currentUser, authorities);
+		System.out.println(customUserDetail);
+		return customUserDetail;
 	}
 }
 

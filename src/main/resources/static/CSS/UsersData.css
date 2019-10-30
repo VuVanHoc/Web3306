@@ -55,7 +55,7 @@
     width: 100px;
     height: 34px;
     border-radius: 5px;
-    background: #9f9fa0;
+    background: #19b133;
     border: none;
     cursor: pointer;
     top: calc(50% - 17px);
@@ -64,7 +64,29 @@
     color: #fff;
 }
 .btn-add:hover {
-    background: #bf352a;
+    background: #179a2d;
+}
+.btn-update {
+	border-radius: 5px;
+	background: #0285bb;
+	cursor: pointer;
+	color: #fff;
+	border: none;
+	padding: 4px 10px;
+}
+.btn-update:hover {
+	background: #026791;
+}
+.btn-remove {
+	border-radius: 5px;
+	background: red;
+	cursor: pointer;
+	color: #fff;
+	border: none;
+	padding: 4px 10px;
+}
+.btn-remove:hover {
+	background: #CE0000;
 }
 .table-list-users {
     position: absolute;

@@ -11,9 +11,6 @@ import com.uet.k62.web.system.examination.utils.RoleCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,15 +58,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RestBody getAllUsers(Integer pageNo, Integer pageSize) {
-//        List<User> users = userRepository.findAllByDeletedIsFalse();
-        Pageable paging = PageRequest.of(pageNo, pageSize);
-        Page<User> pagedResult = userRepository.findAllByDeletedIsFalse(paging);
-        if(pagedResult.hasContent()){
-            return RestBody.success(pagedResult.getContent());
-        }else{
-            return RestBody.success("Không có người dùng nào");
-        }
+    public RestBody getAllUsers() {
+        List<User> users = userRepository.findAllByDeletedIsFalse();
+        return RestBody.success(users);
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.math.BigInteger;
 public interface UserService {
 	RestBody registerAccount(UserFormRegistrationDTO userFormRegistrationDTO);
 	
-	RestBody getAllUsers(Integer pageNo, Integer pageSize);
+	RestBody getAllUsers();
 
 	RestBody getUser(Integer id);
 

@@ -2,24 +2,20 @@ package com.uet.k62.web.system.examination.service.impl;
 
 import com.uet.k62.web.system.examination.error.QuestionNotFoundException;
 import com.uet.k62.web.system.examination.model.RestBody;
-import com.uet.k62.web.system.examination.model.dtos.CorrectAnswerResponseDTO;
-import com.uet.k62.web.system.examination.model.dtos.QuestionAnswerResponseDTO;
-import com.uet.k62.web.system.examination.model.dtos.QuestionRequestDTO;
-import com.uet.k62.web.system.examination.model.dtos.QuestionResponseDTO;
+import com.uet.k62.web.system.examination.model.dtos.*;
 import com.uet.k62.web.system.examination.model.entity.Answer;
 import com.uet.k62.web.system.examination.model.entity.Question;
 import com.uet.k62.web.system.examination.repository.AnswerRepository;
 import com.uet.k62.web.system.examination.repository.QuestionRepository;
 import com.uet.k62.web.system.examination.repository.QuestionTypeRepository;
 import com.uet.k62.web.system.examination.service.QuestionService;
+import com.uet.k62.web.system.examination.service.QuestionTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,22 +76,15 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public RestBody getAllQuestions(Integer pageNo, Integer pageSize) {
+    public RestBody getAllQuestions() {
         List<QuestionResponseDTO> questionResponseListDTO = new ArrayList<>();
-        Pageable paging = PageRequest.of(pageNo, pageSize);
-        Page<Question> pagedResult = questionRepository.findAllByDeletedIsFalse(paging);
-//        List<Question> questions = questionRepository.findAllByDeletedIsFalse();
-        if(pagedResult.hasContent()){
-            List<Question> questions = pagedResult.getContent();
-            questions.forEach(question -> {
-                QuestionResponseDTO single = new QuestionResponseDTO();
-                BeanUtils.copyProperties(question, single);
-                single.setQuestionTypeCode(this.getQuestionTypeCode(question.getQuestionTypeId()));
-                questionResponseListDTO.add(single);
-            });
-        }else{
-            RestBody.success("Không có câu hỏi nào");
-        }
+        List<Question> questions = questionRepository.findAllByDeletedIsFalse();
+        questions.forEach(question -> {
+            QuestionResponseDTO single = new QuestionResponseDTO();
+            BeanUtils.copyProperties(question, single);
+            single.setQuestionTypeCode(this.getQuestionTypeCode(question.getQuestionTypeId()));
+            questionResponseListDTO.add(single);
+        });
 
         return RestBody.success(questionResponseListDTO);
     }

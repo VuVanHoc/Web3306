@@ -31,7 +31,7 @@ public class AnswerServiceImpl implements AnswerService {
         List<Answer> answers = new ArrayList<>();
 
         List<String> answers_input = answerRequestDTO.getAnswers();
-        answers_input.forEach(item->answers.add(new Answer(answerRequestDTO.getQuestion_id(), item, false)));
+        answers_input.forEach(item->answers.add(new Answer(answerRequestDTO.getQuestionId(), item, false)));
         int[] correctIndex = answerRequestDTO.getCorrectIndex();
         Arrays.stream(correctIndex).forEach(index ->answers.get(index).setStatus(true));
 

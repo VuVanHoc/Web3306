@@ -8,14 +8,9 @@ import javax.persistence.Entity;
 @Data
 @Entity(name = "course")
 public class Course extends BaseEntity {
-	
 	@Column(name = "type_id")
 	private int typeId;
-	
-	@Column(name = "user_id")
-	private int userId;
-	
-	@Column(name = "schedule_id")
-	private int scheduleId;
-	
+
+	@Column(name = "course_name")
+	private String courseName;
 }

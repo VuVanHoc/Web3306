@@ -2,6 +2,7 @@ package com.uet.k62.web.system.examination.restcontroller;
 
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.CourseDTO;
+import com.uet.k62.web.system.examination.model.dtos.UserIdListDTO;
 import com.uet.k62.web.system.examination.paging.PageConstant;
 import com.uet.k62.web.system.examination.service.CourseService;
 import io.swagger.annotations.ApiOperation;
@@ -53,4 +54,18 @@ public class CourseController {
         return ResponseEntity.ok(restBody);
     }
 
+
+    @ApiOperation(value = "Register a course", response = RestBody.class)
+    @PostMapping(value = "{courseId}/users")
+    public ResponseEntity registerCourse(@PathVariable Integer courseId, @RequestBody UserIdListDTO dto){
+        RestBody restBody = courseService.registerCourse(courseId, dto);
+        return ResponseEntity.ok(restBody);
+    }
+
+    @ApiOperation(value = "Register a course", response = RestBody.class)
+    @DeleteMapping(value = "{courseId}/users")
+    public ResponseEntity leaveCourse(@PathVariable Integer courseId, @RequestBody UserIdListDTO dto){
+        RestBody restBody = courseService.leaveCourse(courseId, dto);
+        return ResponseEntity.ok(restBody);
+    }
 }

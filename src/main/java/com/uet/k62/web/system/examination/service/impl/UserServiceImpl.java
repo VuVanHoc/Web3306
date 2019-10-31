@@ -4,6 +4,7 @@ import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.UserDetailDTO;
 import com.uet.k62.web.system.examination.model.dtos.UserFormRegistrationDTO;
 import com.uet.k62.web.system.examination.model.entity.User;
+import com.uet.k62.web.system.examination.repository.CourseRepository;
 import com.uet.k62.web.system.examination.repository.UserRepository;
 import com.uet.k62.web.system.examination.service.UserService;
 import com.uet.k62.web.system.examination.utils.Constant;
@@ -28,7 +29,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -60,10 +62,10 @@ public class UserServiceImpl implements UserService {
     public RestBody getAllUsers(Integer pageNo, Integer pageSize) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
         Page<User> users = userRepository.findAllByDeletedIsFalse(paging);
-        if(users.hasContent()){
+
+        if (users.hasContent()) {
             return RestBody.success(users.getContent());
-        }
-        else{
+        } else {
 
             return RestBody.success("Không có người dùng nào");
         }
@@ -72,7 +74,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public RestBody getUser(Integer id) {
         User user = userRepository.findByIdAndDeletedIsFalse(id);
-        if(user == null){
+        if (user == null) {
             return RestBody.error("This account doesn't exist");
         }
         return RestBody.success(user);
@@ -81,7 +83,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public RestBody deleteUser(Integer id) {
         User deleteUser = userRepository.findByIdAndDeletedIsFalse(id);
-        if(deleteUser == null){
+        if (deleteUser == null) {
             return RestBody.error("This account doesn't exist");
         }
         deleteUser.setDeleted(true);
@@ -93,7 +95,7 @@ public class UserServiceImpl implements UserService {
     public RestBody updateInfoUser(UserDetailDTO userDetailDTO, Integer id) {
 
         User updateUser = userRepository.findByIdAndDeletedIsFalse(id);
-        if(updateUser == null){
+        if (updateUser == null) {
             return RestBody.error("This account doesn't exist");
         }
 

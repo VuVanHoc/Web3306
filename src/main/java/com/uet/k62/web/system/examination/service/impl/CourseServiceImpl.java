@@ -1,10 +1,14 @@
 package com.uet.k62.web.system.examination.service.impl;
 
 import com.uet.k62.web.system.examination.error.CourseNotFoundException;
+import com.uet.k62.web.system.examination.error.UserNotFoundException;
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.CourseDTO;
+import com.uet.k62.web.system.examination.model.dtos.UserIdListDTO;
 import com.uet.k62.web.system.examination.model.entity.Course;
+import com.uet.k62.web.system.examination.model.entity.User;
 import com.uet.k62.web.system.examination.repository.CourseRepository;
+import com.uet.k62.web.system.examination.repository.UserRepository;
 import com.uet.k62.web.system.examination.service.CourseService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -12,15 +16,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class CourseServiceImpl implements CourseService {
     private CourseRepository courseRepository;
+    private UserRepository userRepository;
 
-    public CourseServiceImpl(CourseRepository courseRepository){
+    public CourseServiceImpl(CourseRepository courseRepository,
+                             UserRepository userRepository){
         this.courseRepository = courseRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -72,5 +79,50 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseNotFoundException("Course not found");
         }
         return RestBody.success(course);
+    }
+
+    @Override
+    public RestBody registerCourse(Integer courseId, UserIdListDTO dto) {
+        Course course = courseRepository.findByIdAndDeletedIsFalse(courseId);
+        if (course == null) {
+            throw new CourseNotFoundException("Course not found");
+        } else {
+            ArrayList<Integer> userIds = dto.getUserIds();
+            userIds.forEach(userId -> {
+                User user = userRepository.findByIdAndDeletedIsFalse(userId);
+                if(user == null){
+                    throw new UserNotFoundException("Not found user has username: " + user.getUsername() + ". Try again!");
+                }else{
+                    course.getUsers().add(user);
+                }
+            });
+            courseRepository.save(course);
+        }
+
+        return RestBody.success("Đăng kí khóa học thành công");
+    }
+
+    @Override
+    public RestBody leaveCourse(Integer courseId, UserIdListDTO dto) {
+        Course course = courseRepository.findByIdAndDeletedIsFalse(courseId);
+        if (course == null) {
+            throw new CourseNotFoundException("Course not found");
+        } else {
+            ArrayList<Integer> userIds = dto.getUserIds();
+            userIds.forEach(userId -> {
+                User user = userRepository.findByIdAndDeletedIsFalse(userId);
+                if(user == null){
+                    throw new UserNotFoundException("Not found user has username: " + user.getUsername() + ". Try again!");
+                }else{
+                    course.getUsers().forEach(item ->{
+                       if(item.getId() == userId){
+                           course.getUsers().remove(item);
+                       }
+                    });
+                }
+            });
+            courseRepository.save(course);
+        }
+        return RestBody.success("Deleted");
     }
 }

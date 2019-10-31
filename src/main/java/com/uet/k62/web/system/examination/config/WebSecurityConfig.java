@@ -27,12 +27,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable().authorizeRequests()
 				.antMatchers("/login/**").permitAll()
 				.antMatchers("/api/users/**").permitAll()
-				.antMatchers("/home/**").permitAll()
+//				.antMatchers("/home/**").permitAll()
 				.antMatchers("/api/question-types/**").permitAll()
 				.antMatchers("/api/questions/**").permitAll()
 				.antMatchers("/api/answers/**").permitAll()
 				.antMatchers("/api/course-types/**").permitAll()
-                .antMatchers("/api/course/**").permitAll()
+                .antMatchers("/api/courses/**").permitAll()
 
                 .antMatchers("/v2/api-docs",
 						"/swagger-resources",

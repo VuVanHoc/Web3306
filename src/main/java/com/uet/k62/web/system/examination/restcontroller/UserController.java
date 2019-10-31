@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api/user")
+@RequestMapping(value = "api/users")
 public class UserController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 	
@@ -83,5 +83,5 @@ public class UserController {
 		RestBody restBody = userService.deleteUser(id);
 		return ResponseEntity.ok(restBody);
 	}
-	
+
 }

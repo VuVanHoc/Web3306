@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api/course")
+@RequestMapping(value = "api/courses")
 public class ExamScheduleController {
     private ExamScheduleService examScheduleService;
 

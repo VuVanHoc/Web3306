@@ -3,6 +3,7 @@ package com.uet.k62.web.system.examination.restcontroller;
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.UserDetailDTO;
 import com.uet.k62.web.system.examination.model.dtos.UserFormRegistrationDTO;
+import com.uet.k62.web.system.examination.paging.PagingConstant;
 import com.uet.k62.web.system.examination.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -26,9 +27,10 @@ public class UserController {
 	// Method GET - Returns a list of all active users
 	@ApiOperation(value = "Get all users", response = RestBody.class)
 	@GetMapping
-	public ResponseEntity getAllUsers() {
-		System.out.println("Hello world");
-		RestBody restBody = userService.getAllUsers();
+	public ResponseEntity getAllUsers( @RequestParam(defaultValue = PagingConstant.PAGE_NO) Integer pageNo,
+									   @RequestParam(defaultValue = PagingConstant.MAX_PAGE_SIZE) Integer pageSize) {
+//		System.out.println("Hello world");
+		RestBody restBody = userService.getAllUsers(pageNo, pageSize);
 		return ResponseEntity.ok(restBody);
 	}
 	

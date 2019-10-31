@@ -3,13 +3,14 @@ package com.uet.k62.web.system.examination.service;
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.UserDetailDTO;
 import com.uet.k62.web.system.examination.model.dtos.UserFormRegistrationDTO;
+import io.swagger.models.auth.In;
 
 import java.math.BigInteger;
 
 public interface UserService {
 	RestBody registerAccount(UserFormRegistrationDTO userFormRegistrationDTO);
 	
-	RestBody getAllUsers();
+	RestBody getAllUsers(Integer pageNo, Integer pageSize);
 
 	RestBody getUser(Integer id);
 

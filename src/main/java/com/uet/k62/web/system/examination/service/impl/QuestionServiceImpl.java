@@ -13,6 +13,9 @@ import com.uet.k62.web.system.examination.service.QuestionTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -76,15 +79,20 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public RestBody getAllQuestions() {
+    public RestBody getAllQuestions(Integer pageNo, Integer pageSize) {
+        Pageable paging = PageRequest.of(pageNo, pageSize);
         List<QuestionResponseDTO> questionResponseListDTO = new ArrayList<>();
-        List<Question> questions = questionRepository.findAllByDeletedIsFalse();
-        questions.forEach(question -> {
-            QuestionResponseDTO single = new QuestionResponseDTO();
-            BeanUtils.copyProperties(question, single);
-            single.setQuestionTypeCode(this.getQuestionTypeCode(question.getQuestionTypeId()));
-            questionResponseListDTO.add(single);
-        });
+        Page<Question> questions = questionRepository.findAllByDeletedIsFalse(paging);
+        if(questions.hasContent()){
+            questions.forEach(question -> {
+                QuestionResponseDTO single = new QuestionResponseDTO();
+                BeanUtils.copyProperties(question, single);
+                single.setQuestionTypeCode(this.getQuestionTypeCode(question.getQuestionTypeId()));
+                questionResponseListDTO.add(single);
+            });
+        }else{
+            return RestBody.success("Không có câu hỏi nào");
+        }
 
         return RestBody.success(questionResponseListDTO);
     }
@@ -127,7 +135,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         CorrectAnswerResponseDTO responseDTO = new CorrectAnswerResponseDTO();
-        responseDTO.setQuestion_id(id);
+        responseDTO.setQuestionId(id);
         responseDTO.setAnswers(answers);
         responseDTO.setCorrectIndex(correctIndex);
         return RestBody.success(responseDTO);

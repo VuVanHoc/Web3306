@@ -2,6 +2,7 @@ package com.uet.k62.web.system.examination.restcontroller;
 
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.CourseDTO;
+import com.uet.k62.web.system.examination.paging.PageConstant;
 import com.uet.k62.web.system.examination.service.CourseService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,17 @@ public class CourseController {
 
     @ApiOperation(value = "Get a page of course", response = RestBody.class)
     @GetMapping
-    public ResponseEntity getListCourses(){
-        return null;
+    public ResponseEntity getListCourses(@RequestParam(defaultValue = PageConstant.PAGE_NO) Integer pageNo,
+                                         @RequestParam(defaultValue = PageConstant.PAGE_SIZE) Integer pageSize){
+        RestBody restBody = courseService.getAllCourses(pageNo, pageSize);
+        return ResponseEntity.ok(restBody);
+    }
+
+    @ApiOperation(value = "Get a course", response = RestBody.class)
+    @GetMapping(value = "{id}")
+    public ResponseEntity getCourse(@PathVariable Integer id){
+        RestBody restBody = courseService.getCourse(id);
+        return ResponseEntity.ok(restBody);
     }
 
     @ApiOperation(value = "Create a new course", response = RestBody.class)

@@ -7,6 +7,9 @@ import com.uet.k62.web.system.examination.model.entity.Course;
 import com.uet.k62.web.system.examination.repository.CourseRepository;
 import com.uet.k62.web.system.examination.service.CourseService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -52,17 +55,22 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public RestBody getAllCourses() {
-//        List<Course> courses = courseRepository.findAllByDeletedIsFalse();
-        Page
-        if(courses == null){
-            
+    public RestBody getAllCourses(Integer pageNo, Integer pageSize) {
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+        Page<Course> pagedResult = courseRepository.findAllByDeletedIsFalse(paging);
+        if(pagedResult.hasContent()){
+            return RestBody.success(pagedResult.getContent());
+        }else {
+            return RestBody.success("Không có khóa học nào");
         }
-        return null;
     }
 
     @Override
     public RestBody getCourse(Integer id) {
-        return null;
+        Course course = courseRepository.findByIdAndDeletedIsFalse(id);
+        if(course == null){
+            throw new CourseNotFoundException("Course not found");
+        }
+        return RestBody.success(course);
     }
 }

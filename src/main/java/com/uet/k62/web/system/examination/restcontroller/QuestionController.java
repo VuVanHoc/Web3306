@@ -2,6 +2,7 @@ package com.uet.k62.web.system.examination.restcontroller;
 
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.QuestionRequestDTO;
+import com.uet.k62.web.system.examination.paging.PageConstant;
 import com.uet.k62.web.system.examination.service.QuestionService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,9 @@ public class QuestionController {
 
     @ApiOperation(value = "Get all questions", response = RestBody.class)
     @GetMapping
-    public ResponseEntity getAllQuestions(){
-        RestBody restBody = questionService.getAllQuestions();
+    public ResponseEntity getAllQuestions(@RequestParam(defaultValue = PageConstant.PAGE_NO) Integer pageNo,
+                                          @RequestParam(defaultValue = PageConstant.PAGE_SIZE) Integer pageSize){
+        RestBody restBody = questionService.getAllQuestions(pageNo, pageSize);
         return ResponseEntity.ok(restBody);
     }
 

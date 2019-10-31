@@ -11,16 +11,16 @@ import com.uet.k62.web.system.examination.utils.RoleCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -48,19 +48,25 @@ public class UserServiceImpl implements UserService {
         try {
             newUser.setBirthday(toDate(userFormRegistrationDTO.getBirthday()));
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER.info(e.getMessage());
         }
 
-//        LOGGER.info(newUser.toString());
         userRepository.save(newUser);
 
         return RestBody.success(newUser);
     }
 
     @Override
-    public RestBody getAllUsers() {
-        List<User> users = userRepository.findAllByDeletedIsFalse();
-        return RestBody.success(users);
+    public RestBody getAllUsers(Integer pageNo, Integer pageSize) {
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+        Page<User> users = userRepository.findAllByDeletedIsFalse(paging);
+        if(users.hasContent()){
+            return RestBody.success(users.getContent());
+        }
+        else{
+
+            return RestBody.success("Không có người dùng nào");
+        }
     }
 
     @Override
@@ -95,14 +101,13 @@ public class UserServiceImpl implements UserService {
         try {
             updateUser.setBirthday(toDate(userDetailDTO.getBirthday()));
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER.info(e.getMessage());
         }
         updateUser.setEmail(userDetailDTO.getEmail());
         updateUser.setPhone(userDetailDTO.getPhone());
         updateUser.setPicture(userDetailDTO.getPicture());
         updateUser.setUpdatedDate(new Date());
 
-//        LOGGER.info(updateUser.toString());
         userRepository.save(updateUser);
 
         return RestBody.success(updateUser);

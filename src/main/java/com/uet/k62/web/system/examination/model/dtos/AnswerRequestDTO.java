@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class AnswerRequestDTO {
-    private BigInteger questionId;
+    private Integer questionId;
     private List<String> answers;
     private int[] correctIndex;
 }

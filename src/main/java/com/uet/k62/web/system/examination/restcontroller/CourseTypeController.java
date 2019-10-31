@@ -2,6 +2,7 @@ package com.uet.k62.web.system.examination.restcontroller;
 
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.CourseTypeRequestDTO;
+import com.uet.k62.web.system.examination.paging.PageConstant;
 import com.uet.k62.web.system.examination.service.CourseTypeService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,9 @@ public class CourseTypeController {
 
     @ApiOperation(value = "Get all course-types", response = RestBody.class)
     @GetMapping
-    public ResponseEntity getAllCourseTypes(){
-        RestBody restBody = courseTypeService.getAllCourseTypes();
+    public ResponseEntity getAllCourseTypes(@RequestParam(defaultValue = PageConstant.PAGE_NO) Integer pageNo,
+                                            @RequestParam(defaultValue = PageConstant.PAGE_SIZE) Integer pageSize){
+        RestBody restBody = courseTypeService.getAllCourseTypes(pageNo, pageSize);
         return ResponseEntity.ok(restBody);
     }
 

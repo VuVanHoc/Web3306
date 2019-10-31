@@ -7,6 +7,9 @@ import com.uet.k62.web.system.examination.model.entity.CourseType;
 import com.uet.k62.web.system.examination.repository.CourseTypeRepository;
 import com.uet.k62.web.system.examination.service.CourseTypeService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -48,9 +51,14 @@ public class CourseTypeServiceImpl implements CourseTypeService {
     }
 
     @Override
-    public RestBody getAllCourseTypes() {
-        List<CourseType> courseTypes = courseTypeRepository.findAllByDeletedIsFalse();
-        return RestBody.success(courseTypes);
+    public RestBody getAllCourseTypes(Integer pageNo, Integer pageSize) {
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+        Page<CourseType> courseTypes = courseTypeRepository.findAllByDeletedIsFalse(paging);
+        if(courseTypes.hasContent()){
+            return RestBody.success(courseTypes.getContent());
+        }else{
+            return RestBody.success("Không có loại nào");
+        }
     }
 
     @Override

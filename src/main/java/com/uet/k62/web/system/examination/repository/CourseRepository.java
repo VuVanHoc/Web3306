@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface CourseRepository extends JpaRepository<Course, Integer> {
     Course findByIdAndDeletedIsFalse(Integer courseId);
-//    List<Course> findAllByDeletedIsFalse();
     Page<Course> findAllByDeletedIsFalse(Pageable paging);
 
 }

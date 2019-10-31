@@ -9,7 +9,7 @@ public interface QuestionService {
     RestBody createQuestion(QuestionRequestDTO dto);
     RestBody updateQuestion(QuestionRequestDTO dto, Integer id);
     RestBody deleteQuestion(Integer id);
-    RestBody getAllQuestions();
+    RestBody getAllQuestions(Integer pageNo, Integer pageSize);
     RestBody getQuestion(Integer id);
     RestBody getCorrectAnswer(Integer id);
 }

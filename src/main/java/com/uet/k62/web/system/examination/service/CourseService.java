@@ -7,6 +7,6 @@ public interface CourseService {
     RestBody createCourse(CourseDTO courseDTO);
     RestBody updateCourse(CourseDTO courseDTO, Integer courseId);
     RestBody deleteCourse(Integer courseId);
-    RestBody getAllCourses();
+    RestBody getAllCourses(Integer pageNo, Integer pageSize);
     RestBody getCourse(Integer id);
 }

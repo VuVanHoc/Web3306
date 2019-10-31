@@ -9,6 +9,6 @@ public interface CourseTypeService {
     RestBody createCourseType(CourseTypeRequestDTO courseTypeRequestDTO);
     RestBody updateCourseType(CourseTypeRequestDTO courseTypeRequestDTO, BigInteger id);
     RestBody deleteCourseType(BigInteger id);
-    RestBody getAllCourseTypes();
+    RestBody getAllCourseTypes(Integer pageNo, Integer pageSize);
     RestBody getCourseType(BigInteger id);
 }

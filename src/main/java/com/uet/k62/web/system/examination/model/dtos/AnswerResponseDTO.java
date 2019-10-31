@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 public class AnswerResponseDTO {
-    private BigInteger question_id;
+    private Integer questionId;
     private List<String> answers;
 }

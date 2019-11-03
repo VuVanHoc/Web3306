@@ -25,7 +25,7 @@ public class CourseServiceImpl implements CourseService {
     private UserRepository userRepository;
 
     public CourseServiceImpl(CourseRepository courseRepository,
-                             UserRepository userRepository){
+                             UserRepository userRepository) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
     }
@@ -41,7 +41,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public RestBody updateCourse(CourseDTO courseDTO, Integer courseId) {
         Course course = courseRepository.findByIdAndDeletedIsFalse(courseId);
-        if(course == null){
+        if (course == null) {
             throw new CourseNotFoundException("Course not found");
         }
         BeanUtils.copyProperties(courseDTO, course);
@@ -53,7 +53,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public RestBody deleteCourse(Integer courseId) {
         Course course = courseRepository.findByIdAndDeletedIsFalse(courseId);
-        if(course == null){
+        if (course == null) {
             throw new CourseNotFoundException("This course doesn't exist");
         }
         course.setDeleted(true);
@@ -65,9 +65,9 @@ public class CourseServiceImpl implements CourseService {
     public RestBody getAllCourses(Integer pageNo, Integer pageSize) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
         Page<Course> pagedResult = courseRepository.findAllByDeletedIsFalse(paging);
-        if(pagedResult.hasContent()){
+        if (pagedResult.hasContent()) {
             return RestBody.success(pagedResult.getContent());
-        }else {
+        } else {
             return RestBody.success("Không có khóa học nào");
         }
     }
@@ -75,7 +75,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public RestBody getCourse(Integer id) {
         Course course = courseRepository.findByIdAndDeletedIsFalse(id);
-        if(course == null){
+        if (course == null) {
             throw new CourseNotFoundException("Course not found");
         }
         return RestBody.success(course);
@@ -90,9 +90,9 @@ public class CourseServiceImpl implements CourseService {
             ArrayList<Integer> userIds = dto.getUserIds();
             userIds.forEach(userId -> {
                 User user = userRepository.findByIdAndDeletedIsFalse(userId);
-                if(user == null){
+                if (user == null) {
                     throw new UserNotFoundException("Not found user has username: " + user.getUsername() + ". Try again!");
-                }else{
+                } else {
                     course.getUsers().add(user);
                 }
             });
@@ -111,13 +111,13 @@ public class CourseServiceImpl implements CourseService {
             ArrayList<Integer> userIds = dto.getUserIds();
             userIds.forEach(userId -> {
                 User user = userRepository.findByIdAndDeletedIsFalse(userId);
-                if(user == null){
+                if (user == null) {
                     throw new UserNotFoundException("Not found user has username: " + user.getUsername() + ". Try again!");
-                }else{
-                    course.getUsers().forEach(item ->{
-                       if(item.getId() == userId){
-                           course.getUsers().remove(item);
-                       }
+                } else {
+                    course.getUsers().forEach(item -> {
+                        if (item.getId() == userId) {
+                            course.getUsers().remove(item);
+                        }
                     });
                 }
             });

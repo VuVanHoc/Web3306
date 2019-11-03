@@ -22,7 +22,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     private AnswerRepository answerRepository;
 
-    public AnswerServiceImpl(AnswerRepository answerRepository){
+    public AnswerServiceImpl(AnswerRepository answerRepository) {
         this.answerRepository = answerRepository;
     }
 
@@ -31,9 +31,9 @@ public class AnswerServiceImpl implements AnswerService {
         List<Answer> answers = new ArrayList<>();
 
         List<String> answers_input = answerRequestDTO.getAnswers();
-        answers_input.forEach(item->answers.add(new Answer(answerRequestDTO.getQuestionId(), item, false)));
+        answers_input.forEach(item -> answers.add(new Answer(answerRequestDTO.getQuestionId(), item, false)));
         int[] correctIndex = answerRequestDTO.getCorrectIndex();
-        Arrays.stream(correctIndex).forEach(index ->answers.get(index).setStatus(true));
+        Arrays.stream(correctIndex).forEach(index -> answers.get(index).setStatus(true));
 
         answerRepository.saveAll(answers);
 
@@ -50,7 +50,7 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public RestBody deleteAnswer(Integer questionId) {
         List<Answer> answers = answerRepository.findAllByQuestionId(questionId);
-        answers.forEach(item->answerRepository.deleteById(item.getId()));
+        answers.forEach(item -> answerRepository.deleteById(item.getId()));
         return RestBody.success("Deleted");
     }
 }

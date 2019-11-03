@@ -21,7 +21,7 @@ public class ExamServiceImpl implements ExamService {
     private QuestionRepository questionRepository;
 
     public ExamServiceImpl(ExamScheduleRepository examScheduleRepository,
-                           QuestionRepository questionRepository){
+                           QuestionRepository questionRepository) {
         this.examScheduleRepository = examScheduleRepository;
         this.questionRepository = questionRepository;
     }
@@ -29,7 +29,7 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public RestBody getExam(Integer examId) {
         ExamSchedule examSchedule = examScheduleRepository.findAllByIdAndDeletedIsFalse(examId);
-        if(examSchedule == null){
+        if (examSchedule == null) {
             throw new ExamNotFoundException("Exam Not Found");
         }
         List<Integer> questionIdsList = new ArrayList<>();
@@ -41,40 +41,40 @@ public class ExamServiceImpl implements ExamService {
     public RestBody createExam(Integer examId, QuestionIdsListDTO questionIdsListDTO) {
         Set<Integer> questionsFail = new HashSet<>();
         ExamSchedule examSchedule = examScheduleRepository.findAllByIdAndDeletedIsFalse(examId);
-        if(examSchedule == null){
+        if (examSchedule == null) {
             throw new ExamNotFoundException("Exam Not Found");
         }
         questionIdsListDTO.getQuestionIds().forEach(questionId -> {
             Question question = questionRepository.findOneByIdAndDeletedIsFalse(questionId);
-            if(question == null){
+            if (question == null) {
                 questionsFail.add(questionId);
-            }else{
+            } else {
                 examSchedule.getQuestions().add(question);
             }
         });
         examScheduleRepository.save(examSchedule);
-        return questionsFail.isEmpty() ? RestBody.success("Success! Created exam"): RestBody.success("Some questions can not add to exam");
+        return questionsFail.isEmpty() ? RestBody.success("Success! Created exam") : RestBody.success("Some questions can not add to exam");
     }
 
     @Override
     public RestBody updateExam(Integer examId, QuestionIdsListDTO questionIdsListDTO) {
         Set<Integer> questionsFail = new HashSet<>();
         ExamSchedule examSchedule = examScheduleRepository.findAllByIdAndDeletedIsFalse(examId);
-        if(examSchedule == null){
+        if (examSchedule == null) {
             throw new ExamNotFoundException("Exam Not Found");
         }
 
         examSchedule.getQuestions().removeAll(examSchedule.getQuestions());
         questionIdsListDTO.getQuestionIds().forEach(questionId -> {
             Question question = questionRepository.findOneByIdAndDeletedIsFalse(questionId);
-            if(question == null){
+            if (question == null) {
                 questionsFail.add(questionId);
-            }else{
+            } else {
                 examSchedule.getQuestions().add(question);
             }
         });
         examScheduleRepository.save(examSchedule);
-        return questionsFail.isEmpty() ? RestBody.success("Success! Updated exam"): RestBody.success("Some questions can not add to exam");
+        return questionsFail.isEmpty() ? RestBody.success("Success! Updated exam") : RestBody.success("Some questions can not add to exam");
 //        return RestBody.success("Updated exam");
     }
 

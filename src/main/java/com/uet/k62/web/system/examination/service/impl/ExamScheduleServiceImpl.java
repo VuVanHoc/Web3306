@@ -17,14 +17,15 @@ import java.util.Date;
 public class ExamScheduleServiceImpl implements ExamScheduleService {
     private static final String NOT_FOUND_SCHEDULE = "Doesn't exist schedule of this course. Create a exam schedule first!!!";
     private ExamScheduleRepository examScheduleRepository;
-    public ExamScheduleServiceImpl(ExamScheduleRepository examScheduleRepository){
+
+    public ExamScheduleServiceImpl(ExamScheduleRepository examScheduleRepository) {
         this.examScheduleRepository = examScheduleRepository;
     }
 
     @Override
     public RestBody createExamSchedule(ExamScheduleDTO examScheduleDTO, Integer courseId) {
         ExamSchedule examSchedule = examScheduleRepository.findFirstByCourseId(courseId);
-        if(examSchedule==null){
+        if (examSchedule == null) {
             examSchedule = new ExamSchedule();
             //Create new exam schedule
             examSchedule.setCourseId(courseId);
@@ -36,7 +37,7 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
             }
             examSchedule.setNote(examScheduleDTO.getNote());
             examScheduleRepository.save(examSchedule);
-        }else{
+        } else {
             return RestBody.error("This course haved a exam schedule. Pls, update it!");
         }
         return RestBody.success(examSchedule);
@@ -45,9 +46,9 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     @Override
     public RestBody updateExamSchedule(ExamScheduleDTO examScheduleDTO, Integer courseId) {
         ExamSchedule examSchedule = examScheduleRepository.findFirstByCourseId(courseId);
-        if(examSchedule == null){
+        if (examSchedule == null) {
             return RestBody.error(this.NOT_FOUND_SCHEDULE);
-        }else{
+        } else {
             examSchedule.setCourseId(courseId);
             try {
                 examSchedule.setStartTime(convertJsonTimestampToDate(examScheduleDTO.getStartTime()));
@@ -65,7 +66,7 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     @Override
     public RestBody getExamSchedule(Integer courseId) {
         ExamSchedule examSchedule = examScheduleRepository.findFirstByCourseId(courseId);
-        if(examSchedule == null){
+        if (examSchedule == null) {
             return RestBody.error(this.NOT_FOUND_SCHEDULE);
         }
         return RestBody.success(examSchedule);
@@ -74,9 +75,9 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     @Override
     public RestBody deleteExamSchedule(Integer courseId) {
         ExamSchedule examSchedule = examScheduleRepository.findFirstByCourseId(courseId);
-        if(examSchedule == null){
+        if (examSchedule == null) {
             return RestBody.error(this.NOT_FOUND_SCHEDULE);
-        }else{
+        } else {
             examScheduleRepository.delete(examSchedule);
         }
         return RestBody.success("Deleted exam schedule");

@@ -18,7 +18,8 @@ import java.util.List;
 @Service
 public class CourseTypeServiceImpl implements CourseTypeService {
     private CourseTypeRepository courseTypeRepository;
-    public CourseTypeServiceImpl(CourseTypeRepository courseTypeRepository){
+
+    public CourseTypeServiceImpl(CourseTypeRepository courseTypeRepository) {
         this.courseTypeRepository = courseTypeRepository;
     }
 
@@ -42,7 +43,7 @@ public class CourseTypeServiceImpl implements CourseTypeService {
     @Override
     public RestBody deleteCourseType(BigInteger id) {
         CourseType courseType = courseTypeRepository.findByIdAndDeletedIsFalse(id.intValue());
-        if(courseType == null){
+        if (courseType == null) {
             throw new CourseTypeNotFoundException("Course Type Not Found!");
         }
         courseType.setDeleted(true);
@@ -54,9 +55,9 @@ public class CourseTypeServiceImpl implements CourseTypeService {
     public RestBody getAllCourseTypes(Integer pageNo, Integer pageSize) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
         Page<CourseType> courseTypes = courseTypeRepository.findAllByDeletedIsFalse(paging);
-        if(courseTypes.hasContent()){
+        if (courseTypes.hasContent()) {
             return RestBody.success(courseTypes.getContent());
-        }else{
+        } else {
             return RestBody.success("Không có loại nào");
         }
     }

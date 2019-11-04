@@ -146,13 +146,15 @@ a {
         height: 30px;
         border-radius: 5px;
         background: #026b97;
-        color: #fff;
         text-align: center;
         font-size: 16px;
         outline: none;
         border: none;
         margin: 0 auto;
         cursor: pointer;
+    }
+    .btn-start-exam > a {
+        color: #fff;
     }
     .start-exam .btn-start-exam:hover {
         opacity: 0.8;

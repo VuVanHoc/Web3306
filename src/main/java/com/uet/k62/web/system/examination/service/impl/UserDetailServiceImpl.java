@@ -9,30 +9,36 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
-
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-
-    public UserDetailServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-        User currentUser = userRepository.findByUsername(username);
-        if (currentUser == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        List<GrantedAuthority> authorities = AuthorityUtils
-                .commaSeparatedStringToAuthorityList(String.valueOf(roleRepository.findById(currentUser.getRoleId())));
-        return new CustomUserDetail(currentUser, authorities);
-    }
+	
+	private UserRepository userRepository;
+	private RoleRepository roleRepository;
+	
+	public UserDetailServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) {
+		User currentUser = userRepository.findByUsername(username);
+		if (currentUser == null) {
+			throw new UsernameNotFoundException(username);
+		}
+		String roleUser = roleRepository.findById(currentUser.getRoleId()).isPresent() ?
+				roleRepository.findById(currentUser.getRoleId()).get().getName() : "";
+		roleUser = "ROLE_".concat(roleUser);
+		List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roleUser);
+		
+		CustomUserDetail customUserDetail = new CustomUserDetail(currentUser, authorities);
+		System.out.println(customUserDetail);
+		return customUserDetail;
+	}
 }
 

@@ -42,7 +42,7 @@
     position: absolute;
     width: 30px;
     height: 34px;
-    background: url('../Images/icon-search.jpg') no-repeat center center;
+    background: url('../Content/Images/icon-search.jpg') no-repeat center center;
     background-size: 22px;
     border: none;
     cursor: pointer;
@@ -64,7 +64,7 @@
     color: #fff;
 }
 .btn-add:hover {
-    background: #bf352a;
+    background: #6270bf;
 }
 .table-list-users {
     position: absolute;

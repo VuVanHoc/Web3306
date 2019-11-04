@@ -38,16 +38,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/configuration/ui",
 						"/configuration/security",
 						"/swagger-ui.html",
-						"/webjars/**", "../static/**").permitAll()
-//				.antMatchers("/admin/*").hasAuthority("ROLE_ADMIN")
-//				.antMatchers("/student/*").hasAuthority("ROLE_STUDENT")
-//				.antMatchers("/mentor/*").hasAuthority("ROLE_MENTOR")
-				.anyRequest().permitAll()
+						"/webjars/**",
+						"/**/*.html",
+						"/**/*.css",
+						"/**/*.js").permitAll()
+				.antMatchers("/admin/*").hasAuthority("ROLE_ADMIN")
+				.antMatchers("/student/*").hasAuthority("ROLE_STUDENT")
+				.antMatchers("/mentor/*").hasAuthority("ROLE_MENTOR")
+				.anyRequest().authenticated()
 				.and()
 				.formLogin()
 				.loginPage("/login")
 				.loginProcessingUrl("/authenticate")
-				.successHandler(getAuthenticationSuccessHandler())
+//				.successHandler(getAuthenticationSuccessHandler())
 				.failureUrl("/login?error=true")
 				.and()
 				.logout()

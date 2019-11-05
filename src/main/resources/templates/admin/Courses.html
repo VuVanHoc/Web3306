@@ -17,7 +17,7 @@
 		<div class="list-users-title clear-fix">
 			<div class="main-title">Danh sách bộ đề thi</div>
 			<div class="search">
-				<input  class="inp-search" type="text"/>
+				<input id="txtSearch"  class="inp-search" type="text" placeholder="Tìm kiếm"/>
 				<button class="btn-search"></button>
 				<button class="btn-add">Thêm bộ đề</button>
 			</div>
@@ -52,5 +52,10 @@
 </div>
 <script src="../JS/jquery-3.4.1.min.js"></script>
 <script src="../JS/Layout.js"></script>
+<script>
+	$(document).ready(function () {
+		$('#txtSearch').val("");
+	})
+</script>
 </body>
 </html> 

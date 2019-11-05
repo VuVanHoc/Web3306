@@ -13,9 +13,12 @@ public class StudentController {
 	
 	@GetMapping(value = "/student/dashboard")
 	public String showDashboard(){
-		System.out.println("STUDENT DASHBOARD");
-		
-		return "/student/exam";
+		return "/student/home";
+	}
+
+	@GetMapping(value = "/student/examDetail")
+	public String showExamDetail(){
+		return "/student/examDetail";
 	}
 //	@GetMapping(value = "/authenticate")
 //	public String authenticate(){

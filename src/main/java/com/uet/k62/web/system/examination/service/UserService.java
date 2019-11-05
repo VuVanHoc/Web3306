@@ -17,4 +17,6 @@ public interface UserService {
 	RestBody deleteUser(Integer id);
 
 	RestBody updateInfoUser(UserDetailDTO userDetailDTO, Integer id);
+
+	RestBody getCourses(Integer id);
 }

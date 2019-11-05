@@ -84,4 +84,10 @@ public class UserController {
 		return ResponseEntity.ok(restBody);
 	}
 
+	@ApiOperation(value = "User's Courses", response = RestBody.class)
+	@GetMapping(value = "{id}/courses")
+	public ResponseEntity getCourses(@PathVariable Integer id){
+		RestBody restBody = userService.getCourses(id);
+		return ResponseEntity.ok(restBody);
+	}
 }

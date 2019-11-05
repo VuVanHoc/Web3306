@@ -1,10 +1,12 @@
 package com.uet.k62.web.system.examination.service.impl;
 
+import com.uet.k62.web.system.examination.error.CourseNotFoundException;
+import com.uet.k62.web.system.examination.error.UserNotFoundException;
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.UserDetailDTO;
 import com.uet.k62.web.system.examination.model.dtos.UserFormRegistrationDTO;
+import com.uet.k62.web.system.examination.model.entity.Course;
 import com.uet.k62.web.system.examination.model.entity.User;
-import com.uet.k62.web.system.examination.repository.CourseRepository;
 import com.uet.k62.web.system.examination.repository.UserRepository;
 import com.uet.k62.web.system.examination.service.UserService;
 import com.uet.k62.web.system.examination.utils.Constant;
@@ -22,6 +24,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -113,6 +116,19 @@ public class UserServiceImpl implements UserService {
         userRepository.save(updateUser);
 
         return RestBody.success(updateUser);
+    }
+
+    @Override
+    public RestBody getCourses(Integer id) {
+        User user = userRepository.findUserById(id);
+        if (user == null) {
+            throw new UserNotFoundException("User not found");
+        }
+        Set<Course> courses =  user.getCourses();
+        if(courses.isEmpty()){
+            throw new CourseNotFoundException("Không có khóa học nào");
+        }
+        return RestBody.success(courses);
     }
 
     private Date toDate(String timeString) throws ParseException {

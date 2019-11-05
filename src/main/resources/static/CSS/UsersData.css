@@ -42,7 +42,7 @@
     position: absolute;
     width: 30px;
     height: 34px;
-    background: url('../Content/Images/icon-search.jpg') no-repeat center center;
+    background: url('../Images/icon-search.jpg') no-repeat center center;
     background-size: 22px;
     border: none;
     cursor: pointer;
@@ -87,7 +87,7 @@
     height: 40px;
     color: #636365;
     position: sticky;
-    top: 0px;
+    top: 0;
     background: #f4f1f1;
 }
 .list-users tbody td {
@@ -100,24 +100,7 @@
 .list-users tbody tr:nth-child(even) td {
     background: #ebebeb;
 }
-thead tr th:nth-child(1) {
-    width: 40px;
-}
-thead tr th:nth-child(2) {
-    width: 220px;
-}
-thead tr th:nth-child(3) {
-    width: 50px;
-}
-thead tr th:nth-child(5) {
-    width: 200px;
-}
-thead tr th:nth-child(6) {
-    width: 200px;
-}
-thead tr th:nth-child(7) {
-    width: 200px;
-}
+
 tbody tr td:nth-child(1) {
     text-align: center;
 }

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,62 +11,9 @@
     <title>Trang chủ</title>
 </head>
 <body>
-<div class="sidebar">
-	<div class="logo"></div>
-	<div class="menu">
-		<div class="menu-item dash-broad">
-			<a href="/admin/dashboard">
-				<span class="fa fa-home"></span>
-				Trang chủ
-			</a>
-		</div>
-		<div class="menu-item Users">
-			<a href="/admin/manage-user">
-				<span class="fa fa-user"></span>
-				Học viên
-			</a>
-		</div>
-		<div class="menu-item Courses">
-			<a href="/admin/courses">
-				<span class="fa fa-book"></span>
-				Khóa học
-			</a>
-		</div>
-		<div class="menu-item Users">
-			<a href="/admin/history">
-				<span class="fa fa-history"></span>
-				Lịch sử
-			</a>
-		</div>
-	</div>
-</div>
-    <div class="header clear-fix">
-        <div class="header-left">
-            <span class="fa fa-align-justify"></span>
-        </div>
-        <div class="menu-header-right">
-            <div class="menu-header-right-item message">
-                <span class="fa fa-envelope"></span>
-            </div>
-            <div class="menu-header-right-item notification">
-                <span class="fa fa-bell"></span>
-                <span class="notifi">1</span>
-            </div>
-            <div class="menu-header-right-item account">
-                <span class="fa fa-user"></span>
-                <ul class="dropdownd-user">
-                    <li>
-                        <span class="fa fa-user"></span>
-                        <ul class="option-acc">
-                            <li><a href="../Signin.html">Đăng xuất</a></li>
-                            <li><a href="#">Chỉnh sửa</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="content">
+	<div th:replace="/admin/AdminSidebar :: adminSidebar"></div>
+	<div th:replace="/header :: header"> </div>
+	<div class="content">
         <div class="categories">
             <div class="categories-item total-courses">
                 <span class="categories-item-text">
@@ -110,19 +57,10 @@
                 <canvas id="chart-pass-fail"></canvas>
             </div>
         </div>
-    </div> 
-    <div class="list-notifi">
-        <div class="title-notifi">
-            Thông báo
-        </div>
-        <div class="content-notifi">
-            <div class="notifi-item">
-                <a href="../student/listExam.html">Bạn có một kì thi lái xe hạng A1 sắp tới ngày 20/10</a>
-            </div>
-        </div>
     </div>
-    <script src="/JS/jquery-3.4.1.min.js"></script>
-    <script src="/JS/Base.js"></script>
+	
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
     <script src="/JS/Layout.js"></script>
+	<script src="/JS/DrawChart.js"></script>
 </body>
 </html>

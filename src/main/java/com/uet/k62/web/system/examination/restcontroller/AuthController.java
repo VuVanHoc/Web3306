@@ -35,7 +35,6 @@ public class AuthController {
 	
 	@PostMapping(value = "/authenticate", produces = {"application/json"}, consumes = {"application/x-www-form-urlencoded"})
 	public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
-		System.out.println("Auth" + loginRequest.toString());
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(
 						loginRequest.getUsername(),

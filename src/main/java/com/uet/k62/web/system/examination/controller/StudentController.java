@@ -8,13 +8,17 @@ public class StudentController {
 	
 	@GetMapping(value = {"/", "/login", "/logout"})
 	public String index() {
-		return "index";
+		return "Signin";
 	}
 	
 	@GetMapping(value = "/student/dashboard")
 	public String showDashboard(){
 		System.out.println("STUDENT DASHBOARD");
 		
-		return "exam";
+		return "/student/exam";
 	}
+//	@GetMapping(value = "/authenticate")
+//	public String authenticate(){
+//		return "authenticate";
+//	}
 }

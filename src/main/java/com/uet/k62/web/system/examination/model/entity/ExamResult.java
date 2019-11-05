@@ -10,11 +10,11 @@ import java.util.Date;
 @Data
 @Entity(name = "exam_result")
 public class ExamResult extends BaseEntity {
-	
+
 	@Column(name = "user_id")
 	private int userId;
-	
-	@Column(name = "course_id")
+
+	@Column(name = "schedule_id")
 	private int courseId;
 	
 	@Column(name = "end_time")

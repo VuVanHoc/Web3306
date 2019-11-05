@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 public class QuestionAnswerResponseDTO {
-    private BigInteger id;
+    private Integer id;
 //    private int questionTypeId;
     private String questionTypeCode;
     private String content;

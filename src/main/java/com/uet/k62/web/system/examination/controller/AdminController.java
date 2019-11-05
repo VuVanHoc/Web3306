@@ -11,22 +11,22 @@ public class AdminController {
 	@GetMapping(value = "/dashboard")
 	public String showDashboard() {
 		System.out.println("ADMIN DASHBOARD");
-		return "Layout";
+		return "/admin/Layout";
 	}
 	
 	@GetMapping(value = "/courses")
 	public String showCourses() {
-		return "Courses";
+		return "/admin/Courses";
 	}
 	
 	@GetMapping(value = "/history")
 	public String showHistory() {
-		return "history";
+		return "/admin/history";
 	}
 	
 	@GetMapping(value = "/manage-user")
 	public String manageUser() {
-		return "UsersData";
+		return "/admin/UsersData";
 	}
 	
 	

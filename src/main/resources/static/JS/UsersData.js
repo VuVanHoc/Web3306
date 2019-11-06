@@ -6,7 +6,7 @@ function getDataFormServer() {
 	var arrayData = [];
 	$.ajax({
 		method: "GET",
-		url: "/api/user",
+		url: "/api/users",
 		async: false,
 		dataType: "json",
 		success: function (res) {

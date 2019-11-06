@@ -37,7 +37,7 @@ public class UserController {
 	public ResponseEntity getAllUsers(@RequestParam(defaultValue = PageConstant.PAGE_NO) Integer pageNo,
 	                                  @RequestParam(defaultValue = PageConstant.PAGE_SIZE)Integer pageSize) {
 		System.out.println("Hello world");
-		RestBody restBody = userService.getAllUsers();
+		RestBody restBody = userService.getAllUsers(pageNo, pageSize);
 		SecurityContext securityContext = SecurityContextHolder.getContext();
 		LOGGER.info(securityContext.getAuthentication().getPrincipal().toString());
 		return ResponseEntity.ok(restBody);

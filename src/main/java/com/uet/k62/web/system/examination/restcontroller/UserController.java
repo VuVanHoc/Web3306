@@ -8,7 +8,13 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 @RestController
 @RequestMapping(value = "api/user")
@@ -29,6 +35,8 @@ public class UserController {
 	public ResponseEntity getAllUsers() {
 		System.out.println("Hello world");
 		RestBody restBody = userService.getAllUsers();
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		LOGGER.info(securityContext.getAuthentication().getPrincipal().toString());
 		return ResponseEntity.ok(restBody);
 	}
 	

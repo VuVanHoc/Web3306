@@ -1,5 +1,6 @@
 package com.uet.k62.web.system.examination.config;
 
+import com.uet.k62.web.system.examination.utils.Constant;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -36,6 +37,8 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 	
 	private void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
 			throws IOException {
+		System.out.println(response.getHeader("Authorization"));
+		request.setAttribute("Authorization", response.getHeader("Authorization"));
 		String targetUrl = determineTargetUrl(authentication);
 		LOGGER.info(targetUrl);
 		if (response.isCommitted()) {

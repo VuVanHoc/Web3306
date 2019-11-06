@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.math.BigInteger;
 
 public interface ExamScheduleRepository extends JpaRepository<ExamSchedule, Integer> {
+    ExamSchedule findFirstByCourseId(Integer courseId);
+    ExamSchedule findAllByIdAndDeletedIsFalse(Integer id);
 }

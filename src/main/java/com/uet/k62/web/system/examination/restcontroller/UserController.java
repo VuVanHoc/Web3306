@@ -3,8 +3,10 @@ package com.uet.k62.web.system.examination.restcontroller;
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.UserDetailDTO;
 import com.uet.k62.web.system.examination.model.dtos.UserFormRegistrationDTO;
+import com.uet.k62.web.system.examination.paging.PageConstant;
 import com.uet.k62.web.system.examination.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @RestController
-@RequestMapping(value = "api/user")
+@RequestMapping(value = "api/users")
 public class UserController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 	
@@ -32,7 +34,8 @@ public class UserController {
 	// Method GET - Returns a list of all active users
 	@ApiOperation(value = "Get all users", response = RestBody.class)
 	@GetMapping
-	public ResponseEntity getAllUsers() {
+	public ResponseEntity getAllUsers(@RequestParam(defaultValue = PageConstant.PAGE_NO) Integer pageNo,
+	                                  @RequestParam(defaultValue = PageConstant.PAGE_SIZE)Integer pageSize) {
 		System.out.println("Hello world");
 		RestBody restBody = userService.getAllUsers();
 		SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -89,5 +92,11 @@ public class UserController {
 		RestBody restBody = userService.deleteUser(id);
 		return ResponseEntity.ok(restBody);
 	}
-	
+
+	@ApiOperation(value = "User's Courses", response = RestBody.class)
+	@GetMapping(value = "{id}/courses")
+	public ResponseEntity getCourses(@PathVariable Integer id){
+		RestBody restBody = userService.getCourses(id);
+		return ResponseEntity.ok(restBody);
+	}
 }

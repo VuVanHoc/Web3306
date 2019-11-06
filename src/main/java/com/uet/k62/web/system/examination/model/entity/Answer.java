@@ -17,7 +17,7 @@ import java.math.BigInteger;
 public class Answer extends BaseEntity {
 
 	@Column(name = "question_id")
-	private BigInteger questionId;
+	private Integer questionId;
 	
 	@Column(name = "content")
 	private String content;

@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 public class QuestionResponseDTO {
-    private BigInteger id;
+    private Integer id;
 //    private int questionTypeId;
     private String questionTypeCode;
     private String content;

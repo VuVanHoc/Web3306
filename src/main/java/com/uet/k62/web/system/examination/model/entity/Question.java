@@ -1,9 +1,14 @@
 package com.uet.k62.web.system.examination.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import java.util.Set;
 
 @Data
 @Entity(name = "question")
@@ -17,4 +22,10 @@ public class Question extends BaseEntity {
 	
 	@Column(name = "image_url")
 	private String imageUrl;
+
+	@ManyToMany(mappedBy = "questions")
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	@JsonIgnore
+	private Set<ExamSchedule> exams;
 }

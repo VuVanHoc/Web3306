@@ -5,23 +5,7 @@
 <title>Title</title>
 </head>
 <body>
-login success
-<script src="../JS/jquery-3.4.1.min.js"></script>
-<script type="text/javascript">
-	$(document).ready(function () {
-		$.ajax({
-			method : "GET",
-			url : "/authenticate",
-			success : function (res) {
-				alert("Success");
-				console.log(res.data);
-				localStorage.setItem("accessToken", res.data.accessToken);
-			},
-			error : function () {
-				alert("error");
-			}
-		})
-	})
-</script>
+<script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+<script src="/JS/LoginSuccess.js"></script>
 </body>
 </html>

@@ -10,7 +10,13 @@ import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 @RestController
 @RequestMapping(value = "api/users")
@@ -29,8 +35,11 @@ public class UserController {
 	@ApiOperation(value = "Get all users", response = RestBody.class)
 	@GetMapping
 	public ResponseEntity getAllUsers(@RequestParam(defaultValue = PageConstant.PAGE_NO) Integer pageNo,
-									  @RequestParam(defaultValue = PageConstant.PAGE_SIZE)Integer pageSize) {
+	                                  @RequestParam(defaultValue = PageConstant.PAGE_SIZE)Integer pageSize) {
+		System.out.println("Hello world");
 		RestBody restBody = userService.getAllUsers(pageNo, pageSize);
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		LOGGER.info(securityContext.getAuthentication().getPrincipal().toString());
 		return ResponseEntity.ok(restBody);
 	}
 	

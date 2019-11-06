@@ -1,6 +1,10 @@
 package com.uet.k62.web.system.examination.config;
 
+import com.uet.k62.web.system.examination.repository.RoleRepository;
+import com.uet.k62.web.system.examination.repository.UserRepository;
 import com.uet.k62.web.system.examination.service.impl.UserDetailServiceImpl;
+import org.dozer.DozerBeanMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,18 +24,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final UserDetailServiceImpl userDetailService;
 	
-	public WebSecurityConfig(UserDetailServiceImpl userDetailService) {
+	private DozerBeanMapper mapper;
+	final
+	UserRepository userRepository;
+	final
+	RoleRepository roleRepository;
+
+	final
+	JwtTokenProvider jwtTokenProvider;
+	
+	@Autowired
+	public WebSecurityConfig(UserDetailServiceImpl userDetailService, DozerBeanMapper mapper, UserRepository userRepository, RoleRepository roleRepository, JwtTokenProvider jwtTokenProvider) {
 		this.userDetailService = userDetailService;
+		this.mapper = mapper;
+		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
+		this.jwtTokenProvider = jwtTokenProvider;
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
 				.antMatchers("/login*", "/authenticate").permitAll()
-//				.antMatchers("/home/**").permitAll()
-//				.antMatchers("/api/question-types/**").permitAll()
-//				.antMatchers("/api/questions/**").permitAll()
-//				.antMatchers("/api/answers/**").permitAll()
 				.antMatchers("/v2/api-docs",
 						"/swagger-resources",
 						"/swagger-resources/**",
@@ -41,24 +55,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/webjars/**",
 						"/**/*.html",
 						"/**/*.css",
-						"/**/*.js").permitAll()
-//				.antMatchers("/admin/*").hasAuthority("ROLE_ADMIN")
-//				.antMatchers("/student/*").hasAuthority("ROLE_STUDENT")
-//				.antMatchers("/mentor/*").hasAuthority("ROLE_MENTOR")
+						"/**/*.js",
+						"/**/*.png").permitAll()
+//				.antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+//				.antMatchers("/student/**").hasAnyAuthority("ROLE_STUDENT")
 				.anyRequest().permitAll()
+				
+				
+				
 				.and()
 				.formLogin()
 				.loginPage("/login")
-				.loginProcessingUrl("/authenticate")
-				.successHandler(getAuthenticationSuccessHandler())
 				.failureUrl("/login?error=true")
 				.and()
 				.logout()
-				.logoutUrl("/logout")
+				.permitAll()
 				.and()
+				.addFilter(new JwtAuthenticationFilter(mapper, userRepository, roleRepository, authenticationManagerBean(), jwtTokenProvider))
+				.addFilter(new JwtAuthorizationFilter(authenticationManager()))
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
-		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Bean
@@ -75,11 +91,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
 		return new MyAuthenticationSuccessHandler();
-	}
-	
-	@Bean
-	JwtAuthenticationFilter jwtAuthenticationFilter() {
-		return new JwtAuthenticationFilter();
 	}
 	
 	//	cung cấp userDetailService và passwordEncoder cho Spring Security

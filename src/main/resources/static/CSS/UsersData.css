@@ -42,7 +42,7 @@
     position: absolute;
     width: 30px;
     height: 34px;
-    background: url('../Content/Images/icon-search.jpg') no-repeat center center;
+    background: url('../Images/icon-search.jpg') no-repeat center center;
     background-size: 22px;
     border: none;
     cursor: pointer;
@@ -55,7 +55,7 @@
     width: 100px;
     height: 34px;
     border-radius: 5px;
-    background: #9f9fa0;
+    background: #19b133;
     border: none;
     cursor: pointer;
     top: calc(50% - 17px);
@@ -64,7 +64,7 @@
     color: #fff;
 }
 .btn-add:hover {
-    background: #6270bf;
+    background: #179a2d;
 }
 .table-list-users {
     position: absolute;
@@ -87,8 +87,8 @@
     height: 40px;
     color: #636365;
     position: sticky;
-    top: 0px;
-    background: #f4f1f1;
+    top: 0;
+    background: #ebebeb;
 }
 .list-users tbody td {
     border-bottom: 1px solid #ccc;
@@ -98,26 +98,9 @@
     padding: 6px;
 }
 .list-users tbody tr:nth-child(even) td {
-    background: #ebebeb;
+    background: rgba(232, 229, 229, 0.79);
 }
-thead tr th:nth-child(1) {
-    width: 40px;
-}
-thead tr th:nth-child(2) {
-    width: 220px;
-}
-thead tr th:nth-child(3) {
-    width: 50px;
-}
-thead tr th:nth-child(5) {
-    width: 200px;
-}
-thead tr th:nth-child(6) {
-    width: 200px;
-}
-thead tr th:nth-child(7) {
-    width: 200px;
-}
+
 tbody tr td:nth-child(1) {
     text-align: center;
 }

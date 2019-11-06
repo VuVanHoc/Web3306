@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,75 +7,32 @@
     <link href="/CSS/Layout.css" rel="stylesheet" />
     <link href="/CSS/UsersData.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.0.0/css/font-awesome.min.css">
     <link href="/CSS/modal.css" rel="stylesheet" />
-    <title>Người dùng</title>
+    <title>Admin - Quản lý người dùng</title>
 </head>
 <body>
-<div class="sidebar">
-	<div class="logo"></div>
-	<div class="menu">
-		<div class="menu-item dash-broad">
-			<a href="/admin/dashboard">
-				<span class="fa fa-home"></span>
-				Trang chủ
-			</a>
-		</div>
-		<div class="menu-item Users">
-			<a href="/admin/manage-user">
-				<span class="fa fa-user"></span>
-				Học viên
-			</a>
-		</div>
-		<div class="menu-item Courses">
-			<a href="/admin/courses">
-				<span class="fa fa-book"></span>
-				Khóa học
-			</a>
-		</div>
-		<div class="menu-item Users">
-			<a href="/admin/history">
-				<span class="fa fa-history"></span>
-				Lịch sử
-			</a>
-		</div>
-	</div>
-</div>
-    <div class="header clear-fix">
-        <div class="header-left">
-            <span class="fa fa-align-justify"></span>
-        </div>
-        <div class="menu-header-right">
-            <div class="menu-header-right-item message">
-                <span class="fa fa-envelope"></span>
-            </div>
-            <div class="menu-header-right-item notification">
-                <span class="fa fa-bell"></span>
-            </div>
-            <div class="menu-header-right-item account">
-                <span class="fa fa-user"></span>
-            </div>
-        </div>
-    </div>
+	<div th:replace="/admin/AdminSidebar :: adminSidebar"></div>
+	<div th:replace="/header :: header"> </div>
     <div class="content">
         <div class="content-wrap">
             <div class="list-users-title clear-fix">
-                <div class="main-title">Danh sách khách hàng</div>
+                <div class="main-title">Danh sách người dùng</div>
                 <div class="search">
-                    <input autofocus class="inp-search" type="text" />
+                    <input id="txtSearch"  class="inp-search" type="text" placeholder="Tìm kiếm" />
                     <button class="btn-search"></button>
-                    <button class="btn-add btn-add-user">Thêm User</button>
+					<button class="btn-add btn-add-user"><span class="fa fa-plus"></span> Thêm User </button>
                 </div>
             </div>
             <div class="table-list-users">
                 <table class="list-users list-users-main">
                     <thead>
                         <tr>
-                            <th fieldName="CustomerID">Mã</th>
-                            <th fieldName="CustomerName">Họ tên</th>
-                            <th fieldName="Email">Email</th>
-                            <th fieldName="Phone">Số điện thoại</th>
-                            <th fieldName="Address">Địa chỉ</th>
+                            <th fieldName="index">STT</th>
+                            <th fieldName="fullName">Họ tên</th>
+							<th fieldName="roleName">Vai trò</th>
+                            <th fieldName="email">Email</th>
+                            <th fieldName="phone">Số điện thoại</th>
+                            <th fieldName="address">Trạng thái</th>
                             <th fieldName="Action">Hành động</th>
                         </tr>
                     </thead>
@@ -174,8 +131,11 @@
             </div>
         </div>
     </div>
-    <script src="/JS/jquery-3.4.1.min.js"></script>
-    <script src="/JS/Base.js"></script>
-    <script src="/JS/Layout.js"></script>
+	<script src="/JS/jquery-3.4.1.min.js"></script>
+	<script src="/JS/Layout.js"></script>
+	<script src="/JS/UsersData.js"></script>
+
+
+	
 </body>
 </html> 

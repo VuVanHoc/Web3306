@@ -8,7 +8,7 @@
     <link href="/CSS/UsersData.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="/CSS/modal.css" rel="stylesheet" />
-    <title>Admin - Quản lý học viên</title>
+    <title>Admin - Quản lý người dùng</title>
 </head>
 <body>
 	<div th:replace="/admin/AdminSidebar :: adminSidebar"></div>
@@ -16,22 +16,23 @@
     <div class="content">
         <div class="content-wrap">
             <div class="list-users-title clear-fix">
-                <div class="main-title">Danh sách học viên</div>
+                <div class="main-title">Danh sách người dùng</div>
                 <div class="search">
                     <input id="txtSearch"  class="inp-search" type="text" placeholder="Tìm kiếm" />
                     <button class="btn-search"></button>
-                    <button class="btn-add btn-add-user">Thêm User</button>
+					<button class="btn-add btn-add-user"><span class="fa fa-plus"></span> Thêm User </button>
                 </div>
             </div>
             <div class="table-list-users">
                 <table class="list-users list-users-main">
                     <thead>
                         <tr>
-                            <th fieldName="id">Mã</th>
+                            <th fieldName="index">STT</th>
                             <th fieldName="fullName">Họ tên</th>
+							<th fieldName="roleName">Vai trò</th>
                             <th fieldName="email">Email</th>
                             <th fieldName="phone">Số điện thoại</th>
-                            <th fieldName="address">Địa chỉ</th>
+                            <th fieldName="address">Trạng thái</th>
                             <th fieldName="Action">Hành động</th>
                         </tr>
                     </thead>
@@ -132,11 +133,9 @@
     </div>
 	<script src="/JS/jquery-3.4.1.min.js"></script>
 	<script src="/JS/Layout.js"></script>
-	<script>
-		$(document).ready(function () {
-			$('#txtSearch').clear();
-		})
-	</script>
+	<script src="/JS/UsersData.js"></script>
+
+
 	
 </body>
 </html> 

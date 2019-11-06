@@ -8,9 +8,11 @@ import com.uet.k62.web.system.examination.repository.UserRepository;
 import com.uet.k62.web.system.examination.service.UserService;
 import com.uet.k62.web.system.examination.utils.Constant;
 import com.uet.k62.web.system.examination.utils.RoleCode;
+import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +30,10 @@ public class UserServiceImpl implements UserService {
     public static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-
+	
+    @Autowired
+	DozerBeanMapper dozerBeanMapper;
+    
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -60,7 +66,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public RestBody getAllUsers() {
         List<User> users = userRepository.findAllByDeletedIsFalse();
-        return RestBody.success(users);
+        List<UserDetailDTO> userDetailDTOS = new ArrayList<>();
+        int index = 1;
+	    for (User user : users) {
+		    UserDetailDTO userDetailDTO = dozerBeanMapper.map(user, UserDetailDTO.class);
+		    if(user.getRoleId().equals(RoleCode.ADMIN_ROLE)){
+			    userDetailDTO.setRoleName("Admin");
+		    } else {
+			    userDetailDTO.setRoleName("Student");
+		    }
+		    userDetailDTO.setIndex(index);
+		    index++;
+		    userDetailDTOS.add(userDetailDTO);
+	    }
+	    return RestBody.success(userDetailDTOS);
     }
 
     @Override

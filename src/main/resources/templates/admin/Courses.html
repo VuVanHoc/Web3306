@@ -7,7 +7,7 @@
 <link href="../CSS/Layout.css" rel="stylesheet"/>
 <link href="../CSS/UsersData.css" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<title>Khóa học</title>
+<title>Admin - Quản lý khóa học</title>
 </head>
 <body>
 <div th:replace="/header :: header"></div>
@@ -15,11 +15,11 @@
 <div class="content">
 	<div class="content-wrap">
 		<div class="list-users-title clear-fix">
-			<div class="main-title">Danh sách bộ đề thi</div>
+			<div class="main-title">Danh sách khoá học</div>
 			<div class="search">
 				<input id="txtSearch"  class="inp-search" type="text" placeholder="Tìm kiếm"/>
 				<button class="btn-search"></button>
-				<button class="btn-add">Thêm bộ đề</button>
+				<button class="btn-add"><span class="fa fa-plus"></span> Thêm bộ đề</button>
 			</div>
 		</div>
 		<div class="table-list-users">
@@ -52,10 +52,6 @@
 </div>
 <script src="../JS/jquery-3.4.1.min.js"></script>
 <script src="../JS/Layout.js"></script>
-<script>
-	$(document).ready(function () {
-		$('#txtSearch').val("");
-	})
-</script>
+
 </body>
 </html> 

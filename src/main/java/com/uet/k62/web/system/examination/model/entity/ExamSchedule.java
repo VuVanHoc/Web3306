@@ -16,11 +16,11 @@ public class ExamSchedule extends BaseEntity {
 	@Column(name = "course_id")
 	private int courseId;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm", timezone = "GMT+07")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy HH:mm", timezone = "GMT+07")
 	@Column(name = "start_time")
 	private Date startTime;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm", timezone = "GMT+07")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy HH:mm", timezone = "GMT+07")
 	@Column(name = "end_time")
 	private Date endTime;
 	

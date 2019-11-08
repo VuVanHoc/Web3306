@@ -37,7 +37,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roleUser);
 		
 		CustomUserDetail customUserDetail = new CustomUserDetail(currentUser, authorities);
-		System.out.println(customUserDetail);
+//		System.out.println(customUserDetail);
 		return customUserDetail;
 	}
 }

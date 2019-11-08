@@ -1,5 +1,8 @@
 package com.uet.k62.web.system.examination.service.impl;
 
+import com.uet.k62.web.system.examination.error.ExamNotFoundException;
+import com.uet.k62.web.system.examination.error.ExamScheduleExistException;
+import com.uet.k62.web.system.examination.error.ExamScheduleNotFoundException;
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.ExamScheduleDTO;
 import com.uet.k62.web.system.examination.model.entity.ExamSchedule;
@@ -15,7 +18,6 @@ import java.util.Date;
 
 @Service
 public class ExamScheduleServiceImpl implements ExamScheduleService {
-    private static final String NOT_FOUND_SCHEDULE = "Doesn't exist schedule of this course. Create a exam schedule first!!!";
     private ExamScheduleRepository examScheduleRepository;
 
     public ExamScheduleServiceImpl(ExamScheduleRepository examScheduleRepository) {
@@ -38,7 +40,7 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
             examSchedule.setNote(examScheduleDTO.getNote());
             examScheduleRepository.save(examSchedule);
         } else {
-            return RestBody.error("This course haved a exam schedule. Pls, update it!");
+            throw new ExamScheduleExistException("Đã tồm tại kỳ thi cho khóa học");
         }
         return RestBody.success(examSchedule);
     }
@@ -47,7 +49,7 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     public RestBody updateExamSchedule(ExamScheduleDTO examScheduleDTO, Integer courseId) {
         ExamSchedule examSchedule = examScheduleRepository.findFirstByCourseId(courseId);
         if (examSchedule == null) {
-            return RestBody.error(this.NOT_FOUND_SCHEDULE);
+            throw new ExamScheduleNotFoundException("Không tìm thấy kỳ thi");
         } else {
             examSchedule.setCourseId(courseId);
             try {
@@ -67,7 +69,7 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     public RestBody getExamSchedule(Integer courseId) {
         ExamSchedule examSchedule = examScheduleRepository.findFirstByCourseId(courseId);
         if (examSchedule == null) {
-            return RestBody.error(this.NOT_FOUND_SCHEDULE);
+            throw new ExamScheduleNotFoundException("Không tìm thấy kỳ thi");
         }
         return RestBody.success(examSchedule);
     }
@@ -76,7 +78,7 @@ public class ExamScheduleServiceImpl implements ExamScheduleService {
     public RestBody deleteExamSchedule(Integer courseId) {
         ExamSchedule examSchedule = examScheduleRepository.findFirstByCourseId(courseId);
         if (examSchedule == null) {
-            return RestBody.error(this.NOT_FOUND_SCHEDULE);
+            throw new ExamScheduleNotFoundException("Không tìm thấy kỳ thi");
         } else {
             examScheduleRepository.delete(examSchedule);
         }

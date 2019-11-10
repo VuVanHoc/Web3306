@@ -22,13 +22,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import java.math.BigInteger;
-import java.security.Principal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
@@ -89,6 +85,16 @@ public class UserServiceImpl implements UserService {
             return RestBody.error("This account doesn't exist");
         }
         return RestBody.success(user);
+    }
+
+    @Override
+    public RestBody getUser(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            return RestBody.error("This account doesn't exist");
+        }
+        return RestBody.success(user);
+//        return null;
     }
 
     @Override

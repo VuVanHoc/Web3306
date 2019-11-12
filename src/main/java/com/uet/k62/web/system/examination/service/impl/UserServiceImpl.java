@@ -3,9 +3,11 @@ package com.uet.k62.web.system.examination.service.impl;
 import com.uet.k62.web.system.examination.error.CourseNotFoundException;
 import com.uet.k62.web.system.examination.error.UserNotFoundException;
 import com.uet.k62.web.system.examination.model.RestBody;
+import com.uet.k62.web.system.examination.model.dtos.TotalDTO;
 import com.uet.k62.web.system.examination.model.dtos.UserDetailDTO;
 import com.uet.k62.web.system.examination.model.dtos.UserFormRegistrationDTO;
 import com.uet.k62.web.system.examination.model.entity.Course;
+import com.uet.k62.web.system.examination.model.entity.Role;
 import com.uet.k62.web.system.examination.model.entity.User;
 import com.uet.k62.web.system.examination.repository.UserRepository;
 import com.uet.k62.web.system.examination.service.UserService;
@@ -30,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -55,14 +58,14 @@ public class UserServiceImpl implements UserService {
         }
 
         User newUser = new User();
-        BeanUtils.copyProperties(userFormRegistrationDTO, newUser);
-        newUser.setRoleId(RoleCode.STUDENT_ROLE);
+        dozerBeanMapper.map(userFormRegistrationDTO, newUser);
+        newUser.setRoleId(userFormRegistrationDTO.getRoleId());
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        try {
-            newUser.setBirthday(toDate(userFormRegistrationDTO.getBirthday()));
-        } catch (ParseException e) {
-            LOGGER.info(e.getMessage());
-        }
+//        try {
+//            newUser.setBirthday(toDate(userFormRegistrationDTO.getBirthday()));
+//        } catch (ParseException e) {
+//            LOGGER.info(e.getMessage());
+//        }
 
         userRepository.save(newUser);
 
@@ -72,14 +75,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public RestBody getAllUsers(Integer pageNo, Integer pageSize) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
-        Page<User> users = userRepository.findAllByDeletedIsFalse(paging);
+        Page<User> userPage = userRepository.findAllByDeletedIsFalse(paging);
 
-        if (users.hasContent()) {
-            return RestBody.success(users.getContent());
-        } else {
-
-            return RestBody.success("Không có người dùng nào");
+        List<User> userList = userPage.getContent();
+        List<UserDetailDTO> userDetailDTOS = new ArrayList<>();
+        int index = 1;
+        for(User user : userList){
+			UserDetailDTO userDetailDTO = new UserDetailDTO();
+	        dozerBeanMapper.map(user, userDetailDTO);
+	        userDetailDTO.setIndex(index);
+	        index++;
+	        if(user.getRoleId() == RoleCode.STUDENT_ROLE) {
+	        	userDetailDTO.setRoleName("Học viên");
+	        }
+	        else {
+	        	userDetailDTO.setRoleName("Quản trị viên");
+	        }
+	        userDetailDTOS.add(userDetailDTO);
         }
+        
+        return RestBody.success(userDetailDTOS);
+        
     }
 
     @Override
@@ -111,14 +127,14 @@ public class UserServiceImpl implements UserService {
         }
 
         updateUser.setFullName(userDetailDTO.getFullName());
-        try {
-            updateUser.setBirthday(toDate(userDetailDTO.getBirthday()));
-        } catch (ParseException e) {
-            LOGGER.info(e.getMessage());
-        }
+//        try {
+//            updateUser.setBirthday(toDate(userDetailDTO.getBirthday()));
+//        } catch (ParseException e) {
+//            LOGGER.info(e.getMessage());
+//        }
         updateUser.setEmail(userDetailDTO.getEmail());
         updateUser.setPhone(userDetailDTO.getPhone());
-        updateUser.setPicture(userDetailDTO.getPicture());
+//        updateUser.setPicture(userDetailDTO.getPicture());
         updateUser.setUpdatedDate(new Date());
 
         userRepository.save(updateUser);
@@ -144,6 +160,18 @@ public class UserServiceImpl implements UserService {
         DateFormat formatter = new SimpleDateFormat(Constant.DATE_FORMAT_PATTERN);
         String dateString = formatter.format(date);
         return formatter.parse(dateString);
+    }
+    
+    @Override
+    public RestBody calculateTotal(){
+	    TotalDTO totalDTO = new TotalDTO();
+	    List<User> totalStudents = userRepository.findAllByRoleId(RoleCode.STUDENT_ROLE);
+	    totalDTO.setTotalStudent(totalStudents.size());
+	    
+	    List<User> totalAdmin = userRepository.findAllByRoleId(RoleCode.ADMIN_ROLE);
+	    totalDTO.setTotalAdmin(totalAdmin.size());
+	    totalDTO.setTotalCourse(10);
+	    return RestBody.success(totalDTO);
     }
 }
 

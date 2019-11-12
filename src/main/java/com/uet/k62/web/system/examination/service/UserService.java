@@ -19,4 +19,6 @@ public interface UserService {
 	RestBody updateInfoUser(UserDetailDTO userDetailDTO, Integer id);
 
 	RestBody getCourses(Integer id);
+	
+	RestBody calculateTotal();
 }

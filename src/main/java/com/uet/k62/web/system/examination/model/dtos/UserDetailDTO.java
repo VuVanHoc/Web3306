@@ -8,13 +8,12 @@ import lombok.NoArgsConstructor;
 public class UserDetailDTO {
 	
 	private int index;
-	private int id;
+	private String id;
 	private String fullName;
 	private String birthday;
 	private String email;
 	private String phone;
 	private String address;
 	private String roleName;
-	private String picture;
 	
 }

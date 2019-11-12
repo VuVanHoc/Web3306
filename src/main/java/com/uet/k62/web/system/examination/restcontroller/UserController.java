@@ -94,4 +94,9 @@ public class UserController {
 		RestBody restBody = userService.getCourses(id);
 		return ResponseEntity.ok(restBody);
 	}
+	
+	@GetMapping(value = "/total")
+	public ResponseEntity<?> calculateTotalUser(){
+		return ResponseEntity.ok(userService.calculateTotal());
+	}
 }

@@ -141,3 +141,31 @@ tbody tr td:nth-child(1) {
     text-align: center;
     line-height: 30px;
 }
+.form-add-user {
+	display: block;
+}
+.form-item {
+	margin: 15px;
+	display: flex;
+}
+.label{
+	width: 40%;
+}
+.form-item > input {
+	border-radius: 5px;
+	border: 1px solid #cccccc;
+	padding: 6px 14px;
+	width: 60%;
+}
+.form-item > select {
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: 1px solid #cccccc;
+
+}
+.form-item > option {
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: 1px solid #cccccc;
+
+}

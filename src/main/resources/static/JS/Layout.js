@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 	let layout = new Layout();
-
+	layout.loadTotal();
 
 });
 
@@ -12,9 +12,10 @@ class Layout {
 	InitEvents() {
 		$(document).on('click', '.notification', this.showNotifi);
 		$(document).on('click', '.account', this.showOptionAcc);
-		$('.list-users-main').on('click', 'tbody tr', this.openModalViewDetailUser);
-		$('.btn-wrap').on('click', '.cancel', this.closeModel);
+		$('.list-users-main').on('click', '.update', this.openModalViewDetailUser);
+		$('.form-item').on('click', '.cancel', this.closeModel);
 		$(document).on('click', '.btn-add-user', this.openModalAddUser);
+		$(document).on('click', '#btn-userinfo', this.openModalUpdateUser);
 	}
 
 	openModalViewDetailUser() {
@@ -23,6 +24,10 @@ class Layout {
 
 	openModalAddUser() {
 		$('.modal-add-user').addClass("show");
+	}
+
+	openModalUpdateUser(){
+		$('.modal-detail-profile').addClass("show")
 	}
 
 	closeModel() {
@@ -40,5 +45,24 @@ class Layout {
 	showOptionAcc() {
 		$('.dropdownd-user').toggleClass("show");
 	}
+
+	loadTotal(){
+		$.ajax({
+			method: "GET",
+			url: "http://localhost:8080/api/users/total",
+			async: true,
+			contentType: "json",
+			success: function (res) {
+				var o = res.data;
+				$("#totalAdmin").text(o.totalAdmin);
+				$("#totalCourse").text(o.totalCourse);
+				$("#totalStudent").text(o.totalStudent);
+			},
+			error: function () {
+				alert("Error total");
+			}
+		})
+	}
+
 }
 

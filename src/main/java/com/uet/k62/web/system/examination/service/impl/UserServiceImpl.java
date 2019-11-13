@@ -42,6 +42,8 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 	
     @Autowired
+    CourseServiceImpl courseService;
+    @Autowired
 	DozerBeanMapper dozerBeanMapper;
     
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -174,7 +176,7 @@ public class UserServiceImpl implements UserService {
 	    totalDTO.setTotalAdmin(totalAdmin.size());
 	    totalDTO.setTotalOnline(totalAdmin.size() + totalStudents.size());
 	    
-	    totalDTO.setTotalCourse(10);
+	    totalDTO.setTotalCourse(5);
 	    return RestBody.success(totalDTO);
     }
 }

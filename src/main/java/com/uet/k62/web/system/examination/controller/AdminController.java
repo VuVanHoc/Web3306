@@ -10,7 +10,7 @@ public class AdminController {
 	
 	@GetMapping(value = "/dashboard")
 	public String showDashboard() {
-		System.out.println("ADMIN DASHBOARD");
+//		System.out.println("ADMIN DASHBOARD");
 		return "/admin/Layout";
 	}
 	
@@ -27,6 +27,11 @@ public class AdminController {
 	@GetMapping(value = "/manage-user")
 	public String manageUser() {
 		return "/admin/UsersData";
+	}
+	
+	@GetMapping(value = "/questions")
+	public String manageQuestion(){
+		return "/admin/Questions";
 	}
 	
 	

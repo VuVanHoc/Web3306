@@ -60,7 +60,7 @@
     opacity: 0.8;
 }
 .btn-item {
-    width: 80px;
+    width: 90px;
     border-radius: 5px;
     border: none;
     color: #fff;
@@ -101,3 +101,12 @@ button {
 	width: 60px;
 	font-weight: 500;
 }
+.a-see-detail {
+	color: #0062b5;
+	cursor: pointer;
+}
+.a-see-detail:active {
+	color: #19b133;
+}
+
+

@@ -80,6 +80,7 @@
     max-height: 100%;
     border-collapse: collapse;
     table-layout: auto;
+	text-align: center;
 }
 .list-users thead th {
     border-bottom: 1px solid #ccc;
@@ -89,13 +90,14 @@
     position: sticky;
     top: 0;
     background: #ebebeb;
+	text-align: center;
 }
 .list-users tbody td {
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
     height: 37px;
-    text-align: left;
     padding: 6px;
+	text-align: center;
 }
 .list-users tbody tr:nth-child(even) td {
     background: rgba(232, 229, 229, 0.79);

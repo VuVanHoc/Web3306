@@ -10,22 +10,22 @@ $(document).ready(function () {
 		var cfpw = $('#cfpw-add').val();
 		var roleId = $('#roleName').val();
 
-		console.log("Name"+fullName);
+		console.log("Name" + fullName);
 		var object = {
-			roleId : roleId,
+			roleId: roleId,
 			fullName: fullName,
-			username : username,
-			password : pass,
+			username: username,
+			password: pass,
 			confirmPassword: cfpw,
 			phone: phone
 		};
 		$.ajax({
 			method: "POST",
 			url: "http://localhost:8080/api/users",
-			data :JSON.stringify(object),
+			data: JSON.stringify(object),
 			characterData: "utf-8",
 			contentType: "application/json; charset=UTF-8",
-			dataType : "json",
+			dataType: "json",
 			success: function () {
 				alert("Đăng ký thành công!");
 				closeModel();
@@ -44,20 +44,20 @@ $(document).ready(function () {
 		var roleId = $('#roleName-update').val();
 		var userId = $('#id-user').val();
 		var object = {
-			roleId : roleId,
+			roleId: roleId,
 			fullName: fullName,
-			email : username,
-			password : "123",
+			email: username,
+			password: "123",
 			confirmPassword: "123",
 			phone: phone
 		};
 		$.ajax({
 			method: "PUT",
-			url: "http://localhost:8080/api/users/"+userId,
-			data :JSON.stringify(object),
+			url: "http://localhost:8080/api/users/" + userId,
+			data: JSON.stringify(object),
 			characterData: "utf-8",
 			contentType: "application/json; charset=UTF-8",
-			dataType : "json",
+			dataType: "json",
 			success: function () {
 				alert("Cập nhật thành công!");
 				closeModel();
@@ -68,9 +68,11 @@ $(document).ready(function () {
 	})
 
 });
- function closeModel() {
+
+function closeModel() {
 	$('.modal').removeClass("show");
 }
+
 function getDataFormServer() {
 	var arrayData = [];
 	$.ajax({
@@ -95,36 +97,39 @@ function loadDataToUI() {
 	var fields = $('.list-users th[fieldName]');
 	$('.list-users tbody').empty();
 	$.each(data, function (index, item) {
-		var rowhtml = $('<tr id="'+item.id+ '"></tr>');
+		var rowhtml = $('<tr id="' + item.id + '"></tr>');
 		$.each(fields, function (fieldindex, fielditem) {
-		    var fieldname = fielditem.getAttribute('fieldName');
-		    var value = item[fieldname];
-		    if (fieldname) {
-		        rowhtml.append('<td class="' + fieldname + '">' + value + '</td>');
-		    }
+			var fieldname = fielditem.getAttribute('fieldName');
+			var value = item[fieldname];
+			if (fieldname) {
+				rowhtml.append('<td class="' + fieldname + '">' + value + '</td>');
+			}
 
 		});
-		rowhtml.append('<td><button class="btn-table update" onclick="initFormUpdate('+item.id+')">Sửa</button>' +
-			'<button class="btn-table cancel" onclick="removeUser('+item.id+')">Xoá</button></td>');
+		rowhtml.append('<td><button class="btn-table update" onclick="initFormUpdate(' + item.id + ')">Sửa</button>' +
+			'<button class="btn-table cancel" onclick="removeUser(' + item.id + ')">Xoá</button></td>');
 		$('.list-users tbody').append(rowhtml);
 
 	})
 }
 
 function removeUser(userId) {
-	$.ajax({
-		method: "DELETE",
-		url: "http://localhost:8080/api/users/"+userId,
-		success : function () {
-			alert("Xoa thanh cong");
-			loadDataToUI();
-		}
-	})
+	if (confirm("Bạn muốn xoá tài khoản này?")) {
+		$.ajax({
+			method: "DELETE",
+			url: "http://localhost:8080/api/users/" + userId,
+			success: function () {
+				alert("Xoa thanh cong");
+				loadDataToUI();
+			}
+		})
+	}
 }
+
 function initFormUpdate(userId) {
 	$.ajax({
 		method: "GET",
-		url: "http://localhost:8080/api/users/"+userId,
+		url: "http://localhost:8080/api/users/" + userId,
 		success: function (res) {
 			var user = res.data;
 			console.log(user.fullName);

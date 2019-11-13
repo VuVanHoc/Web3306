@@ -7,8 +7,8 @@ import java.math.BigInteger;
 
 public interface CourseTypeService {
     RestBody createCourseType(CourseTypeRequestDTO courseTypeRequestDTO);
-    RestBody updateCourseType(CourseTypeRequestDTO courseTypeRequestDTO, BigInteger id);
-    RestBody deleteCourseType(BigInteger id);
+    RestBody updateCourseType(CourseTypeRequestDTO courseTypeRequestDTO, Integer id);
+    RestBody deleteCourseType(Integer id);
     RestBody getAllCourseTypes(Integer pageNo, Integer pageSize);
-    RestBody getCourseType(BigInteger id);
+    RestBody getCourseType(Integer id);
 }

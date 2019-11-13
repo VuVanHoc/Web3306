@@ -13,8 +13,6 @@ public class UserDetailDTO {
 	private String birthday;
 	private String email;
 	private String phone;
-	private String address;
 	private String roleName;
-	private String picture;
-	
+	private int roleId;
 }

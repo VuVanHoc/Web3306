@@ -6,17 +6,12 @@ import com.uet.k62.web.system.examination.model.dtos.UserFormRegistrationDTO;
 import com.uet.k62.web.system.examination.paging.PageConstant;
 import com.uet.k62.web.system.examination.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 
 @RestController
 @RequestMapping(value = "api/users")
@@ -105,5 +100,10 @@ public class UserController {
 	public ResponseEntity getCourses(@PathVariable Integer id){
 		RestBody restBody = userService.getCourses(id);
 		return ResponseEntity.ok(restBody);
+	}
+	
+	@GetMapping(value = "/total")
+	public ResponseEntity<?> calculateTotalUser(){
+		return ResponseEntity.ok(userService.calculateTotal());
 	}
 }

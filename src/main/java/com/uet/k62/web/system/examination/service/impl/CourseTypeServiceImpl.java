@@ -33,16 +33,16 @@ public class CourseTypeServiceImpl implements CourseTypeService {
     }
 
     @Override
-    public RestBody updateCourseType(CourseTypeRequestDTO courseTypeRequestDTO, BigInteger id) {
-        CourseType courseType = courseTypeRepository.findByIdAndDeletedIsFalse(id.intValue());
+    public RestBody updateCourseType(CourseTypeRequestDTO courseTypeRequestDTO, Integer id) {
+        CourseType courseType = courseTypeRepository.findByIdAndDeletedIsFalse(id);
         BeanUtils.copyProperties(courseTypeRequestDTO, courseType);
         courseTypeRepository.save(courseType);
         return RestBody.success(courseType);
     }
 
     @Override
-    public RestBody deleteCourseType(BigInteger id) {
-        CourseType courseType = courseTypeRepository.findByIdAndDeletedIsFalse(id.intValue());
+    public RestBody deleteCourseType(Integer id) {
+        CourseType courseType = courseTypeRepository.findByIdAndDeletedIsFalse(id);
         if (courseType == null) {
             throw new CourseTypeNotFoundException("Course Type Not Found!");
         }
@@ -63,8 +63,8 @@ public class CourseTypeServiceImpl implements CourseTypeService {
     }
 
     @Override
-    public RestBody getCourseType(BigInteger id) {
-        CourseType courseType = courseTypeRepository.findByIdAndDeletedIsFalse(id.intValue());
+    public RestBody getCourseType(Integer id) {
+        CourseType courseType = courseTypeRepository.findByIdAndDeletedIsFalse(id);
         return RestBody.success(courseType);
     }
 }

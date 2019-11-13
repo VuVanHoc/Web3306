@@ -14,6 +14,8 @@ public interface UserService {
 
 	RestBody getUser(Integer id);
 
+	RestBody getUser(String username);
+
 	RestBody deleteUser(Integer id);
 
 	RestBody updateInfoUser(UserDetailDTO userDetailDTO, Integer id);

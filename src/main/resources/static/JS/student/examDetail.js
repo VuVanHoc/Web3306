@@ -1,4 +1,10 @@
 const LOCATION_API = "http://localhost:8080";
+var courseId = $('#courseId').val();
+var current_course = getCourse(courseId);
+// var current_coursetype = getCourseType(current_course.typeId);
+var examSchedule = this.getData(LOCATION_API + "/api/courses/" + courseId + "/exam-schedule");
+var start_time = new Date(examSchedule.startTime);
+var end_time = new Date(examSchedule.endTime);
 
 $(document).ready(function () {
     loadInfo();
@@ -23,29 +29,33 @@ function getData(url) {
 }
 
 function loadInfo() {
-    var courseId = $('#courseId').val();
-    var current_course = getCourse(courseId);
-    // var current_coursetype = getCourseType(current_course.typeId);
-    var examSchedule = this.getData(LOCATION_API + "/api/courses/" + courseId + "/exam-schedule");
-    var start_time = new Date(examSchedule.startTime);
-    var end_time = new Date(examSchedule.endTime);
-
     $('#courseName').text(current_course.courseName);
     $('#startTime').text(start_time.getHours() + " giờ " + start_time.getMinutes() + " phút, ngày " + start_time.getDate() + " tháng " + (start_time.getMonth()+1) + " năm " + start_time.getFullYear());
     $('#endTime').text(end_time.getHours() + " giờ " + end_time.getMinutes() + " phút, ngày " + end_time.getDate() + " tháng " + (end_time.getMonth()+1) + " năm " + end_time.getFullYear());
-    $('#examTime').text("20 phút"); //mặc định thời gian thi cho mọi kỳ thi vì chưa có dữ liệu này
+    $('#examTime').text((end_time-start_time)/60/1000 + " phút");
     if($('#note').val() != null) $('#note').text(examSchedule.note);
     // $('#examId').val(examSchedule.id);
     // console.log("Exam ID: " + examSchedule.id);
 }
 
 function loadExam() {
-    var url_exam = LOCATION_API.concat("/student/courses/", $('#courseId').val(), "/exam");
-    window.location.href = url_exam;
+    // if(Date.now() >= start_time.getTime() && Date.now() <= end_time.getTime()){
+        var url_exam = LOCATION_API.concat("/student/courses/", $('#courseId').val(), "/exam");
+        window.location.href = url_exam;
+    // }else {
+    //     if(Date.now() < start_time.getTime()){
+    //         alert("Chưa đến giờ thi");
+    //     }
+    //     if(Date.now() > end_time.getTime()){
+    //         alert("Đã hết giờ thi");
+    //     }
+    // }
+
 }
 
 // function getCourseType(id) {
 //     var courseType = this.getData(LOCATION_API + "/api/course-types/" + id);
+//     return courseType;
 // }
 
 function getCourse(id) {

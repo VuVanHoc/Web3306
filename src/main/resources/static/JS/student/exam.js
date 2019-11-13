@@ -1,15 +1,25 @@
 const API_URL = "http://localhost:8080";
-var caudalam = new Array(); //id của các câu đã làm
+const IMAGE_URL = "http://localhost:8080/Images/"
+var caudalam = new Set(); //id của các câu đã làm
 var courseId = $('#courseId').val();
 var course = getCourse(courseId);
 var courseType = getCourseType(course.typeId);
 var totalQuestions = courseType.numberQuestion;
-var examId = getExam(courseId).id;
+
+var exam = getExam(courseId);
+var examId = exam.id;
+
+//Danh sách các câu hỏi
+var array_question_id = getData(API_URL + "/api/exams/" + examId + "/questions");
+array_question_id.sort();
+//Danh sách các loại câu hỏi
 var questionTypeCode = ["MC", "SA", "SO"]; //MC: checkbox, SA: text, SO: radio
 
-$(document).ready(function () {
-    // caudalam.push(4, 6);
+var DaNopBai = false;
+var ThoiGianLam;
+var SoCauDung = 0, SoCauSai = 0;
 
+$(document).ready(function () {
     //Hiển thị số ô câu hỏi
     showListIconQuestion(totalQuestions);
 
@@ -22,31 +32,58 @@ $(document).ready(function () {
     showQuestion(current_question);
 
     listenClickOtherQuestion(current_question);
+    $('.btn-submit').click(function () {
+        submit();
+        DaNopBai = true;
+    });
 });
 
 function listenClickOtherQuestion(current_question) {
     //Hiển thị nội dung câu hỏi khi chuyển câu hỏi
     $("[data-question]").click(function () {
         if (this.getAttribute("data-question") != current_question) {
+            danh_dau_da_lam(current_question);
             $("[data-question=" + current_question +"]").removeClass("dang-lam");
             if(da_lam(current_question)){
                 $("[data-question=" + current_question +"]").addClass("da-lam");
+            }else{
+                $("[data-question=" + current_question +"]").removeClass("da-lam");
             }
             hiddenQuestion(current_question);
             current_question = this.getAttribute("data-question");
+            $("[data-question=" + current_question +"]").removeClass("da-lam");
             $("[data-question=" + current_question +"]").addClass("dang-lam");
             showQuestion(current_question);
         }
     });
 }
 
-function kiem_tra_da_lam() {
-
+function danh_dau_da_lam(questionNumber) {
+    if($('#question_' + questionNumber).attr('question-type') == "SA"){
+        $('#question_' + questionNumber + ' :input').each(function (index, element){
+            if($(element).val()){
+                caudalam.add(Number(questionNumber));
+            }else{
+                caudalam.delete(Number(questionNumber));
+            }
+        });
+    }else{
+        var numberChecked = 0;
+        $('#question_' + questionNumber + ' :input').each(function (index, element) {
+            if($(element).prop('checked')){
+                numberChecked = numberChecked + 1;
+            }
+        });
+        if(numberChecked > 0){
+            caudalam.add(Number(questionNumber));
+        }else{
+            caudalam.delete(Number(questionNumber));
+        }
+    }
 }
 
 function da_lam(current_question) {
-    var index = caudalam.indexOf(Number(current_question));
-    return index >= 0 ? true : false;
+    return caudalam.has(Number(current_question));
 }
 
 function getData(url) {
@@ -61,7 +98,9 @@ function getData(url) {
         },
         error: function (xhr) {
             fakeData = JSON.parse(xhr.responseText);
-            // alert(fakeData.message);
+            alert(fakeData.message);
+            // window.history.back();
+
         }
     });
     return fakeData;
@@ -83,39 +122,40 @@ function showListIconQuestion(totalQuestions) {
 }
 
 function loadQuestions(totalQuestions) {
-    var array_question_id = getData(API_URL + "/api/exams/" + examId + "/questions");
-    array_question_id.sort();
-    console.log(array_question_id);
+    // console.log(array_question_id);
     var i;
-    for (i = 0; i < totalQuestions; i++) {
-        $('.list-question').append('<div id="question_' + (i + 1) + '" class="question" style="display: none;"><p class="question-title">Câu ' + (i + 1) + ':</p></div>')
-
+    for (i = 0; i < 3; i++) {
         var data_question = getData(API_URL + "/api/questions/".concat(array_question_id[i]));
-        console.log(data_question);
+        $('.list-question').append('<div id="question_' + (i + 1) + '" class="question" style="display: none;" question-type="' + data_question.questionTypeCode + '"><p class="question-title">Câu ' + (i + 1) + ':</p></div>')
 
         //Nội dung câu hỏi
-        $('#question_' + (i + 1)).append("<p class='question-content'>" + data_question.content + "</p>")
+        $('#question_' + (i + 1)).append("<div class='question-content'></div>")
+        $('#question_' + (i + 1) + ' .question-content').append("<p>" + data_question.content + "</p>");
+        if(data_question.imageUrl.length > 0){
+            $('#question_' + (i + 1) + ' .question-content').append("<img class='question-image' src='" + IMAGE_URL.concat(data_question.imageUrl) + "'>");
+        }
 
         //Phần câu trả lời
+        $('#question_' + (i + 1)).append("<div class='answer-content'></div>");
         switch(data_question.questionTypeCode) {
             case questionTypeCode[0]: //MC
                 var j;
                 for(j = 0; j < data_question.answers.length; j++){
-                    $('#question_' + (i + 1)).append("<div class='answer-content'><input type='checkbox' value=''/>" + data_question.answers[j] +"</div>");
+                    $('#question_' + (i + 1) + ' .answer-content').append("<label><input type='checkbox' index-answer='" + j + "'>" + data_question.answers[j] + "</label>");
                 }
                 break;
             case questionTypeCode[1]: //SA
                 for(j = 0; j < data_question.answers.length; j++){
-                    $('#question_' + (i + 1)).append("<div class='answer-content'><input type='text' placeholder='Nhập câu trả lời'/></div>");
+                    $('#question_' + (i + 1) + ' .answer-content').append("<input type='text' index-answer='" + j + "' placeholder='Nhập câu trả lời'/>");
                 }
                 break;
             case questionTypeCode[2]: //SO
                 for(j = 0; j < data_question.answers.length; j++){
-                    $('#question_' + (i + 1)).append("<div class='answer-content'><input type='radio' name='answerSelectOne' value=''/>" + data_question.answers[j] +"</div>");
+                    $('#question_' + (i + 1) + ' .answer-content').append("<label><input type='radio' name='answerSelectOne' index-answer='" + j + "'/>" + data_question.answers[j] + "</label>");
                 }
                 break;
             default:
-                $('#question_' + (i + 1)).append("<div class='answer-content'><p>Không thể load dạng câu trả lời</p></div>");
+                $('#question_' + (i + 1) + ' .answer-content').append("<p>Không thể load dạng câu trả lời</p>");
         }
     }
 }
@@ -144,3 +184,98 @@ function getExam(courseId) {
     var exam = getData(API_URL + "/api/courses/" + courseId + "/exam-schedule");
     return exam;
 }
+
+function submit() {
+    $('#time').countdown(0);
+    $(":input").prop('disabled', true);
+    $('.topbar').css('display','none');
+    var i;
+    for (i = 0; i < 3; i++) {
+        var questionNumber = i + 1;
+        var answer = getData(API_URL + "/api/questions/" + array_question_id[i] + "/answers");
+        var corrects = answer.correctIndex;
+
+        if($('#question_' + questionNumber).attr('question-type') == "SA"){
+            $('#question_' + questionNumber + ' :input').each(function (index, element){
+                if($(element).val() === answer.answers[corrects[0]]){
+                    $("[data-question=" + questionNumber +"]").addClass("cau-dung");
+                    SoCauDung += 1;
+                }else{
+                    $("[data-question=" + questionNumber +"]").addClass("cau-sai");
+                    SoCauSai += 1;
+                }
+            });
+        }else{
+            var checked_answer = new Array();
+            $('#question_' + questionNumber + ' :input').each(function (index, element) {
+                if($('#question_' + questionNumber +' input[index-answer="' + index + '"]').is(":checked")){
+                    checked_answer.push(index);
+                }
+            });
+            console.log(checked_answer);
+            if(compareArrays(corrects, checked_answer)){
+                $("[data-question=" + questionNumber +"]").addClass("cau-dung");
+                SoCauDung += 1;
+            }else{
+                $("[data-question=" + questionNumber +"]").addClass("cau-sai");
+                SoCauSai += 1;
+            }
+        }
+    }
+
+    $('.so-cau-dung').text(SoCauDung);
+    $('.so-cau-sai').text(SoCauSai);
+    $('.so-cau-chua-lam').text(courseType.numberQuestion-SoCauDung-SoCauSai);
+    if(SoCauDung >= courseType.minScore){
+        $('.ket-qua').text("Đạt").addClass('dat');
+    }else {
+        $('.ket-qua').text("Không Đạt").addClass('khong-dat');
+    }
+    $('.result').removeAttr('style');
+}
+
+function compareArrays(arr1, arr2) {
+    return $(arr1).not(arr2).length == 0 && $(arr2).not(arr1).length == 0
+};
+
+(function($){
+    $.fn.countdown = function(milliseconds, callback) {
+        var $el = this;
+        var buffer = 200;
+        var end, timer;
+
+        // Defaults
+        milliseconds = milliseconds || 20 * 60 * 1000; // 20 minutes
+        end = new Date(Date.now() + milliseconds + buffer);
+
+        // Start the counter
+        tick();
+
+        function formatTime(time){
+            minutes = format_two_digits(time.getMinutes());
+            seconds = format_two_digits(time.getSeconds());
+            return minutes + ":" + seconds;
+        }
+
+        function format_two_digits(n) {
+            return n < 10 ? '0' + n : n;
+        }
+
+        function tick() {
+            var remaining = new Date(end - Date.now());
+
+            if (remaining > 0 && DaNopBai == false) {
+                $el.html(formatTime(remaining));
+                timer = setTimeout(tick, 1000);
+            } else {
+                $el.addClass('finish');
+                ThoiGianLam = milliseconds - remaining;
+                clearInterval(timer);
+                if (callback) callback.apply($el);
+            }
+        };
+    };
+
+    var totalTime = Date.parse(exam.endTime) - Date.parse(exam.startTime);
+    $('#time').countdown(totalTime);
+})(jQuery);

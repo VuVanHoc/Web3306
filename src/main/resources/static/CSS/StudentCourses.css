@@ -163,14 +163,14 @@
     line-height: 30px;
 }
 
-a {
+.content a {
     color: #026b97;
 }
 
-a:hover {
+.content a:hover {
     color: #e12828;
 }
 
-a:active {
+.content a:active {
     color: #000;
 }

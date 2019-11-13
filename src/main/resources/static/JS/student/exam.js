@@ -1,13 +1,25 @@
-const LOCATION_API = "http://localhost:8080";
-var caudalam = new Array();
+const API_URL = "http://localhost:8080";
+const IMAGE_URL = "http://localhost:8080/Images/"
+var caudalam = new Set(); //id của các câu đã làm
 var courseId = $('#courseId').val();
 var course = getCourse(courseId);
 var courseType = getCourseType(course.typeId);
 var totalQuestions = courseType.numberQuestion;
 
-$(document).ready(function () {
-    caudalam.push(4, 6);
+var exam = getExam(courseId);
+var examId = exam.id;
 
+//Danh sách các câu hỏi
+var array_question_id = getData(API_URL + "/api/exams/" + examId + "/questions");
+array_question_id.sort();
+//Danh sách các loại câu hỏi
+var questionTypeCode = ["MC", "SA", "SO"]; //MC: checkbox, SA: text, SO: radio
+
+var DaNopBai = false;
+var ThoiGianLam;
+var SoCauDung = 0, SoCauSai = 0;
+
+$(document).ready(function () {
     //Hiển thị số ô câu hỏi
     showListIconQuestion(totalQuestions);
 
@@ -15,29 +27,63 @@ $(document).ready(function () {
     loadQuestions(totalQuestions);
 
     //Hiển thị câu hỏi 1 khi bắt đầu
-    var current_questionid = 1;
-    showQuestion(current_questionid);
+    var current_question = 1;
+    $("[data-question=1]").addClass("dang-lam");
+    showQuestion(current_question);
 
-    listenClickOtherQuestion(current_questionid);
+    listenClickOtherQuestion(current_question);
+    $('.btn-submit').click(function () {
+        submit();
+        DaNopBai = true;
+    });
 });
 
-function listenClickOtherQuestion(current_questionid) {
+function listenClickOtherQuestion(current_question) {
     //Hiển thị nội dung câu hỏi khi chuyển câu hỏi
-    $("[data-question-id]").click(function () {
-        if (this.getAttribute("data-question-id") != current_questionid) {
-            if(da_lam($("[data-question-id=" + current_questionid +"]").val())){
-            // console.log($("[data-question-id=" + current_questionid +"]"));
-            $("[data-question-id=" + current_questionid +"]").addClass("da-lam");
+    $("[data-question]").click(function () {
+        if (this.getAttribute("data-question") != current_question) {
+            danh_dau_da_lam(current_question);
+            $("[data-question=" + current_question +"]").removeClass("dang-lam");
+            if(da_lam(current_question)){
+                $("[data-question=" + current_question +"]").addClass("da-lam");
+            }else{
+                $("[data-question=" + current_question +"]").removeClass("da-lam");
             }
-            hiddenQuestion(current_questionid);
-            current_questionid = this.getAttribute("data-question-id");
-            showQuestion(current_questionid);
+            hiddenQuestion(current_question);
+            current_question = this.getAttribute("data-question");
+            $("[data-question=" + current_question +"]").removeClass("da-lam");
+            $("[data-question=" + current_question +"]").addClass("dang-lam");
+            showQuestion(current_question);
         }
     });
 }
 
-function da_lam(current_questionid) {
+function danh_dau_da_lam(questionNumber) {
+    if($('#question_' + questionNumber).attr('question-type') == "SA"){
+        $('#question_' + questionNumber + ' :input').each(function (index, element){
+            if($(element).val()){
+                caudalam.add(Number(questionNumber));
+            }else{
+                caudalam.delete(Number(questionNumber));
+            }
+        });
+    }else{
+        var numberChecked = 0;
+        $('#question_' + questionNumber + ' :input').each(function (index, element) {
+            if($(element).prop('checked')){
+                numberChecked = numberChecked + 1;
+            }
+        });
+        if(numberChecked > 0){
+            caudalam.add(Number(questionNumber));
+        }else{
+            caudalam.delete(Number(questionNumber));
+        }
+    }
+}
 
+function da_lam(current_question) {
+    return caudalam.has(Number(current_question));
 }
 
 function getData(url) {
@@ -53,6 +99,8 @@ function getData(url) {
         error: function (xhr) {
             fakeData = JSON.parse(xhr.responseText);
             alert(fakeData.message);
+            // window.history.back();
+
         }
     });
     return fakeData;
@@ -65,25 +113,54 @@ function showListIconQuestion(totalQuestions) {
     for (i = 0; i < numberOfRows; i++) {
         var row = $('<div class="row"></div>');
         for (j = 0; j < questionsPerRow; j++) {
-            var questionId = (i * questionsPerRow + j + 1);
-            row.append('<button data-question-id="' + questionId + '">' + questionId + '</button>');
+            var question = (i * questionsPerRow + j + 1);
+            row.append('<a href="#" data-question="' + question + '">' + question + '</a>');
         }
         $('.list-icon-question').append(row);
     }
+
 }
 
 function loadQuestions(totalQuestions) {
+    // console.log(array_question_id);
     var i;
-    for (i = 0; i < totalQuestions; i++) {
-        $('.list-question').append('<div id="question_' + (i + 1) + '" class="question" style="display: none;"><p class="question-title">Câu ' + (i + 1) + ':</p></div>')
-        $('#question_' + (i + 1)).append("<p class='question-content'> Biển nào sau đây ....</p>")
-        $('#question_' + (i + 1)).append("<div class='answer-content'><input type='checkbox' value='test'/> <input type='radio' value='test'/>" +
-            "<input type='text' placeholder='text tai day'/></div>")
+    for (i = 0; i < 3; i++) {
+        var data_question = getData(API_URL + "/api/questions/".concat(array_question_id[i]));
+        $('.list-question').append('<div id="question_' + (i + 1) + '" class="question" style="display: none;" question-type="' + data_question.questionTypeCode + '"><p class="question-title">Câu ' + (i + 1) + ':</p></div>')
+
+        //Nội dung câu hỏi
+        $('#question_' + (i + 1)).append("<div class='question-content'></div>")
+        $('#question_' + (i + 1) + ' .question-content').append("<p>" + data_question.content + "</p>");
+        if(data_question.imageUrl.length > 0){
+            $('#question_' + (i + 1) + ' .question-content').append("<img class='question-image' src='" + IMAGE_URL.concat(data_question.imageUrl) + "'>");
+        }
+
+        //Phần câu trả lời
+        $('#question_' + (i + 1)).append("<div class='answer-content'></div>");
+        switch(data_question.questionTypeCode) {
+            case questionTypeCode[0]: //MC
+                var j;
+                for(j = 0; j < data_question.answers.length; j++){
+                    $('#question_' + (i + 1) + ' .answer-content').append("<label><input type='checkbox' index-answer='" + j + "'>" + data_question.answers[j] + "</label>");
+                }
+                break;
+            case questionTypeCode[1]: //SA
+                for(j = 0; j < data_question.answers.length; j++){
+                    $('#question_' + (i + 1) + ' .answer-content').append("<input type='text' index-answer='" + j + "' placeholder='Nhập câu trả lời'/>");
+                }
+                break;
+            case questionTypeCode[2]: //SO
+                for(j = 0; j < data_question.answers.length; j++){
+                    $('#question_' + (i + 1) + ' .answer-content').append("<label><input type='radio' name='answerSelectOne' index-answer='" + j + "'/>" + data_question.answers[j] + "</label>");
+                }
+                break;
+            default:
+                $('#question_' + (i + 1) + ' .answer-content').append("<p>Không thể load dạng câu trả lời</p>");
+        }
     }
 }
 
 function showQuestion(questionid) {
-    $("[data-question-id='" + questionid + "']").focus();
     var selector = '#question_'.concat(questionid);
     $(selector).css("display", "");
 }
@@ -94,11 +171,111 @@ function hiddenQuestion(questionid) {
 }
 
 function getCourseType(id) {
-    var courseType = this.getData(LOCATION_API + "/api/course-types/" + id);
+    var courseType = this.getData(API_URL + "/api/course-types/" + id);
     return courseType;
 }
 
 function getCourse(id) {
-    var course = this.getData(LOCATION_API + "/api/courses/" + id);
+    var course = this.getData(API_URL + "/api/courses/" + id);
     return course;
 }
+
+function getExam(courseId) {
+    var exam = getData(API_URL + "/api/courses/" + courseId + "/exam-schedule");
+    return exam;
+}
+
+function submit() {
+    $('#time').countdown(0);
+    $(":input").prop('disabled', true);
+    $('.topbar').css('display','none');
+    var i;
+    for (i = 0; i < 3; i++) {
+        var questionNumber = i + 1;
+        var answer = getData(API_URL + "/api/questions/" + array_question_id[i] + "/answers");
+        var corrects = answer.correctIndex;
+
+        if($('#question_' + questionNumber).attr('question-type') == "SA"){
+            $('#question_' + questionNumber + ' :input').each(function (index, element){
+                if($(element).val() === answer.answers[corrects[0]]){
+                    $("[data-question=" + questionNumber +"]").addClass("cau-dung");
+                    SoCauDung += 1;
+                }else{
+                    $("[data-question=" + questionNumber +"]").addClass("cau-sai");
+                    SoCauSai += 1;
+                }
+            });
+        }else{
+            var checked_answer = new Array();
+            $('#question_' + questionNumber + ' :input').each(function (index, element) {
+                if($('#question_' + questionNumber +' input[index-answer="' + index + '"]').is(":checked")){
+                    checked_answer.push(index);
+                }
+            });
+            console.log(checked_answer);
+            if(compareArrays(corrects, checked_answer)){
+                $("[data-question=" + questionNumber +"]").addClass("cau-dung");
+                SoCauDung += 1;
+            }else{
+                $("[data-question=" + questionNumber +"]").addClass("cau-sai");
+                SoCauSai += 1;
+            }
+        }
+    }
+
+    $('.so-cau-dung').text(SoCauDung);
+    $('.so-cau-sai').text(SoCauSai);
+    $('.so-cau-chua-lam').text(courseType.numberQuestion-SoCauDung-SoCauSai);
+    if(SoCauDung >= courseType.minScore){
+        $('.ket-qua').text("Đạt").addClass('dat');
+    }else {
+        $('.ket-qua').text("Không Đạt").addClass('khong-dat');
+    }
+    $('.result').removeAttr('style');
+}
+
+function compareArrays(arr1, arr2) {
+    return $(arr1).not(arr2).length == 0 && $(arr2).not(arr1).length == 0
+};
+
+(function($){
+    $.fn.countdown = function(milliseconds, callback) {
+        var $el = this;
+        var buffer = 200;
+        var end, timer;
+
+        // Defaults
+        milliseconds = milliseconds || 20 * 60 * 1000; // 20 minutes
+        end = new Date(Date.now() + milliseconds + buffer);
+
+        // Start the counter
+        tick();
+
+        function formatTime(time){
+            minutes = format_two_digits(time.getMinutes());
+            seconds = format_two_digits(time.getSeconds());
+            return minutes + ":" + seconds;
+        }
+
+        function format_two_digits(n) {
+            return n < 10 ? '0' + n : n;
+        }
+
+        function tick() {
+            var remaining = new Date(end - Date.now());
+
+            if (remaining > 0 && DaNopBai == false) {
+                $el.html(formatTime(remaining));
+                timer = setTimeout(tick, 1000);
+            } else {
+                $el.addClass('finish');
+                ThoiGianLam = milliseconds - remaining;
+                clearInterval(timer);
+                if (callback) callback.apply($el);
+            }
+        };
+    };
+
+    var totalTime = Date.parse(exam.endTime) - Date.parse(exam.startTime);
+    $('#time').countdown(totalTime);
+})(jQuery);

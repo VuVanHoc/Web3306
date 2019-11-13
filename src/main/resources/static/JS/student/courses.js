@@ -1,4 +1,6 @@
 const LOCATION_API = "http://localhost:8080";
+var username = localStorage.getItem("username");
+var userId = getData("/api/users/username/" + username).id;
 
 $(document).ready(function () {
     loadCourses();
@@ -15,15 +17,16 @@ function getData(url) {
             fakeData = response.data; // gán data
             // console.log(fakeData);
         },
-        error: function () {
-            alert('Hệ thống sẽ cố gắng không hiện thông báo này');
+        error: function (xhr) {
+            fakeData = JSON.parse(xhr.responseText);
+            alert(fakeData.message);
         }
     });
     return fakeData;
 }
 
 function loadCourses() {
-    var data = this.getData(LOCATION_API + "/api/users/4/courses");
+    var data = this.getData(LOCATION_API + "/api/users/" + userId +"/courses");
     $('#endRow').text(data.length);
     $('#totalRows').text(data.length);
     // var fields = $('.list-courses th[fieldName]');

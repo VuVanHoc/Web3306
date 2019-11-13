@@ -93,6 +93,13 @@ public class UserController {
 		return ResponseEntity.ok(restBody);
 	}
 
+	@ApiOperation(value = "Find user by username", response = RestBody.class)
+	@GetMapping(value = "username/{username}")
+	public ResponseEntity getByUsername(@PathVariable String username){
+		RestBody restBody = userService.getUser(username);
+		return ResponseEntity.ok(restBody);
+	}
+
 	@ApiOperation(value = "User's Courses", response = RestBody.class)
 	@GetMapping(value = "{id}/courses")
 	public ResponseEntity getCourses(@PathVariable Integer id){

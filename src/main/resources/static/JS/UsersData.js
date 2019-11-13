@@ -35,7 +35,38 @@ $(document).ready(function () {
 		})
 	});
 
-	$('')
+
+//	update
+	$('#btn-update').click(function () {
+		var fullName = $('#txt-fullname-update').val();
+		var username = $('#txt-username-update').val();
+		var phone = $('#txt-phone-update').val();
+		var roleId = $('#roleName-update').val();
+		var userId = $('#id-user').val();
+		var object = {
+			roleId : roleId,
+			fullName: fullName,
+			email : username,
+			password : "123",
+			confirmPassword: "123",
+			phone: phone
+		};
+		$.ajax({
+			method: "PUT",
+			url: "http://localhost:8080/api/users/"+userId,
+			data :JSON.stringify(object),
+			characterData: "utf-8",
+			contentType: "application/json; charset=UTF-8",
+			dataType : "json",
+			success: function () {
+				alert("Cập nhật thành công!");
+				closeModel();
+				loadDataToUI();
+
+			}
+		})
+	})
+
 });
  function closeModel() {
 	$('.modal').removeClass("show");
@@ -64,7 +95,7 @@ function loadDataToUI() {
 	var fields = $('.list-users th[fieldName]');
 	$('.list-users tbody').empty();
 	$.each(data, function (index, item) {
-		var rowhtml = $('<tr></tr>');
+		var rowhtml = $('<tr id="'+item.id+ '"></tr>');
 		$.each(fields, function (fieldindex, fielditem) {
 		    var fieldname = fielditem.getAttribute('fieldName');
 		    var value = item[fieldname];
@@ -73,8 +104,36 @@ function loadDataToUI() {
 		    }
 
 		});
-		rowhtml.append('<td><button class="btn-table update">Sửa</button><button class="btn-table cancel">Xoá</button></td>');
+		rowhtml.append('<td><button class="btn-table update" onclick="initFormUpdate('+item.id+')">Sửa</button>' +
+			'<button class="btn-table cancel" onclick="removeUser('+item.id+')">Xoá</button></td>');
 		$('.list-users tbody').append(rowhtml);
+
+	})
+}
+
+function removeUser(userId) {
+	$.ajax({
+		method: "DELETE",
+		url: "http://localhost:8080/api/users/"+userId,
+		success : function () {
+			alert("Xoa thanh cong");
+			loadDataToUI();
+		}
+	})
+}
+function initFormUpdate(userId) {
+	$.ajax({
+		method: "GET",
+		url: "http://localhost:8080/api/users/"+userId,
+		success: function (res) {
+			var user = res.data;
+			console.log(user.fullName);
+			$('#txt-fullname-update').val(user.fullName);
+			$('#txt-username-update').val(user.username);
+			$('#txt-phone-update').val(user.phone);
+			$('#roleName-update').val(user.roleId);
+			$('#id-user').val(userId);
+		}
 
 	})
 }

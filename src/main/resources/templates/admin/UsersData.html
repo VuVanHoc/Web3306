@@ -68,7 +68,7 @@
 				</div>
 				<div class="form-item">
 					<div class="label">Số điện thoại</div>
-					<input type="text" id="txt-phone" placeholder="Nhập tên đăng nhập">
+					<input type="text" id="txt-phone" placeholder="Nhập số điện thoại">
 				</div>
 				<div class="form-item">
 					<div class="label">Mật khẩu</div>
@@ -101,21 +101,22 @@
                 CẬP NHẬT THÔNG TIN NGƯỜI DÙNG
             </div>
 			<form method="post" action="javascript:void(0)" class="form-add-user">
+				<input id="id-user" hidden>
 				<div class="form-item">
-					<div class="label">Tên đăng nhập</div>
-					<input type="text" id="txt-username-update" placeholder="Nhập tên đăng nhập">
+					<div class="label">Họ và tên</div>
+					<input type="text" id="txt-fullname-update" placeholder="Nhập tên họ và tên">
 				</div>
 				<div class="form-item">
-					<div class="label">Mật khẩu</div>
-					<input type="password" id="password-add-update" placeholder="Nhập mật khẩu ">
+					<div class="label">Địa chỉ email</div>
+					<input type="text" id="txt-username-update" placeholder="Nhập tên tên đăng nhập/ Email">
 				</div>
 				<div class="form-item">
-					<div class="label">Xác nhận mật khẩu</div>
-					<input type="password" id="cfpw-add-update" placeholder="Xác nhận mật khẩu">
+					<div class="label">Số điện thoại</div>
+					<input type="text" id="txt-phone-update" placeholder="Nhập số điện thoại">
 				</div>
 				<div class="form-item">
 					<div class="label">Chức vụ</div>
-					<select name="roleName">
+					<select name="roleName" id="roleName-update">
 						<option value="4">Học viên</option>
 						<option value="1">Quản trị viên</option>
 					</select>

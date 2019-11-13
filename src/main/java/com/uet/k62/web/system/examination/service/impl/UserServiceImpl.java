@@ -61,6 +61,7 @@ public class UserServiceImpl implements UserService {
         dozerBeanMapper.map(userFormRegistrationDTO, newUser);
         newUser.setRoleId(userFormRegistrationDTO.getRoleId());
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        newUser.setEmail(newUser.getUsername());
 //        try {
 //            newUser.setBirthday(toDate(userFormRegistrationDTO.getBirthday()));
 //        } catch (ParseException e) {
@@ -127,6 +128,7 @@ public class UserServiceImpl implements UserService {
         }
 
         updateUser.setFullName(userDetailDTO.getFullName());
+        updateUser.setRoleId(userDetailDTO.getRoleId());
 //        try {
 //            updateUser.setBirthday(toDate(userDetailDTO.getBirthday()));
 //        } catch (ParseException e) {
@@ -165,11 +167,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public RestBody calculateTotal(){
 	    TotalDTO totalDTO = new TotalDTO();
-	    List<User> totalStudents = userRepository.findAllByRoleId(RoleCode.STUDENT_ROLE);
+	    List<User> totalStudents = userRepository.findAllByRoleIdAndDeletedIsFalse(RoleCode.STUDENT_ROLE);
 	    totalDTO.setTotalStudent(totalStudents.size());
 	    
-	    List<User> totalAdmin = userRepository.findAllByRoleId(RoleCode.ADMIN_ROLE);
+	    List<User> totalAdmin = userRepository.findAllByRoleIdAndDeletedIsFalse(RoleCode.ADMIN_ROLE);
 	    totalDTO.setTotalAdmin(totalAdmin.size());
+	    totalDTO.setTotalOnline(totalAdmin.size() + totalStudents.size());
+	    
 	    totalDTO.setTotalCourse(10);
 	    return RestBody.success(totalDTO);
     }

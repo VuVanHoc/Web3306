@@ -57,6 +57,7 @@ class Layout {
 				$("#totalAdmin").text(o.totalAdmin);
 				$("#totalCourse").text(o.totalCourse);
 				$("#totalStudent").text(o.totalStudent);
+				$("#totalUser").text(o.totalOnline);
 			},
 			error: function () {
 				alert("Error total");

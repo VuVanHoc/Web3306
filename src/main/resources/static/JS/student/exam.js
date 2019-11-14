@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:8080";
-const IMAGE_URL = "http://localhost:8080/Images/"
+const IMAGE_URL = "http://localhost:8080/Images/";
+const userId = getData("/api/users/username/" + localStorage.username).id;
 var caudalam = new Set(); //id của các câu đã làm
 var courseId = $('#courseId').val();
 var course = getCourse(courseId);
@@ -104,6 +105,22 @@ function getData(url) {
         }
     });
     return fakeData;
+}
+
+function postData(url, jsonData) {
+    var data = [];
+    $.ajax({
+        url: url,
+        method: "POST",
+        data: jsonData,
+        dataType: "json",
+        characterData: "utf-8",
+        contentType: "application/json; charset=UTF-8",
+        success : function () {
+            alert("Đã nộp bài!");
+        }
+    });
+    return data;
 }
 
 function showListIconQuestion(totalQuestions) {
@@ -212,7 +229,6 @@ function submit() {
                     checked_answer.push(index);
                 }
             });
-            console.log(checked_answer);
             if(compareArrays(corrects, checked_answer)){
                 $("[data-question=" + questionNumber +"]").addClass("cau-dung");
                 SoCauDung += 1;
@@ -232,6 +248,14 @@ function submit() {
         $('.ket-qua').text("Không Đạt").addClass('khong-dat');
     }
     $('.result').removeAttr('style');
+
+    var dataResult = {
+        courseId: courseId,
+        score: SoCauDung ,
+        status: (SoCauDung >= courseType.minScore),
+        userId:  userId
+    };
+    var result = postData(API_URL + "/api/exam-result", JSON.stringify(dataResult));
 }
 
 function compareArrays(arr1, arr2) {

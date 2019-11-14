@@ -14,11 +14,11 @@ public class ExamResult extends BaseEntity {
 	@Column(name = "user_id")
 	private int userId;
 
-	@Column(name = "schedule_id")
+	@Column(name = "course_id")
 	private int courseId;
 	
-	@Column(name = "end_time")
-	private Date endTime;
+//	@Column(name = "end_time")
+//	private Date endTime;
 	
 	@Column(name = "score")
 	private int score;

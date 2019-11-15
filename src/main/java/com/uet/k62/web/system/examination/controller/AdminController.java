@@ -21,11 +21,11 @@ public class AdminController {
 		return "/admin/Courses";
 	}
 
-	@GetMapping(value = "/courses/{courseId}/courseDetail")
-	public String showCourseDetail(@PathVariable Integer courseId, Model model) {
-		model.addAttribute("courseId", courseId);
-		return "/admin/courses/CourseDetail";
-	}
+//	@GetMapping(value = "/courses/{courseId}/courseDetail")
+//	public String showCourseDetail(@PathVariable Integer courseId, Model model) {
+//		model.addAttribute("courseId", courseId);
+//		return "/admin/courses/CourseDetail";
+//	}
 
 	@GetMapping(value = "/courses/{courseId}/student")
 	public String showStudentInCourse(@PathVariable Integer courseId, Model model) {

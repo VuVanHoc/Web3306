@@ -34,8 +34,6 @@ public class CourseServiceImpl implements CourseService {
     private CourseTypeRepository courseTypeRepository;
 
     @Autowired
-    CourseTypeRepository courseTypeRepository;
-    @Autowired
 	DozerBeanMapper mapper;
     
     public CourseServiceImpl(CourseRepository courseRepository,

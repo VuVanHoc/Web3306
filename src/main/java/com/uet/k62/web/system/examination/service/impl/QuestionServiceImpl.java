@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,13 +84,26 @@ public class QuestionServiceImpl implements QuestionService {
         Pageable paging = PageRequest.of(pageNo, pageSize);
         List<QuestionResponseDTO> questionResponseListDTO = new ArrayList<>();
         Page<Question> questions = questionRepository.findAllByDeletedIsFalse(paging);
+	    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
         if (questions.hasContent()) {
-            questions.forEach(question -> {
+        	int index = pageNo * pageSize + 1;
+            for (Question question : questions.getContent()){
                 QuestionResponseDTO single = new QuestionResponseDTO();
                 BeanUtils.copyProperties(question, single);
+                
                 single.setQuestionTypeCode(this.getQuestionTypeCode(question.getQuestionTypeId()));
+	            if(single.getQuestionTypeCode().equals("MC")){
+		            single.setQuestionTypeCode("Multiple Choice");
+	            } else if(single.getQuestionTypeCode().equals("SA")){
+		            single.setQuestionTypeCode("Fill in blank");
+	            } else if(single.getQuestionTypeCode().equals("TF")){
+		            single.setQuestionTypeCode("Yes/No or True/False");
+	            }
+	            single.setIndex(index);
+	            index++;
+                single.setCreatedDate(simpleDateFormat.format(question.getCreatedDate()));
                 questionResponseListDTO.add(single);
-            });
+            }
         } else {
             return RestBody.success("Không có câu hỏi nào");
         }

@@ -17,7 +17,7 @@ array_question_id.sort();
 var questionTypeCode = ["MC", "SA", "SO"]; //MC: checkbox, SA: text, SO: radio
 
 var DaNopBai = false;
-var ThoiGianLam;
+// var ThoiGianLam;
 var SoCauDung = 0, SoCauSai = 0;
 
 $(document).ready(function () {
@@ -38,6 +38,42 @@ $(document).ready(function () {
         DaNopBai = true;
     });
 });
+
+function getData(url) {
+    var fakeData = [];
+    $.ajax({
+        method: "GET",
+        url: url,
+        async: false,
+        dataType: "json",
+        success: function (res) {
+            fakeData = res.data; // gán data
+        },
+        error: function (xhr) {
+            fakeData = JSON.parse(xhr.responseText);
+            alert(fakeData.message);
+            // window.history.back();
+
+        }
+    });
+    return fakeData;
+}
+
+function postData(url, jsonData) {
+    var data = [];
+    $.ajax({
+        url: url,
+        method: "POST",
+        data: jsonData,
+        dataType: "json",
+        characterData: "utf-8",
+        contentType: "application/json; charset=UTF-8",
+        success : function () {
+            alert("Đã nộp bài!");
+        }
+    });
+    return data;
+}
 
 function listenClickOtherQuestion(current_question) {
     //Hiển thị nội dung câu hỏi khi chuyển câu hỏi
@@ -85,42 +121,6 @@ function danh_dau_da_lam(questionNumber) {
 
 function da_lam(current_question) {
     return caudalam.has(Number(current_question));
-}
-
-function getData(url) {
-    var fakeData = [];
-    $.ajax({
-        method: "GET",
-        url: url,
-        async: false,
-        dataType: "json",
-        success: function (res) {
-            fakeData = res.data; // gán data
-        },
-        error: function (xhr) {
-            fakeData = JSON.parse(xhr.responseText);
-            alert(fakeData.message);
-            // window.history.back();
-
-        }
-    });
-    return fakeData;
-}
-
-function postData(url, jsonData) {
-    var data = [];
-    $.ajax({
-        url: url,
-        method: "POST",
-        data: jsonData,
-        dataType: "json",
-        characterData: "utf-8",
-        contentType: "application/json; charset=UTF-8",
-        success : function () {
-            alert("Đã nộp bài!");
-        }
-    });
-    return data;
 }
 
 function showListIconQuestion(totalQuestions) {
@@ -293,7 +293,8 @@ function compareArrays(arr1, arr2) {
                 timer = setTimeout(tick, 1000);
             } else {
                 $el.addClass('finish');
-                ThoiGianLam = milliseconds - remaining;
+                submit();
+                // ThoiGianLam = milliseconds - remaining;
                 clearInterval(timer);
                 if (callback) callback.apply($el);
             }

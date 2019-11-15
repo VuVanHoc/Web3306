@@ -1,6 +1,7 @@
 package com.uet.k62.web.system.examination.service.impl;
 
 import com.uet.k62.web.system.examination.error.CourseNotFoundException;
+import com.uet.k62.web.system.examination.error.CourseTypeNotFoundException;
 import com.uet.k62.web.system.examination.error.UserNotFoundException;
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.CourseDTO;
@@ -8,6 +9,7 @@ import com.uet.k62.web.system.examination.model.dtos.UserIdListDTO;
 import com.uet.k62.web.system.examination.model.entity.Course;
 import com.uet.k62.web.system.examination.model.entity.User;
 import com.uet.k62.web.system.examination.repository.CourseRepository;
+import com.uet.k62.web.system.examination.repository.CourseTypeRepository;
 import com.uet.k62.web.system.examination.repository.UserRepository;
 import com.uet.k62.web.system.examination.service.CourseService;
 import org.springframework.beans.BeanUtils;
@@ -23,19 +25,27 @@ import java.util.Date;
 public class CourseServiceImpl implements CourseService {
     private CourseRepository courseRepository;
     private UserRepository userRepository;
+    private CourseTypeRepository courseTypeRepository;
 
     public CourseServiceImpl(CourseRepository courseRepository,
-                             UserRepository userRepository) {
+                             UserRepository userRepository,
+                             CourseTypeRepository courseTypeRepository) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
+        this.courseTypeRepository = courseTypeRepository;
     }
 
     @Override
     public RestBody createCourse(CourseDTO courseDTO) {
-        Course course = new Course();
-        BeanUtils.copyProperties(courseDTO, course);
-        courseRepository.save(course);
-        return RestBody.success(course);
+        if(courseTypeRepository.findByIdAndDeletedIsFalse(courseDTO.getTypeId()) != null){
+            Course course = new Course();
+            BeanUtils.copyProperties(courseDTO, course);
+            courseRepository.save(course);
+            return RestBody.success(course);
+        } else{
+            throw new CourseTypeNotFoundException("Not found course type");
+        }
+
     }
 
     @Override
@@ -68,7 +78,7 @@ public class CourseServiceImpl implements CourseService {
         if (pagedResult.hasContent()) {
             return RestBody.success(pagedResult.getContent());
         } else {
-            return RestBody.success("Không có khóa học nào");
+            throw new CourseNotFoundException("Không có khóa học nào");
         }
     }
 
@@ -124,5 +134,10 @@ public class CourseServiceImpl implements CourseService {
             courseRepository.save(course);
         }
         return RestBody.success("Deleted");
+    }
+
+    @Override
+    public RestBody getTotal() {
+        return RestBody.success(courseRepository.countAllByDeletedIsFalse());
     }
 }

@@ -7,19 +7,25 @@ import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.CourseDTO;
 import com.uet.k62.web.system.examination.model.dtos.UserIdListDTO;
 import com.uet.k62.web.system.examination.model.entity.Course;
+import com.uet.k62.web.system.examination.model.entity.CourseType;
 import com.uet.k62.web.system.examination.model.entity.User;
 import com.uet.k62.web.system.examination.repository.CourseRepository;
 import com.uet.k62.web.system.examination.repository.CourseTypeRepository;
 import com.uet.k62.web.system.examination.repository.UserRepository;
 import com.uet.k62.web.system.examination.service.CourseService;
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -27,6 +33,11 @@ public class CourseServiceImpl implements CourseService {
     private UserRepository userRepository;
     private CourseTypeRepository courseTypeRepository;
 
+    @Autowired
+    CourseTypeRepository courseTypeRepository;
+    @Autowired
+	DozerBeanMapper mapper;
+    
     public CourseServiceImpl(CourseRepository courseRepository,
                              UserRepository userRepository,
                              CourseTypeRepository courseTypeRepository) {
@@ -75,8 +86,29 @@ public class CourseServiceImpl implements CourseService {
     public RestBody getAllCourses(Integer pageNo, Integer pageSize) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
         Page<Course> pagedResult = courseRepository.findAllByDeletedIsFalse(paging);
+	    List<Course> courseList = pagedResult.getContent();
+	    
+	    List<CourseDTO> courseDTOList = new ArrayList<>();
+	    
+	    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	    int index = 1;
+	    for(Course course : courseList){
+	    	CourseDTO courseDTO = new CourseDTO();
+	    	mapper.map(course, courseDTO);
+	    	CourseType courseType = courseTypeRepository.findByIdAndDeletedIsFalse(course.getTypeId());
+	    	if(courseType != null){
+	    		courseDTO.setCreatedTime(simpleDateFormat.format(course.getCreatedDate()));
+	    		courseDTO.setTypeName(courseType.getName());
+	    		courseDTO.setDescription(courseType.getDescription());
+	    		courseDTO.setTotal(courseType.getNumberQuestion());
+	    		courseDTO.setMinScore(courseType.getMinScore());
+		    }
+	    	courseDTO.setIndex(index);
+	    	index++;
+	    	courseDTOList.add(courseDTO);
+	    }
         if (pagedResult.hasContent()) {
-            return RestBody.success(pagedResult.getContent());
+            return RestBody.success(courseDTOList);
         } else {
             throw new CourseNotFoundException("Không có khóa học nào");
         }

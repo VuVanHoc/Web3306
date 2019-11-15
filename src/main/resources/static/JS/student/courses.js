@@ -19,7 +19,7 @@ function getData(url) {
         },
         error: function (xhr) {
             fakeData = JSON.parse(xhr.responseText);
-            alert(fakeData.message);
+            // alert(fakeData.message);
         }
     });
     return fakeData;

@@ -85,6 +85,7 @@ function loadDataToUI() {
 			}
 
 		});
+		rowhtml.append('<td><span class="fa fa-address-book"></span></td>')
 		rowhtml.append('<td><a class="a-see-detail">Xem chi tiết</a></td>')
 		rowhtml.append('<td><button class="btn-table update" style="width: 45px" onclick="initFormUpdateCourse('+item.id+')">Sửa</button>' +
 			'<button class="btn-table cancel" style="width: 45px" onclick="removeCourse('+item.id+')">Xoá</button></td>');

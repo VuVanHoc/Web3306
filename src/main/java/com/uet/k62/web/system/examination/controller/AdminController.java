@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
-	
 	@GetMapping(value = "/dashboard")
 	public String showDashboard() {
 //		System.out.println("ADMIN DASHBOARD");
@@ -21,22 +20,10 @@ public class AdminController {
 		return "/admin/Courses";
 	}
 
-//	@GetMapping(value = "/courses/{courseId}/courseDetail")
-//	public String showCourseDetail(@PathVariable Integer courseId, Model model) {
-//		model.addAttribute("courseId", courseId);
-//		return "/admin/courses/CourseDetail";
-//	}
-
-	@GetMapping(value = "/courses/{courseId}/student")
-	public String showStudentInCourse(@PathVariable Integer courseId, Model model) {
-		model.addAttribute("courseId", courseId);
-		return "/admin/courses/CourseDetail";
-	}
-
-	@GetMapping(value = "/courses/{courseId}/exam")
-	public String showExamInCourse(@PathVariable Integer courseId, Model model) {
-		model.addAttribute("courseId", courseId);
-		return "/admin/courses/ExamInCourse";
+	@GetMapping(value = "/courses/{course}/exam")
+	public String showExamInCourse(Model model, @PathVariable("course") Integer course) {
+		model.addAttribute("courseId", course);
+		return "/admin/CreateExam";
 	}
 	
 	@GetMapping(value = "/history")

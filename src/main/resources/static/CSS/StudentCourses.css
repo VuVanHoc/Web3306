@@ -17,15 +17,17 @@
     color: #026b97;
     font-weight: bold;
     width: 300px;
-    text-align: center;
+    text-align: left;
     float: left;
     text-transform: uppercase;
+    margin-left: 30px;
 }
 .search {
     position: relative;
     float: right;
-    height: 100%;
-    width: calc(100% - 300px);
+    transform: translate(32px, 33px);
+    /* height: 100%; */
+    /* width: calc(100% - 300px); */
 }
 .inp-search {
     position: absolute;
@@ -50,35 +52,32 @@
     right: 55px;
     outline: none;
 }
+
 .btn-add {
     position: absolute;
-    width: auto;
+    width: 100px;
     height: 34px;
     border-radius: 5px;
-    background: #19b133;
+    background: #9f9fa0;
     border: none;
     cursor: pointer;
-    outline: none;
-    color: #fff;
-    padding: 10px;
-}
-
-.btn-add:hover {
-    background: #179a2d;
-}
-
-.btn-add-course{
     top: calc(50% - 17px);
     right: 340px;
+    outline: none;
+    color: #fff;
 }
-
+.btn-add:hover {
+    background: #6270bf;
+}
 .table-list-courses {
     position: absolute;
-    left: 15px;
-    top: 90px;
-    right: 10px;
+    left: 0;
+    top: 50px;
+    right: 3px;
     height: calc(100% - 170px);
     overflow: auto;
+    /*border: 1px solid #ccc;*/
+    margin: 30px;
 }
 .table-list-courses table.list-courses {
     width: 100%;
@@ -92,32 +91,40 @@
     height: 40px;
     color: #636365;
     position: sticky;
-    top: 0;
-    background: #ebebeb;
+    top: 0px;
+    background: #f4f1f1;
 }
 .list-courses tbody td {
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
     height: 37px;
-    text-align: center;
+    text-align: left;
     padding: 6px;
 }
 .list-courses tbody tr:nth-child(even) td {
-    background: rgba(232, 229, 229, 0.79);
+    background: #ebebeb;
 }
-
-tbody tr td:nth-child(1) {
+.list-courses thead tr th:nth-child(1) {
+    width: 10px;
+}
+.list-courses thead tr th:nth-child(2) {
+    width: 220px;
+}
+.list-courses thead tr th:nth-child(3) {
+    width: 100px;
+}
+.list-courses thead tr th:nth-child(4) {
+    width: 200px;
+}
+.list-courses tbody tr td:nth-child(1) {
     text-align: center;
 }
-
-.content-wrap a{
-    color: #026b97;
+.list-courses tbody tr td:nth-child(3) {
+    text-align: center;
 }
-
-.content-wrap a:hover{
-    color: #000000;
+.list-courses tbody tr td:nth-child(4) {
+    text-align: center;
 }
-
 .paging-data {
     position: absolute;
     bottom: 0;
@@ -144,7 +151,7 @@ tbody tr td:nth-child(1) {
     font-weight: bold;
     padding-right: 20px;
 }
-.paging-left > a {
+.paging-left > div {
     height: 30px;
     width: 30px;
     font-size: 20px;
@@ -156,30 +163,14 @@ tbody tr td:nth-child(1) {
     line-height: 30px;
 }
 
-.btn-update{
-    padding: 5px;
-    border-radius: 2px;
-    border: none;
-    color: #fff;
-    font-weight: bold;
-    font-size: 15px;
-    background: #f9d63e;
+.content a {
+    color: #026b97;
 }
 
-.btn-update:hover{
-    background: #e4c237;
+.content a:hover {
+    color: #e12828;
 }
 
-.btn-delete{
-    padding: 5px;
-    border-radius: 2px;
-    border: none;
-    color: #fff;
-    font-weight: bold;
-    font-size: 15px;
-    background: #e15555;
-}
-
-.btn-delete:hover{
-    background: #b64747;
+.content a:active {
+    color: #000;
 }

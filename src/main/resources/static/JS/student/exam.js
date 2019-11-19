@@ -14,7 +14,7 @@ var examId = exam.id;
 var array_question_id = getData(API_URL + "/api/exams/" + examId + "/questions");
 array_question_id.sort();
 //Danh sách các loại câu hỏi
-var questionTypeCode = ["MC", "SA", "SO"]; //MC: checkbox, SA: text, SO: radio
+var questionTypeCode = ["MC", "SA", "TF"]; //MC: checkbox, SA: text, SO: radio
 
 var DaNopBai = false;
 // var ThoiGianLam;
@@ -141,14 +141,14 @@ function showListIconQuestion(totalQuestions) {
 function loadQuestions(totalQuestions) {
     // console.log(array_question_id);
     var i;
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < totalQuestions; i++) {
         var data_question = getData(API_URL + "/api/questions/".concat(array_question_id[i]));
         $('.list-question').append('<div id="question_' + (i + 1) + '" class="question" style="display: none;" question-type="' + data_question.questionTypeCode + '"><p class="question-title">Câu ' + (i + 1) + ':</p></div>')
 
         //Nội dung câu hỏi
         $('#question_' + (i + 1)).append("<div class='question-content'></div>")
         $('#question_' + (i + 1) + ' .question-content').append("<p>" + data_question.content + "</p>");
-        if(data_question.imageUrl.length > 0){
+        if(data_question.imageUrl != null){
             $('#question_' + (i + 1) + ' .question-content').append("<img class='question-image' src='" + IMAGE_URL.concat(data_question.imageUrl) + "'>");
         }
 
@@ -166,7 +166,7 @@ function loadQuestions(totalQuestions) {
                     $('#question_' + (i + 1) + ' .answer-content').append("<input type='text' index-answer='" + j + "' placeholder='Nhập câu trả lời'/>");
                 }
                 break;
-            case questionTypeCode[2]: //SO
+            case questionTypeCode[2]: //TF
                 for(j = 0; j < data_question.answers.length; j++){
                     $('#question_' + (i + 1) + ' .answer-content').append("<label><input type='radio' name='answerSelectOne' index-answer='" + j + "'/>" + data_question.answers[j] + "</label>");
                 }
@@ -207,7 +207,7 @@ function submit() {
     $(":input").prop('disabled', true);
     $('.topbar').css('display','none');
     var i;
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < totalQuestions; i++) {
         var questionNumber = i + 1;
         var answer = getData(API_URL + "/api/questions/" + array_question_id[i] + "/answers");
         var corrects = answer.correctIndex;
@@ -241,7 +241,6 @@ function submit() {
 
     $('.so-cau-dung').text(SoCauDung);
     $('.so-cau-sai').text(SoCauSai);
-    $('.so-cau-chua-lam').text(courseType.numberQuestion-SoCauDung-SoCauSai);
     if(SoCauDung >= courseType.minScore){
         $('.ket-qua').text("Đạt").addClass('dat');
     }else {

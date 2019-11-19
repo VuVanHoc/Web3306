@@ -2,6 +2,7 @@ package com.uet.k62.web.system.examination.controller;
 
 import com.uet.k62.web.system.examination.model.entity.Question;
 import com.uet.k62.web.system.examination.paging.PageConstant;
+import com.uet.k62.web.system.examination.service.ExamResultService;
 import com.uet.k62.web.system.examination.service.impl.QuestionServiceImpl;
 import com.uet.k62.web.system.examination.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class AdminController {
 	
 	@Autowired
 	QuestionServiceImpl questionService;
+	@Autowired
+	ExamResultService examResultService;
 	
 	@GetMapping(value = "/dashboard")
 	public String showDashboard() {
@@ -37,7 +40,9 @@ public class AdminController {
 	}
 	
 	@GetMapping(value = "/history")
-	public String showHistory() {
+	public String showHistory(Model model) {
+		System.out.println(examResultService.getAllResults());
+		model.addAttribute("histories", examResultService.getAllResults().getData());
 		return "/admin/history";
 	}
 	

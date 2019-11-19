@@ -53,4 +53,9 @@ public class AnswerServiceImpl implements AnswerService {
         answers.forEach(item -> answerRepository.deleteById(item.getId()));
         return RestBody.success("Deleted");
     }
+    
+    
+    public List<Answer> getListAnswerOfQuestion(int questionId){
+    	return answerRepository.findAllByQuestionId(questionId);
+    }
 }

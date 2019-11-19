@@ -162,4 +162,8 @@ public class QuestionServiceImpl implements QuestionService {
     private String getQuestionTypeCode(Integer questionTypeId) {
         return questionTypeRepository.findOneByIdAndDeletedIsFalse(questionTypeId).getCode();
     }
+    
+    public Question getAQuestionById(int id){
+    	return questionRepository.findOneByIdAndDeletedIsFalse(id);
+    }
 }

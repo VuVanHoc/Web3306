@@ -86,7 +86,7 @@ function loadDataToUI() {
 
 		});
 		rowhtml.append('<td><a href="http://localhost:8080/admin/courses/' + item.id + '/exam"><span class="fa fa-address-book"></span></a></td>')
-		rowhtml.append('<td><a class="a-see-detail">Xem chi tiết</a></td>')
+		rowhtml.append('<td><a class="a-see-detail" href="http://localhost:8080/admin/courses/'+item.id +'/list-student">Xem chi tiết</a></td>')
 		rowhtml.append('<td><button class="btn-table update" style="width: 45px" onclick="initFormUpdateCourse('+item.id+')">Sửa</button>' +
 			'<button class="btn-table cancel" style="width: 45px" onclick="removeCourse('+item.id+')">Xoá</button></td>');
 		$('.list-users tbody').append(rowhtml);

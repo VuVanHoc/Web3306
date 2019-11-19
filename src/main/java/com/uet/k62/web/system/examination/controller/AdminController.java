@@ -1,7 +1,13 @@
 package com.uet.k62.web.system.examination.controller;
 
+import com.uet.k62.web.system.examination.model.entity.Answer;
+import com.uet.k62.web.system.examination.model.entity.Course;
 import com.uet.k62.web.system.examination.model.entity.Question;
 import com.uet.k62.web.system.examination.paging.PageConstant;
+import com.uet.k62.web.system.examination.repository.CourseRepository;
+import com.uet.k62.web.system.examination.service.AnswerService;
+import com.uet.k62.web.system.examination.service.CourseService;
+import com.uet.k62.web.system.examination.service.impl.AnswerServiceImpl;
 import com.uet.k62.web.system.examination.service.ExamResultService;
 import com.uet.k62.web.system.examination.service.impl.QuestionServiceImpl;
 import com.uet.k62.web.system.examination.utils.Constant;
@@ -13,12 +19,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
 	
 	@Autowired
 	QuestionServiceImpl questionService;
+	@Autowired
+	CourseService courseService;
+	@Autowired
+	CourseRepository courseRepository;
+	@Autowired
+	AnswerServiceImpl answerService;
 	@Autowired
 	ExamResultService examResultService;
 	
@@ -57,5 +71,35 @@ public class AdminController {
 		return "/admin/Questions";
 	}
 	
+	@GetMapping(value = "/courses/{course}/list-student")
+	public String showStudentInCourse(Model model, @PathVariable("course") int course){
+		model.addAttribute("courseId", course);
+		Course course1 = courseRepository.findByIdAndDeletedIsFalse(course);
+		
+		model.addAttribute("course", course1);
+		return "/admin/AddUserToCourse";
+		
+	}
+	
+	
+	@GetMapping(value = "/question/detail")
+	public String seeDetailQuestion(@RequestParam("id") int id, Model model){
+		Question question = questionService.getAQuestionById(id);
+		List<Answer> answers = answerService.getListAnswerOfQuestion(id);
+		model.addAttribute("answers", answers);
+		model.addAttribute("question", question);
+		if(question.getImageUrl() != null) {
+			model.addAttribute("showImg", true);
+		} else {
+			model.addAttribute("showImg", false);
+		}
+		return "/admin/DetailQuestion";
+	}
+	
+	@GetMapping(value = "/questions/create-new-question")
+	public String createNewQuestion(){
+		
+		return "/admin/new-question";
+	}
 	
 }

@@ -29,4 +29,18 @@ public class ExamResultController {
         RestBody restBody = examResultService.getExamResult(userId, courseId);
         return ResponseEntity.ok(restBody);
     }
+
+    @ApiOperation(value = "Tổng số người đã thi", response = RestBody.class)
+    @GetMapping(value = "/totalRecords")
+    public ResponseEntity getTotal(){
+        RestBody restBody = examResultService.getTotalRecord();
+        return ResponseEntity.ok(restBody);
+    }
+
+    @ApiOperation(value = "Tổng số người đỗ", response = RestBody.class)
+    @GetMapping(value = "/totalPass")
+    public ResponseEntity getPass(){
+        RestBody restBody = examResultService.getPass();
+        return ResponseEntity.ok(restBody);
+    }
 }

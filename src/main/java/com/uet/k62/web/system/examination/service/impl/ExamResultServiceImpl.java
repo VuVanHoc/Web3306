@@ -66,4 +66,29 @@ public class ExamResultServiceImpl implements ExamResultService {
 
         return RestBody.success(responeDTO);
     }
+
+    @Override
+    public RestBody getAllResults() {
+        List<ExamResultDTO> responeDTO = new ArrayList<>();
+        List<ExamResult> resultByCourse = examResultRepository.findAllByDeletedIsFalse();
+        if(resultByCourse == null){
+            throw new ExamResultNotFoundException("Không tìm thấy kết quả");
+        }
+        resultByCourse.forEach(r -> {
+            ExamResultDTO newDto = new ExamResultDTO();
+            BeanUtils.copyProperties(r, newDto);
+            responeDTO.add(newDto);
+        });
+        return RestBody.success(responeDTO);
+    }
+
+    @Override
+    public RestBody getTotalRecord() {
+        return RestBody.success(examResultRepository.countAllByDeletedIsFalse());
+    }
+
+    @Override
+    public RestBody getPass() {
+        return  RestBody.success(examResultRepository.countAllByStatusIsTrue());
+    }
 }

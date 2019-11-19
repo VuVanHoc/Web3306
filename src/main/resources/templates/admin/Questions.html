@@ -9,6 +9,15 @@
 <link href="/CSS/modal.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <title>Admin - Quản lý bộ câu hỏi</title>
+<style>
+	.list-users tbody td {
+		border-bottom: 1px solid #ccc;
+		border-right: 1px solid #ccc;
+		height: 37px;
+		padding: 6px;
+		text-align: center;
+	}
+</style>
 </head>
 <body>
 <div th:replace="/header :: header"></div>
@@ -35,6 +44,15 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr th:each="question : ${questions}">
+						<td th:text="${question.index}"></td>
+						<td th:text="${question.questionTypeCode}"></td>
+						<td><a style="color: #0d6b0c" th:text="${question.content}" th:href="@{'/admin/question/detail?id='+ ${question.id}}"></a></td>
+						<td th:text="${question.createdDate}"></td>
+						<td><button class="btn-table update">Xem</button>
+							<button class="btn-table cancel">Xoá</button>
+						</td>
+					</tr>
 				</tbody>
 			
 			</table>
@@ -56,7 +74,38 @@
 </div>
 <script src="/JS/jquery-3.4.1.min.js"></script>
 <script src="/JS/Layout.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		var pageNum = 0;
+		$('.page-first').click(function () {
+			pageNum = 0;
+			console.log(pageNum);
+			window.location.href = "http://localhost:8080/admin/questions?pageNum="+pageNum;
 
+		});
+
+		$('.page-prev').click(function () {
+			if(pageNum > 0)
+				pageNum--;
+			console.log(pageNum);
+			window.location.href = "http://localhost:8080/admin/questions?pageNum="+pageNum;
+
+		});
+
+		$('.page-next').click(function () {
+			pageNum ++;
+			console.log(pageNum);
+			window.location.href = "http://localhost:8080/admin/questions?pageNum="+pageNum;
+		});
+		$('.page-last').click(function () {
+			pageNum = 0;
+			console.log(pageNum);
+			window.location.href = "http://localhost:8080/admin/questions?pageNum="+pageNum;
+
+		});
+		
+	})
+</script>
 
 </body>
 </html>

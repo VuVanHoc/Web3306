@@ -20,14 +20,24 @@
 				<thead>
 					<tr>
 						<th>STT</th>
-						<th>Mã đề</th>
-						<th>Hạng</th>
-						<th>Người phụ trách</th>
-						<th>Thời gian tạo</th>
-						<th>Thời gian thi</th>
-						<th>Địa điểm thi</th>
+						<th>Khoá học</th>
+						<th>Họ và tên</th>
+						<th>Email</th>
+						<th>Số điểm</th>
+						<th>Trạng thái</th>
 					</tr>
 				</thead>
+				<tbody>
+					<tr th:each="history : ${history}">
+						<td th:text="${history.index}"></td>
+						<td th:text="${history.index}"></td>
+						<td th:text="${history.index}"></td>
+						<td th:text="${history.index}"></td>
+						<td th:text="${history.index}"></td>
+						<td th:text="${history.index}"></td>
+						<td th:text="${history.index}"></td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 	</div>

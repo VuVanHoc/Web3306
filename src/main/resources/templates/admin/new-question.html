@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed|Roboto:400,500,700&display=swap" rel="stylesheet">
+<link href="/CSS/layout-newquestion.css" rel="stylesheet"/>
+<link href="/CSS/Layout.css" rel="stylesheet"/>
+<link href="/CSS/UsersData.css" rel="stylesheet"/>
+<link href="/CSS/modal.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>Trang chủ</title>
+</head>
+<body>
+<div th:replace="/header :: header"></div>
+<div th:replace="/admin/AdminSidebar :: adminSidebar"></div>
+<div class="content">
+	<form action="" method="post" class="form-add-user">
+		<h2 class="title">Tạo câu hỏi mới</h2>
+		
+		<div class="form-group">
+			<label class="control-label">Loại câu hỏi</label>
+			<select class="control-select" name="question-type">
+				<option value="multiple-choice">Multiple Choice</option>
+				<option value="one-choice">Yes/No or True/False</option>
+				<option value="text-answrer">Fill in Blank</option>
+			</select>
+		</div>
+		<div class="form-group-fluid description">
+			<label class="control-label">Nội dung câu hỏi</label>
+			<textarea class="textarea-description"></textarea>
+			<input type="file" name="upload-file">
+		</div>
+		<div class="form-group-fluid answer answer-multiple-choice">
+			<label class="control-label">Các đáp án lựa chọn</label>
+			<div class="one-answer">
+				<input type="checkbox" name="answer-multiple-choice">
+				<textarea></textarea>
+			</div>
+			<div class="one-answer">
+				<input type="checkbox" name="answer-multiple-choice">
+				<textarea></textarea>
+			</div>
+			<a href="#">Thêm đáp án</a>
+		</div>
+		<div class="form-group-fluid answer answer-one-choice">
+			<label class="control-label">Tùy chọn đáp án</label>
+			<div class="one-answer">
+				<input type="radio" name="answer-one-choice">
+				<textarea></textarea>
+			</div>
+			<div class="one-answer">
+				<input type="radio" name="answer-one-choice">
+				<textarea></textarea>
+			</div>
+			<a href="#">Thêm đáp án</a>
+		</div>
+		<div class="form-group-fluid answer answer-text-answrer">
+			<label class="control-label">Tùy trọn đáp án</label>
+			<textarea></textarea>
+		</div>
+		<input type="submit" name="" value="Xác nhận">
+	</form>
+</div>
+<script src="/JS/jquery-3.4.1.min.js"></script>
+<script src="/JS/Base.js"></script>
+<script src="/JS/Layout.js"></script>
+</body>
+</html>

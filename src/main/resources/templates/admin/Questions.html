@@ -29,7 +29,7 @@
 			<div class="search">
 				<input id="txtSearch" class="inp-search" type="text" placeholder="Tìm kiếm"/>
 				<button class="btn-search"></button>
-				<button class="btn-add" id="btn-create-course"><span class="fa fa-plus"></span>Tạo câu hỏi</button>
+				<button class="btn-add" id="btn-create-question"><span class="fa fa-plus"></span>Tạo câu hỏi</button>
 			</div>
 		</div>
 		<div class="table-list-users">
@@ -47,7 +47,7 @@
 					<tr th:each="question : ${questions}">
 						<td th:text="${question.index}"></td>
 						<td th:text="${question.questionTypeCode}"></td>
-						<td><a style="color: #0d6b0c" th:text="${question.content}" th:href="@{'/admin/question/detail?id='+ ${question.id}}"></a></td>
+						<td style="text-align: justify"><a style="color: rgba(13,98,12,0.75)" th:text="${question.content}" th:href="@{'/admin/question/detail?id='+ ${question.id}}"></a></td>
 						<td th:text="${question.createdDate}"></td>
 						<td><button class="btn-table update">Xem</button>
 							<button class="btn-table cancel">Xoá</button>
@@ -104,6 +104,9 @@
 
 		});
 		
+		$('#btn-create-question').click(function () {
+			window.location.href = "/admin/questions/create-new-question";
+		});
 	})
 </script>
 

@@ -18,7 +18,8 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             CourseTypeNotFoundException.class,
             ExamNotFoundException.class,
             ExamScheduleNotFoundException.class,
-            UserNotFoundException.class})
+            UserNotFoundException.class,
+            ExamResultNotFoundException.class})
     public ResponseEntity<CustomErrorResponse> customHandleNotFound(Exception ex, WebRequest request) {
         CustomErrorResponse errors = new CustomErrorResponse();
         errors.setTimestamp(LocalDateTime.now());
@@ -26,5 +27,15 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         errors.setStatus(HttpStatus.NOT_FOUND.value());
 
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({ExamScheduleExistException.class})
+    public ResponseEntity<CustomErrorResponse> customHandleExist(Exception ex, WebRequest request) {
+        CustomErrorResponse errors = new CustomErrorResponse();
+        errors.setTimestamp(LocalDateTime.now());
+        errors.setError(ex.getMessage());
+        errors.setStatus(HttpStatus.BAD_REQUEST.value());
+
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }

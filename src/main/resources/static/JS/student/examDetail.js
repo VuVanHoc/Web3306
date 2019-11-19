@@ -7,6 +7,7 @@ var start_time = new Date(examSchedule.startTime);
 var end_time = new Date(examSchedule.endTime);
 
 $(document).ready(function () {
+    console.log(examSchedule);
     loadInfo();
 });
 
@@ -22,7 +23,8 @@ function getData(url) {
         },
         error: function (xhr) {
             fakeData = JSON.parse(xhr.responseText);
-            alert(fakeData.message);
+            alert(fakeData.error);
+            window.history.back();
         }
     });
     return fakeData;

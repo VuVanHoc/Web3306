@@ -98,7 +98,9 @@ public class QuestionServiceImpl implements QuestionService {
 		            single.setQuestionTypeCode("Fill in blank");
 	            } else if(single.getQuestionTypeCode().equals("TF")){
 		            single.setQuestionTypeCode("Yes/No or True/False");
-	            }
+	            }else if(single.getQuestionTypeCode().equals("SO")){
+                    single.setQuestionTypeCode("Select One");
+                }
 	            single.setIndex(index);
 	            index++;
                 single.setCreatedDate(simpleDateFormat.format(question.getCreatedDate()));

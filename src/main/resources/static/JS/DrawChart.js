@@ -1,7 +1,29 @@
 $(document).ready(function () {
-	var drawChartPie = new DrawChartPie(70,30); // tuyền ti le thi sinh đỗ hay trượi
+    a = getData("/api/exam-result/totalRecords"); //Tổng ĐỖ+TRƯỢT
+    b = getData("/api/exam-result/totalPass"); //Tổng ĐỖ
+	var drawChartPie = new DrawChartPie(b,a-b); // tuyền ti le thi sinh đỗ hay trượi
 	var drawChartLine = new DrawChartLine(); // truyên vào số lượng tí sinh có điểm 10 20 30...100
 })
+
+function getData(url) {
+    var fakeData = [];
+    $.ajax({
+        method: "GET",
+        url: url,
+        async: false,
+        dataType: "json",
+        success: function (response) {
+            fakeData = response.data; // gán data
+            // console.log(fakeData);
+        },
+        error: function (xhr) {
+            fakeData = JSON.parse(xhr.responseText);
+            // alert(fakeData.message);
+        }
+    });
+    return fakeData;
+}
+
 class DrawChartPie {
 	constructor(a,b) { //cho thêm tham số vào đây
 		var ctx = document.getElementById('chart-pass-fail').getContext('2d');

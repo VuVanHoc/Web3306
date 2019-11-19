@@ -7,7 +7,10 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface ExamResultRepository extends JpaRepository<ExamResult, Integer> {
+    List<ExamResult> findAllByDeletedIsFalse();
     List<ExamResult> findByUserId(Integer userId);
     List<ExamResult> findByCourseId(Integer courseId);
     List<ExamResult> findByUserIdAndCourseId(Integer userId, Integer courseId);
+    Integer countAllByDeletedIsFalse();
+    Integer countAllByStatusIsTrue();
 }

@@ -209,26 +209,35 @@ thead tr th:nth-child(1) {
 }
 
 thead tr th:nth-child(2) {
-	width: 220px;
 }
 
 thead tr th:nth-child(3) {
-	width: 50px;
 }
 
 thead tr th:nth-child(5) {
-	width: 200px;
 }
 
 thead tr th:nth-child(6) {
 	width: 200px;
 }
 
-thead tr th:nth-child(7) {
-	width: 200px;
-}
 
-tbody tr td:nth-child(1) {
+tbody tr td:nth-child(1){
+	 text-align: center;
+ }
+tbody tr td:nth-child(2){
+	text-align: center;
+}
+tbody tr td:nth-child(3){
+	text-align: center;
+}
+tbody tr td:nth-child(4){
+	text-align: center;
+}
+tbody tr td:nth-child(5){
+	text-align: center;
+}
+tbody tr td:nth-child(6){
 	text-align: center;
 }
 .show {

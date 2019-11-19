@@ -1,4 +1,8 @@
-﻿
+﻿/*CSS cho phần bài thi của học viên*/
+    /*
+    Merge từ dev_huy
+    */
+
 * {
     margin: 0;
     padding: 0;
@@ -156,6 +160,7 @@ div.row > a.cau-dung{
     flex-grow: 1;
     height: 100%;
     overflow: auto;
+    width: 525px;
 }
 
 .right-column .topbar {
@@ -230,6 +235,7 @@ div.row > a.cau-dung{
 }
 
 .answer-content {
+    width: 70%;
     line-height: 2;
     margin-top: 5px ;
     display: grid;

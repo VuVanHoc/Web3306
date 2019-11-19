@@ -26,6 +26,13 @@ public class CourseController {
         return ResponseEntity.ok(restBody);
     }
 
+    @ApiOperation(value = "Get total course", response = RestBody.class)
+    @GetMapping(value = "total")
+    public ResponseEntity getTotalCourses(){
+        RestBody restBody = courseService.getTotal();
+        return ResponseEntity.ok(restBody);
+    }
+
     @ApiOperation(value = "Get a course", response = RestBody.class)
     @GetMapping(value = "{id}")
     public ResponseEntity getCourse(@PathVariable Integer id){

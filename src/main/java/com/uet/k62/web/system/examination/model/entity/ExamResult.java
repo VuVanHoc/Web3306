@@ -17,8 +17,8 @@ public class ExamResult extends BaseEntity {
 	@Column(name = "course_id")
 	private int courseId;
 	
-	@Column(name = "end_time")
-	private Date endTime;
+//	@Column(name = "end_time")
+//	private Date endTime;
 	
 	@Column(name = "score")
 	private int score;

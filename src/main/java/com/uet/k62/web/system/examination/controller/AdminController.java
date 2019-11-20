@@ -55,7 +55,7 @@ public class AdminController {
 	
 	@GetMapping(value = "/history")
 	public String showHistory(Model model) {
-		System.out.println(examResultService.getAllResults());
+//		System.out.println(examResultService.getAllResults());
 		model.addAttribute("histories", examResultService.getAllResults().getData());
 		return "/admin/history";
 	}

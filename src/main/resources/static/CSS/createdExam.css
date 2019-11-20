@@ -135,6 +135,14 @@ tbody tr:nth-child(even) td {
     background: rgba(163, 161, 161, 0.79);
 }
 
+tbody td a{
+    color: #026b97;
+}
+
+tbody td a:hover{
+    color: #000000;
+}
+
 #table1, #table2{
     height: 400px;
     overflow: auto;

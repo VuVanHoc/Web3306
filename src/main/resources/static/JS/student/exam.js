@@ -14,7 +14,7 @@ var examId = exam.id;
 var array_question_id = getData(API_URL + "/api/exams/" + examId + "/questions");
 array_question_id.sort();
 //Danh sách các loại câu hỏi
-var questionTypeCode = ["MC", "SA", "TF"]; //MC: checkbox, SA: text, SO: radio
+var questionTypeCode = ["MC", "SA", "TF", "SO"]; //MC: checkbox, SA: text, SO: radio
 
 var DaNopBai = false;
 // var ThoiGianLam;
@@ -154,9 +154,9 @@ function loadQuestions(totalQuestions) {
 
         //Phần câu trả lời
         $('#question_' + (i + 1)).append("<div class='answer-content'></div>");
+        var j;
         switch(data_question.questionTypeCode) {
             case questionTypeCode[0]: //MC
-                var j;
                 for(j = 0; j < data_question.answers.length; j++){
                     $('#question_' + (i + 1) + ' .answer-content').append("<label><input type='checkbox' index-answer='" + j + "'>" + data_question.answers[j] + "</label>");
                 }
@@ -300,6 +300,12 @@ function compareArrays(arr1, arr2) {
         };
     };
 
-    var totalTime = Date.parse(exam.endTime) - Date.parse(exam.startTime);
+    let totalTime;
+    if(courseType.name === "A1" || courseType.name === "A2"){
+        totalTime = 20*60*1000;
+    }else{
+        totalTime = Date.parse(exam.endTime) - Date.parse(exam.startTime);
+    }
+
     $('#time').countdown(totalTime);
 })(jQuery);

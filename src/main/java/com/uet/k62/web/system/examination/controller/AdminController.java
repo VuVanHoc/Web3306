@@ -99,7 +99,7 @@ public class AdminController {
 	@GetMapping(value = "/questions/create-new-question")
 	public String createNewQuestion(){
 		
-		return "/admin/new-question";
+		return "/admin/newQuestion";
 	}
 	
 }

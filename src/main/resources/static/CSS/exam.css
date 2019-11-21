@@ -229,8 +229,9 @@ div.row > a.cau-dung{
 
 .question-content .question-image {
     display: block;
-    height: 300px;
-    width: 500px;
+    /*height: 300px;*/
+    /*width: 600px;*/
+    max-width:100%; height:auto;
     text-align: center;
 }
 
@@ -341,4 +342,32 @@ div.row > a.cau-dung{
 
 .khong-dat{
     color: #e12828;
+}
+
+/*zoom image*/
+#overlay{
+    position: fixed;
+    top: 15%;
+    left: 25%;
+    width:50%;
+    height: 70%;
+    background: rgba(0,0,0,0.8) none 50% / contain no-repeat;
+    cursor: pointer;
+    transition: 0.3s;
+
+    visibility: hidden;
+    opacity: 0;
+}
+#overlay.open {
+    visibility: visible;
+    opacity: 1;
+}
+
+#overlay:after { /* X button icon */
+    content: "\2715";
+    position: absolute;
+    color: #fff;
+    top: 10px;
+    right: 20px;
+    font-size: 2em;
 }

@@ -4,6 +4,14 @@ var userId = getData("/api/users/username/" + username).id;
 
 $(document).ready(function () {
     loadCourses();
+
+    //Search
+    $("#mySearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
 });
 
 function getData(url) {
@@ -34,18 +42,23 @@ function loadCourses() {
     var path1 = "/student/courses/";
     var path2 = "/examDetail";
     $.each(data, function (index, item) {
-        var rowhtml = $('<tr></tr>');
+        let rowhtml = $('<tr></tr>');
         rowhtml.append('<td class="">' + (index+1) + '</td>');
         rowhtml.append('<td class="">' + item.courseName + '</td>');
-        rowhtml.append('<td class="">' + getNameCourseType(item.typeId) + '</td>');
-        var exam_url = path1.concat(item.id, path2);
+        let courseType = getCourseType(item.typeId);
+        rowhtml.append('<td class="">' + courseType.name + '</td>');
+        rowhtml.append('<td class="">' + courseType.description + '</td>');
+        rowhtml.append('<td class="">' + courseType.numberQuestion + '</td>');
+        rowhtml.append('<td class="">' + courseType.minScore + '</td>');
+
+        let exam_url = path1.concat(item.id, path2);
         rowhtml.append('<td class=""><a href="'+ exam_url +'">Xem chi tiết</a></td>');
         $('.list-courses tbody').append(rowhtml);
     })
 
 }
 
-function getNameCourseType(typeId) {
-    var name = this.getData(LOCATION_API + "/api/course-types/" + typeId).name;
-    return name;
+function getCourseType(typeId) {
+    let courseType = this.getData(LOCATION_API + "/api/course-types/" + typeId);
+    return courseType;
 }

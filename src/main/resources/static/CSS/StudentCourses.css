@@ -116,15 +116,10 @@
 .list-courses thead tr th:nth-child(4) {
     width: 200px;
 }
-.list-courses tbody tr td:nth-child(1) {
+.list-courses tbody tr td:nth-child(n) {
     text-align: center;
 }
-.list-courses tbody tr td:nth-child(3) {
-    text-align: center;
-}
-.list-courses tbody tr td:nth-child(4) {
-    text-align: center;
-}
+
 .paging-data {
     position: absolute;
     bottom: 0;

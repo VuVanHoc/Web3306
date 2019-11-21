@@ -18,15 +18,19 @@
 <div class="space"></div>
 <div class="content-exam">
     <div class="left-column">
-        <div class="list-question-title">Câu hỏi</div>
+        <div class="list-question-title">
+            <h3><a class="btn-submit" href="/student/dashboard"><i class="fa fa-home"></i> Trang chủ</a></h3>
+            <br>
+            <p>Câu hỏi</p>
+        </div>
         <div class="list-icon-question"></div>
+
         <div class="result" style="display: none;">
             <h3>Kết quả</h3>
             <p>Số câu đúng: <span class="so-cau-dung"></span></p>
             <p>Số câu sai: <span class="so-cau-sai"></span></p>
             <p>Kết quả: <span class="ket-qua"></span></p>
-            <h3><a href="/student/dashboard">Trang chủ</a></h3>
-        </div>
+                    </div>
     </div>
     <div class="right-column">
         <div class="topbar">
@@ -37,7 +41,9 @@
         <div class="list-question">
 
         </div>
-
+    </div>
+    <!--overlay image-->
+    <div id="overlay">
     </div>
 </div>
 <input id="courseId" type="hidden" th:value="${courseId}"/>

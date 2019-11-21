@@ -14,7 +14,7 @@ var examId = exam.id;
 var array_question_id = getData(API_URL + "/api/exams/" + examId + "/questions");
 array_question_id.sort();
 //Danh sách các loại câu hỏi
-var questionTypeCode = ["MC", "SA", "TF"]; //MC: checkbox, SA: text, SO: radio
+var questionTypeCode = ["MC", "SA", "TF", "SO"]; //MC: checkbox, SA: text, SO: radio
 
 var DaNopBai = false;
 // var ThoiGianLam;
@@ -34,9 +34,58 @@ $(document).ready(function () {
 
     listenClickOtherQuestion(current_question);
     $('.btn-submit').click(function () {
-        submit();
-        DaNopBai = true;
+        if(confirm("Bài thi sẽ kết thúc. Bạn chắc chắn chứ?")){
+            submit();
+            DaNopBai = true;
+        }
     });
+
+    // Image to Lightbox Overlay
+    $('img').on('click', function() {
+        $('#overlay')
+            .css({backgroundImage: `url(${this.src})`})
+            .addClass('open')
+            .one('click', function() { $(this).removeClass('open'); });
+    });
+});
+
+// when press arrow keys, go to other questions
+$(document).keydown(function(e) {
+    let current_question = Number($('.dang-lam').attr('data-question'));
+
+    switch (e.keyCode) {
+        case 37: // left arrow key
+            if(current_question > 1){
+                $('[data-question="' + (current_question - 1) +'"]').click();
+            }else{
+                $('[data-question="' + (current_question - 1 + totalQuestions) +'"]').click();
+            }
+            break;
+        case 38: // up arrow key
+            if(current_question - 5 > 0){ // item in a row: 5
+                $('[data-question="' + (current_question - 5) +'"]').click();
+            }else{
+                $('[data-question="' + (totalQuestions + current_question - 5) +'"]').click();
+            }
+            break;
+        case 39: // right arrow key
+            if(current_question < totalQuestions){
+                $('[data-question="' + (current_question + 1) +'"]').click();
+            }else{
+                current_question = 0;
+                $('[data-question="' + (current_question + 1) +'"]').click();
+            }
+            break;
+        case 40: // down arrow key
+            if(current_question + 5 < totalQuestions){ // item in a row: 5
+                $('[data-question="' + (current_question + 5) +'"]').click();
+            }else{
+                $('[data-question="' + (current_question + 5 - totalQuestions) +'"]').click();
+            }
+            break;
+        default:
+            // console.log(e.keyCode);
+    }
 });
 
 function getData(url) {
@@ -140,9 +189,9 @@ function showListIconQuestion(totalQuestions) {
 
 function loadQuestions(totalQuestions) {
     // console.log(array_question_id);
-    var i;
+    let i;
     for (i = 0; i < totalQuestions; i++) {
-        var data_question = getData(API_URL + "/api/questions/".concat(array_question_id[i]));
+        let data_question = getData(API_URL + "/api/questions/".concat(array_question_id[i]));
         $('.list-question').append('<div id="question_' + (i + 1) + '" class="question" style="display: none;" question-type="' + data_question.questionTypeCode + '"><p class="question-title">Câu ' + (i + 1) + ':</p></div>')
 
         //Nội dung câu hỏi
@@ -154,9 +203,9 @@ function loadQuestions(totalQuestions) {
 
         //Phần câu trả lời
         $('#question_' + (i + 1)).append("<div class='answer-content'></div>");
+        let j;
         switch(data_question.questionTypeCode) {
             case questionTypeCode[0]: //MC
-                var j;
                 for(j = 0; j < data_question.answers.length; j++){
                     $('#question_' + (i + 1) + ' .answer-content').append("<label><input type='checkbox' index-answer='" + j + "'>" + data_question.answers[j] + "</label>");
                 }
@@ -206,11 +255,11 @@ function submit() {
     $('#time').countdown(0);
     $(":input").prop('disabled', true);
     $('.topbar').css('display','none');
-    var i;
+    let i;
     for (i = 0; i < totalQuestions; i++) {
-        var questionNumber = i + 1;
-        var answer = getData(API_URL + "/api/questions/" + array_question_id[i] + "/answers");
-        var corrects = answer.correctIndex;
+        let questionNumber = i + 1;
+        let answer = getData(API_URL + "/api/questions/" + array_question_id[i] + "/answers");
+        let corrects = answer.correctIndex;
 
         if($('#question_' + questionNumber).attr('question-type') == "SA"){
             $('#question_' + questionNumber + ' :input').each(function (index, element){
@@ -223,7 +272,7 @@ function submit() {
                 }
             });
         }else{
-            var checked_answer = new Array();
+            let checked_answer = new Array();
             $('#question_' + questionNumber + ' :input').each(function (index, element) {
                 if($('#question_' + questionNumber +' input[index-answer="' + index + '"]').is(":checked")){
                     checked_answer.push(index);
@@ -248,13 +297,13 @@ function submit() {
     }
     $('.result').removeAttr('style');
 
-    var dataResult = {
+    let dataResult = {
         courseId: courseId,
         score: SoCauDung ,
         status: (SoCauDung >= courseType.minScore),
         userId:  userId
     };
-    var result = postData(API_URL + "/api/exam-result", JSON.stringify(dataResult));
+    let result = postData(API_URL + "/api/exam-result", JSON.stringify(dataResult));
 }
 
 function compareArrays(arr1, arr2) {
@@ -300,6 +349,9 @@ function compareArrays(arr1, arr2) {
         };
     };
 
-    var totalTime = Date.parse(exam.endTime) - Date.parse(exam.startTime);
+    let totalTime;
+
+    totalTime = Date.parse(exam.endTime) - Date.parse(exam.startTime);
+
     $('#time').countdown(totalTime);
 })(jQuery);

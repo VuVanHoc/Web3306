@@ -29,14 +29,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					<!--<tr th:each="history : ${histories}">-->
-						<!--<td th:text="${history.courseId}"></td>-->
-						<!--<td th:text="${history.courseId}"></td>-->
-						<!--<td th:text="${history.userId}"></td>-->
-						<!--<td th:text="${history.userId}"></td>-->
-						<!--<td th:text="${history.score}"></td>-->
-						<!--<td th:text="${history.status}"></td>-->
-					<!--</tr>-->
 				</tbody>
 			</table>
 		</div>
@@ -46,9 +38,8 @@
 
 	<script type="text/javascript" th:inline="javascript">
     var objects = [[${histories}]];
-    console.log(objects);
 
-    $('.list-users tbody').empty();
+    // $('.list-users tbody').empty();
     $.each(objects, function (index, item) {
         let user = getUser(item.userId);
         let course = getCourse(item.courseId);
@@ -58,8 +49,14 @@
     	row.append('<td>' + course.courseName + '</td>');
         row.append('<td>' + user.fullName + '</td>');
         row.append('<td>' + user.username + '</td>');
-        row.append('<td>' + item.score + '</td>');
-        row.append('<td>' + (item.status ? 'Đạt' : 'Không đạt') + '</td>');
+        if(item.status){
+            row.append('<td><span style="color: green">' + item.score + '</span></td>');
+            row.append('<td><span style="color: green">Đạt</span></td>');
+		}else {
+            row.append('<td><span style="color: red">' + item.score + '</span></td>');
+            row.append('<td><span style="color: red">Đạt</span></td>');
+		}
+
         $('.list-users tbody').append(row);
     });
 

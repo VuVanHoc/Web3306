@@ -1,6 +1,14 @@
 $(document).ready(function () {
 	loadDataToUI();
 
+    //Search
+    $("#txtSearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
 	//add new user
 	$('#btn-register').click(function () {
 		var fullName = $('#txt-fullname').val();

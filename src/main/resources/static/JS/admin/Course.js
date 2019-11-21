@@ -3,6 +3,11 @@ $(document).ready(function () {
 
 	$('#btn-create-course').click(function () {
 		$('.modal-add-course').addClass("show");
+        var courseTypes = getCoursesList();
+        $('#type-id').empty();
+        courseTypes.forEach(function (item, index ) {
+            $('#type-id').append("<option value='" + item.id + "'> Hạng " + item.name + "</option>");
+        });
 	});
 
 	$('#btn-add-new-course').click(addNewCourse);
@@ -12,6 +17,14 @@ $(document).ready(function () {
 	})
 
 	$('#btn-update-course').click(updateCouseInfo);
+
+    //Search
+    $("#txtSearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
 });
 
 function addNewCourse() {
@@ -155,4 +168,21 @@ function updateCouseInfo(id) {
 		}
 	})
 
+}
+
+function getCoursesList() {
+	var arrayData = [];
+        $.ajax({
+            method: "GET",
+            url: "/api/course-types",
+            async: false,
+            dataType: "json",
+            success: function (res) {
+                arrayData = res.data;
+            },
+            error: function (e) {
+				console.log("Lỗi load danh sách các hạng bằng lái");
+            }
+        });
+        return arrayData;
 }

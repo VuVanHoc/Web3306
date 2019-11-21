@@ -17,7 +17,7 @@
 		</div>
 		<div class="space"></div>
 		<div class="history">
-			<table class="list-users">
+			<table id="tableHistory" class="list-users">
 				<thead>
 					<tr>
 						<th>STT</th>
@@ -32,9 +32,12 @@
 				</tbody>
 			</table>
 		</div>
+		<button class="export-btn"><i class="fa fa-file-excel-o"></i> Xuất ra Excel</button>
+
 	</div>
 	<script src="/JS/jquery-3.4.1.min.js"></script>
 	<script src="/JS/Layout.js"></script>
+	<script src="/JS/tableHTMLExport.js"></script>
 
 	<script type="text/javascript" th:inline="javascript">
     var objects = [[${histories}]];
@@ -84,6 +87,18 @@
         });
         return arrayData;
     }
+
+    //Export to Excel
+
+    $(document).ready(function(){
+        $(".export-btn").click(function(){
+
+            $("#tableHistory").tableHTMLExport({
+                type:'csv',
+                filename:'history-exam.csv',
+            });
+        });
+    });
 </script>
 </body>
 </html>

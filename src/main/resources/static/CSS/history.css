@@ -244,3 +244,20 @@ tbody tr td:nth-child(6){
 	display: block;
 	z-index: 1;
 }
+
+.export-btn{
+	color: #fff;
+	padding: 10px 16px;
+	border: 0;
+	outline: 0;
+	font-size: 18px;
+	border-radius: 5px;
+	background: #19b133;
+	margin: 10px auto;
+	cursor: pointer;
+
+}
+.export-btn:hover{
+	opacity: 0.9;
+
+}

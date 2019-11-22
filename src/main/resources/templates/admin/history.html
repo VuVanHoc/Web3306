@@ -37,9 +37,13 @@
 	</div>
 	<script src="/JS/jquery-3.4.1.min.js"></script>
 	<script src="/JS/Layout.js"></script>
-	<script src="/JS/tableHTMLExport.js"></script>
 
 	<script type="text/javascript" th:inline="javascript">
+		$(document).ready(function () {
+			$('.export-btn').click(function () {
+				window.location.assign("/admin/report");
+            });
+        });
     var objects = [[${histories}]];
 
     // $('.list-users tbody').empty();
@@ -57,7 +61,7 @@
             row.append('<td><span style="color: green">Đạt</span></td>');
 		}else {
             row.append('<td><span style="color: red">' + item.score + '</span></td>');
-            row.append('<td><span style="color: red">Đạt</span></td>');
+            row.append('<td><span style="color: red">Không đạt</span></td>');
 		}
 
         $('.list-users tbody').append(row);
@@ -87,18 +91,6 @@
         });
         return arrayData;
     }
-
-    //Export to Excel
-
-    $(document).ready(function(){
-        $(".export-btn").click(function(){
-
-            $("#tableHistory").tableHTMLExport({
-                type:'csv',
-                filename:'history-exam.csv',
-            });
-        });
-    });
 </script>
 </body>
 </html>

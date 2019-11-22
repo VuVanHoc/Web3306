@@ -1,16 +1,17 @@
 package com.uet.k62.web.system.examination.controller;
 
+import com.uet.k62.web.system.examination.model.dtos.ExamResultFullDTO;
 import com.uet.k62.web.system.examination.model.entity.Answer;
 import com.uet.k62.web.system.examination.model.entity.Course;
+import com.uet.k62.web.system.examination.model.entity.ExamResult;
 import com.uet.k62.web.system.examination.model.entity.Question;
-import com.uet.k62.web.system.examination.paging.PageConstant;
 import com.uet.k62.web.system.examination.repository.CourseRepository;
-import com.uet.k62.web.system.examination.service.AnswerService;
+import com.uet.k62.web.system.examination.repository.ExamResultRepository;
 import com.uet.k62.web.system.examination.service.CourseService;
-import com.uet.k62.web.system.examination.service.impl.AnswerServiceImpl;
 import com.uet.k62.web.system.examination.service.ExamResultService;
+import com.uet.k62.web.system.examination.service.impl.AnswerServiceImpl;
 import com.uet.k62.web.system.examination.service.impl.QuestionServiceImpl;
-import com.uet.k62.web.system.examination.utils.Constant;
+import com.uet.k62.web.system.examination.view.ExcelReportView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -35,7 +38,9 @@ public class AdminController {
 	AnswerServiceImpl answerService;
 	@Autowired
 	ExamResultService examResultService;
-	
+	@Autowired
+	ExamResultRepository examResultRepository;
+
 	@GetMapping(value = "/dashboard")
 	public String showDashboard() {
 //		System.out.println("ADMIN DASHBOARD");
@@ -55,9 +60,14 @@ public class AdminController {
 	
 	@GetMapping(value = "/history")
 	public String showHistory(Model model) {
-//		System.out.println(examResultService.getAllResults());
 		model.addAttribute("histories", examResultService.getAllResults().getData());
 		return "/admin/history";
+	}
+
+	@GetMapping(value = "/report")
+	public ModelAndView getExcel() {
+		List<ExamResultFullDTO> examResults = (ArrayList<ExamResultFullDTO>) examResultService.getFullResults().getData();
+		return new ModelAndView(new ExcelReportView(), "examResults", examResults);
 	}
 	
 	@GetMapping(value = "/manage-user")

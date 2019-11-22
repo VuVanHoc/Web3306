@@ -7,6 +7,7 @@ public interface ExamResultService {
     RestBody saveExamResult(ExamResultDTO examResultDTO);
     RestBody getExamResult(Integer userId, Integer courseId);
     RestBody getAllResults();
+    RestBody getFullResults();
     RestBody getTotalRecord();
     RestBody getPass();
 }

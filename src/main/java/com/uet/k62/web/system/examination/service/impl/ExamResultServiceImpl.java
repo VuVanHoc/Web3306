@@ -3,10 +3,18 @@ package com.uet.k62.web.system.examination.service.impl;
 import com.uet.k62.web.system.examination.error.ExamResultNotFoundException;
 import com.uet.k62.web.system.examination.model.RestBody;
 import com.uet.k62.web.system.examination.model.dtos.ExamResultDTO;
+import com.uet.k62.web.system.examination.model.dtos.ExamResultFullDTO;
+import com.uet.k62.web.system.examination.model.entity.Course;
 import com.uet.k62.web.system.examination.model.entity.ExamResult;
+import com.uet.k62.web.system.examination.model.entity.User;
+import com.uet.k62.web.system.examination.repository.CourseRepository;
 import com.uet.k62.web.system.examination.repository.ExamResultRepository;
+import com.uet.k62.web.system.examination.repository.UserRepository;
+import com.uet.k62.web.system.examination.service.CourseService;
 import com.uet.k62.web.system.examination.service.ExamResultService;
+import com.uet.k62.web.system.examination.service.UserService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +22,11 @@ import java.util.List;
 
 @Service
 public class ExamResultServiceImpl implements ExamResultService {
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    CourseRepository courseRepository;
+
     private ExamResultRepository examResultRepository;
 
     public ExamResultServiceImpl(ExamResultRepository examResultRepository){
@@ -77,6 +90,27 @@ public class ExamResultServiceImpl implements ExamResultService {
         resultByCourse.forEach(r -> {
             ExamResultDTO newDto = new ExamResultDTO();
             BeanUtils.copyProperties(r, newDto);
+            responeDTO.add(newDto);
+        });
+        return RestBody.success(responeDTO);
+    }
+
+    @Override
+    public RestBody getFullResults() {
+        List<ExamResultFullDTO> responeDTO = new ArrayList<>();
+        List<ExamResult> resultByCourse = examResultRepository.findAllByDeletedIsFalse();
+        if(resultByCourse == null){
+            throw new ExamResultNotFoundException("Không tìm thấy kết quả");
+        }
+        resultByCourse.forEach(r -> {
+            ExamResultFullDTO newDto = new ExamResultFullDTO();
+            User user = userRepository.getOne(r.getUserId());
+            Course course = courseRepository.getOne(r.getCourseId());
+            newDto.setFullName(user.getFullName());
+            newDto.setUserName(user.getUsername());
+            newDto.setCoursename(course.getCourseName());
+            newDto.setScore(r.getScore());
+            newDto.setStatus(r.isStatus() ? "Đạt" : "Không đạt");
             responeDTO.add(newDto);
         });
         return RestBody.success(responeDTO);

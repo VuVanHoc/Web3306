@@ -17,6 +17,8 @@ function loadDataToUI(){
     removeQuestionFromExam();
     //Nếu đề thi đã được tạo => Load đề thi đã được tạo
     existedExam = getSchedule("/api/courses/" + courseId + "/exam-schedule");
+
+    console.log(courseId);
     if(existedExam){
         loadExistedExam(existedExam);
         submitWithAction("UPDATE");

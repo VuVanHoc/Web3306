@@ -75,4 +75,12 @@ public class CourseController {
         RestBody restBody = courseService.leaveCourse(courseId, dto);
         return ResponseEntity.ok(restBody);
     }
+	
+	@ApiOperation(value = "Register a course", response = RestBody.class)
+	@GetMapping(value = "{courseId}/users")
+	public ResponseEntity getListUserInCourse(@PathVariable Integer courseId){
+		
+    	RestBody restBody = courseService.getAllUserInCourse(courseId);
+		return ResponseEntity.ok(restBody);
+	}
 }

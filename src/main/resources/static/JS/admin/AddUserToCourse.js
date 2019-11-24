@@ -13,10 +13,11 @@ function loadDataToUI(){
 	loadListUser();
 	addQuestionToExam(); //Khi chọn câu hỏi trong ngân hàng, câu hỏi thêm vào bảng câu hỏi đã chọn (action cột 2)
 	removeQuestionFromExam();
-	//Nếu đề thi đã được tạo => Load đề thi đã được tạo
-	existedExam = getSchedule("/api/courses/" + courseId + "/exam-schedule");
+	//Load list user in course
+	existedExam = getSchedule("/api/courses/" + courseId + "/users");
+	// console.log(existedExam);
 	if(existedExam){
-		loadExistedExam(existedExam);
+		loadExistedUsers(existedExam);
 		submitWithAction("UPDATE");
 	}else{
 		submitWithAction("CREATE");
@@ -90,7 +91,7 @@ function loadListUser() {
 }
 
 function loadMore(pageNo) {
-	data = getData("/api/questions?pageNo=" + pageNo + "&pageSize=10");
+	// data = getData("/api/questions?pageNo=" + pageNo + "&pageSize=10");
 	if(data === "Không có câu hỏi nào"){
 		return data;
 	}
@@ -106,10 +107,10 @@ function loadMore(pageNo) {
 	})
 }
 
-function loadExistedExam(existedExam) {
+function loadExistedUsers(existedExam) {
 	examId = existedExam.id;
 
-	var array_question_id = getData("/api/exams/" + examId + "/questions");
+	var array_question_id = getData("/api/courses/" + courseId + "/users");
 	console.log(array_question_id);
 	for (let i = 0; i < array_question_id.length; i++) {
 		$('#table1 input[value="' + array_question_id[i] + '"]').prev().click();
@@ -118,37 +119,25 @@ function loadExistedExam(existedExam) {
 
 function submitWithAction(action) {
 	$('.btn-save').click(function () {
-		startTime = $('#startTime').val();
-		endTime = $('#endTime').val();
-		note = $('#note').val();
-		dataSchedule = {
-			endTime: new Date(endTime).getTime()/1000,
-			note: note,
-			startTime: new Date(startTime).getTime()/1000
-		}
 
-		let questionsArray = new Array();
+
+		let usersData = new Array();
 		$('#tb2 .questionIdClass').each(function (index, item) {
-			questionsArray.push(Number($(item).val()));
+			usersData.push(Number($(item).val()));
 		});
-		let questionsIdsData = {
-			questionIds: questionsArray
-		}
+		let userIdDatas = {
+			userIds: usersData
+		};
 
 		if(action === "UPDATE"){
-			responseCreateExam = putData("/api/courses/" + courseId +"/exam-schedule", JSON.stringify(dataSchedule));
 			setTimeout(function(){
-				examId = getData("/api/courses/" + courseId + "/exam-schedule").id;
-				let resultExam = putData("/api/exams/" + examId +"/questions", JSON.stringify(questionsIdsData));
-				alert("Đã ghi nhận!");
+				let resultExam = postData("/api/courses/" + courseId +"/users", JSON.stringify(userIdDatas));
+				alert("Đã ghi nhận học viên mới!");
 			}, 1000);
 		}else if(action === "CREATE"){
-			responseCreateExam = postData("/api/courses/" + courseId +"/exam-schedule", JSON.stringify(dataSchedule));
-
 			setTimeout(function(){
-				examId = getData("/api/courses/" + courseId + "/exam-schedule").id;
-				let resultExam = postData("/api/exams/" + examId +"/questions", JSON.stringify(questionsIdsData));
-				alert("Đã ghi nhận!");
+				let resultExam = postData("/api/courses/" + courseId +"/users", JSON.stringify(userIdDatas));
+				alert("Đã ghi nhận học viên mới!");
 			}, 1000);
 		}
 	});

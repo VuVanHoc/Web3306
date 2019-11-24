@@ -5,6 +5,10 @@ var existedExam;
 
 $(document).ready(function () {
 	loadDataToUI();
+
+	$('.btn-back').on("click", function () {
+		window.history.back();
+	});
 });
 
 

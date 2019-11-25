@@ -32,9 +32,9 @@
 			
 			<div class="form-group-fluid description">
 				<label class="control-label">Nội dung câu hỏi</label>
-				<textarea class="textarea-description" placeholder="Nhập nội dung câu hỏi ..."></textarea>
+				<textarea id="question-content" class="textarea-description" placeholder="Nhập nội dung câu hỏi ..."></textarea>
 				<div>
-					<input type="file" class="upload-file">
+					<input type="file" id="image-question" class="upload-file">
 				</div>
 			
 			</div>
@@ -63,10 +63,10 @@
 				<!-- Có/Không -->
 				<label class="control-label">Chọn đáp án</label>
 				<div class="one-answer">
-					<div class="yes" style="margin-top: 4px; margin-right: 4px;">
-						<input type="radio" name="yesno"/> <input type="text" placeholder="Nhập đáp án...">
+					<div class="yesno" style="margin-top: 4px; margin-right: 4px;">
+						<input type="radio" checked name="yesno"/> <input type="text" placeholder="Nhập đáp án...">
 					</div>
-					<div class="no" style="margin-top: 4px" ;>
+					<div class="yesno" style="margin-top: 4px" ;>
 						<input type="radio" name="yesno"/> <input type="text" placeholder="Nhập đáp án...">
 					</div>
 				</div>
@@ -79,8 +79,8 @@
 			<div class="form-group-fluid answer answer-text">
 				<!-- Điền text -->
 				<label class="control-label">Tạo đáp án</label>
-				<div class="one-answer">
-					<textarea placeholder="Nhập đáp án..."></textarea>
+				<div class="text-answer">
+					<textarea id="text-answer" placeholder="Nhập đáp án..."></textarea>
 				</div>
 				<div class="submit">
 					<button class="btn btn-cancel" type="button">Huỷ</button>

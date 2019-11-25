@@ -352,13 +352,22 @@ html, body {
 	left: -57px;
 	top: -23px;
 }
-
+.text-answer {
+	margin-left: calc(10% + 150px);
+	border-radius: 5px;
+}
+.yes-no-answer {
+	margin-left: calc(10% + 150px);
+}
 .dropdownd-user > li > ul > li {
 	height: 25px;
 	width: 100px;
 	line-height: 25px;
 	list-style: none;
 	text-align: center;
+}
+input[type=radio]{
+	margin: 5px;
 }
 h2 {
 	text-align: center;

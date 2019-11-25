@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import java.util.Date;
 
 @Data
-@Entity(name = "exam_result")
+@Entity(name = "exam_result_update")
 public class ExamResult extends BaseEntity {
 
 	@Column(name = "user_id")

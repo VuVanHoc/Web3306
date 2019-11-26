@@ -37,11 +37,11 @@ class DrawChartPie {
 
 			// The data for our dataset
 			data: {
-				labels: ["Pass", "Fail"],
+				labels: ["Đỗ", "Trượt"],
 				datasets: [{
 					label: "My First dataset",
-					backgroundColor: ['#19B133', '#BF360C'],
-					borderColor: '#4852cc',
+					backgroundColor: ['#19B133', '#fa2c2c'],
+					borderColor: '#e8e5e5',
 					data: [a, b], //đây la sô % đỗ vá trượt
 				}]
 			},

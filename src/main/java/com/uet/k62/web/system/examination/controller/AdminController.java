@@ -12,6 +12,7 @@ import com.uet.k62.web.system.examination.service.ExamResultService;
 import com.uet.k62.web.system.examination.service.impl.AnswerServiceImpl;
 import com.uet.k62.web.system.examination.service.impl.QuestionServiceImpl;
 import com.uet.k62.web.system.examination.view.ExcelReportView;
+import com.uet.k62.web.system.examination.view.PdfReportView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

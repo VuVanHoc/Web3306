@@ -217,7 +217,7 @@ function loadQuestions(totalQuestions) {
                 break;
             case questionTypeCode[2]: //TF
                 for(j = 0; j < data_question.answers.length; j++){
-                    $('#question_' + (i + 1) + ' .answer-content').append("<label><input type='radio' name='answerSelectOne' index-answer='" + j + "'/>" + data_question.answers[j] + "</label>");
+                    $('#question_' + (i + 1) + ' .answer-content').append("<label><input type='radio' name='quiz-radio-" + i + "' index-answer='" + j + "'/>" + data_question.answers[j] + "</label>");
                 }
                 break;
             default:

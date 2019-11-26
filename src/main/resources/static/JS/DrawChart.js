@@ -37,7 +37,7 @@ class DrawChartPie {
 
 			// The data for our dataset
 			data: {
-				labels: ["Đỗ", "Trượt"],
+				labels: ["Đạt", "Không đạt"],
 				datasets: [{
 					label: "My First dataset",
 					backgroundColor: ['#19B133', '#fa2c2c'],

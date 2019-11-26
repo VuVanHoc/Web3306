@@ -47,7 +47,7 @@
 					<tr th:each="question : ${questions}">
 						<td th:text="${question.index}"></td>
 						<td th:text="${question.questionTypeCode}"></td>
-						<td style="text-align: justify"><a style="color: rgba(13,98,12,0.75)" th:text="${question.content}" th:href="@{'/admin/question/detail?id='+ ${question.id}}"></a></td>
+						<td style="text-align: justify"><a style="color: rgba(13,107,12,0.85); font-weight: 500" th:text="${question.content}" th:href="@{'/admin/question/detail?id='+ ${question.id}}"></a></td>
 						<td th:text="${question.createdDate}"></td>
 						<td><button class="btn-table update" th:onclick="|viewDetailQuestion('${question.id}')|">Xem</button>
 							<button class="btn-table cancel" th:onclick="|removeQuestion('${question.id}')|">Xoá</button>

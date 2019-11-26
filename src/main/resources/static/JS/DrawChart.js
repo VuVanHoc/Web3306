@@ -56,7 +56,7 @@ class DrawChartLine {
 		var ctx = document.getElementById('chart-point-exam').getContext('2d');
 		var chart = new Chart(ctx, {
 			// The type of chart we want to create
-			type: 'line',
+			type: 'bar',
 
 			// The data for our dataset
 			data: {
@@ -72,10 +72,20 @@ class DrawChartLine {
 
 			// Configuration options go here
 			options: {
-				responsive : true,
-				title : {
-					display : true,
-					text : 'Phổ điểm của thí sinh dự thi'
+
+				yAxes: [{
+					ticks: {
+						beginAtZero: true,
+						callback: function (value) { if (Number.isInteger(value)) { return value; } },
+						stepSize: 1
+					},
+					scaleLabel: {
+						display: true,
+						labelString : 'Số thí sinh'
+					},
+				}],
+				tooltip : {
+					enable : true
 				}
 			}
 		});

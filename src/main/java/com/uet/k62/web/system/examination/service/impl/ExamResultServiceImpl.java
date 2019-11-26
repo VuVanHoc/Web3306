@@ -42,6 +42,7 @@ public class ExamResultServiceImpl implements ExamResultService {
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     public RestBody getExamResult(Integer userId, Integer courseId) {
         List<ExamResultDTO> responeDTO = new ArrayList<>();
         if(userId == null){ //Kết quả thi tất cả user của 1 khóa học
@@ -81,6 +82,7 @@ public class ExamResultServiceImpl implements ExamResultService {
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     public RestBody getAllResults() {
         List<ExamResultDTO> responeDTO = new ArrayList<>();
         List<ExamResult> resultByCourse = examResultRepository.findAllByDeletedIsFalse();

@@ -13,4 +13,6 @@ public interface CourseService {
     RestBody registerCourse(Integer courseId, UserIdListDTO dto);
     RestBody leaveCourse(Integer courseId, UserIdListDTO dto);
     RestBody getTotal();
+    
+	RestBody getAllUserInCourse(Integer courseId);
 }

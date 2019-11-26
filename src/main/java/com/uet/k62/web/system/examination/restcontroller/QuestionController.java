@@ -1,12 +1,15 @@
 package com.uet.k62.web.system.examination.restcontroller;
 
 import com.uet.k62.web.system.examination.model.RestBody;
+import com.uet.k62.web.system.examination.model.dtos.CreateQuestionAndAnswerRequest;
 import com.uet.k62.web.system.examination.model.dtos.QuestionRequestDTO;
 import com.uet.k62.web.system.examination.paging.PageConstant;
 import com.uet.k62.web.system.examination.service.QuestionService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.PostConstruct;
 
 @RestController
 @RequestMapping(value = "api/questions")
@@ -58,6 +61,14 @@ public class QuestionController {
     public ResponseEntity getCorrectAnswers(@PathVariable Integer id){
         RestBody body = questionService.getCorrectAnswer(id);
         return ResponseEntity.ok(body);
+    }
+    
+    
+    @PostMapping(value = "create-new-question")
+	public ResponseEntity createQuestion(@RequestBody CreateQuestionAndAnswerRequest createQuestionAndAnswerRequest){
+	    RestBody restBody = questionService.createQuestionAndAnswer(createQuestionAndAnswerRequest);
+	    
+	    return ResponseEntity.ok(restBody);
     }
 }
 

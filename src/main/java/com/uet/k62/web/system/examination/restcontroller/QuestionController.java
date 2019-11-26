@@ -66,8 +66,9 @@ public class QuestionController {
     
     @PostMapping(value = "create-new-question")
 	public ResponseEntity createQuestion(@RequestBody CreateQuestionAndAnswerRequest createQuestionAndAnswerRequest){
-	    System.out.println(createQuestionAndAnswerRequest);
-	    return null;
+	    RestBody restBody = questionService.createQuestionAndAnswer(createQuestionAndAnswerRequest);
+	    
+	    return ResponseEntity.ok(restBody);
     }
 }
 

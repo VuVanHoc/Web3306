@@ -17,6 +17,7 @@ public class BaseEntity {
 	public Integer id;
 
 	@Getter
+	@Setter
 	@Column(name = "created_time")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT+07")
 	protected Date createdDate;

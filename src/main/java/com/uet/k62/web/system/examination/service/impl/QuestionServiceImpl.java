@@ -2,19 +2,20 @@ package com.uet.k62.web.system.examination.service.impl;
 
 import com.uet.k62.web.system.examination.error.QuestionNotFoundException;
 import com.uet.k62.web.system.examination.model.RestBody;
-import com.uet.k62.web.system.examination.model.dtos.CorrectAnswerResponseDTO;
-import com.uet.k62.web.system.examination.model.dtos.QuestionAnswerResponseDTO;
-import com.uet.k62.web.system.examination.model.dtos.QuestionRequestDTO;
-import com.uet.k62.web.system.examination.model.dtos.QuestionResponseDTO;
+import com.uet.k62.web.system.examination.model.dtos.*;
 import com.uet.k62.web.system.examination.model.entity.Answer;
 import com.uet.k62.web.system.examination.model.entity.Question;
+import com.uet.k62.web.system.examination.model.entity.QuestionType;
 import com.uet.k62.web.system.examination.repository.AnswerRepository;
 import com.uet.k62.web.system.examination.repository.QuestionRepository;
 import com.uet.k62.web.system.examination.repository.QuestionTypeRepository;
 import com.uet.k62.web.system.examination.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
+import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,9 @@ public class QuestionServiceImpl implements QuestionService {
     private AnswerRepository answerRepository;
     private QuestionTypeRepository questionTypeRepository;
 
+    @Autowired
+	DozerBeanMapper mapper;
+    
     public QuestionServiceImpl(QuestionRepository questionRepository, AnswerRepository answerRepository, QuestionTypeRepository questionTypeRepository) {
         this.questionRepository = questionRepository;
         this.answerRepository = answerRepository;
@@ -158,8 +162,37 @@ public class QuestionServiceImpl implements QuestionService {
         responseDTO.setCorrectIndex(correctIndex);
         return RestBody.success(responseDTO);
     }
-
-    private String getQuestionTypeCode(Integer questionTypeId) {
+	
+	@Override
+	public RestBody createQuestionAndAnswer(CreateQuestionAndAnswerRequest createQuestionAndAnswerRequest) {
+		Question newQuestion = new Question();
+		if(StringUtils.isNotEmpty(createQuestionAndAnswerRequest.getQuestion())){
+			newQuestion.setContent(createQuestionAndAnswerRequest.getQuestion());
+		}
+		if(StringUtils.isNotEmpty(createQuestionAndAnswerRequest.getImage())){
+			newQuestion.setImageUrl(createQuestionAndAnswerRequest.getImage());
+		}
+		if(StringUtils.isNotEmpty(createQuestionAndAnswerRequest.getQuestionType())){
+			QuestionType questionType = questionTypeRepository.findOneByCode(createQuestionAndAnswerRequest.getQuestionType().trim());
+			if(questionType != null) {
+				newQuestion.setQuestionTypeId(questionType.getId());
+			}
+		}
+		newQuestion.setCreatedDate(new Date());
+		Question createSuccess = questionRepository.save(newQuestion);
+		
+		if(createQuestionAndAnswerRequest.getAnswerDTOList() != null && createSuccess != null){
+			for(CreateAnswerDTO answerDTO : createQuestionAndAnswerRequest.getAnswerDTOList()){
+				Answer answer = mapper.map(answerDTO, Answer.class);
+				answer.setQuestionId(createSuccess.getId());
+				answer.setCreatedDate(new Date());
+				answerRepository.save(answer);
+			}
+		}
+		return RestBody.success(createSuccess);
+	}
+	
+	private String getQuestionTypeCode(Integer questionTypeId) {
         return questionTypeRepository.findOneByIdAndDeletedIsFalse(questionTypeId).getCode();
     }
     

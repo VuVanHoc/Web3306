@@ -55,7 +55,12 @@
 		// console.log(questionType + ' ' + question + ' ' + image);
 		console.log(data);
 
-		postData(data);
+		if(question !== ''){
+			postData(data);
+
+		} else {
+			alert("Bạn cần phải nhập câu hỏi!");
+		}
 		// switch (questionType) {
 		//     case "multiple-choice" :
 		//     	console.log(questionType)

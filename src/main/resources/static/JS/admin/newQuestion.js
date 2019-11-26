@@ -78,11 +78,11 @@ function postData(data) {
 		dataType: "json",
 		success : function () {
 			alert("Tạo câu hỏi thành công!");
-			// window.location.href = "http://localhost:8080/admin/questions";
+			window.location.href = "http://localhost:8080/admin/questions";
 		},
 		error : function () {
 			alert("Xin lỗi, đã có lỗi xảy ra!");
-			// window.location.href = "http://localhost:8080/admin/questions";
+			window.location.href = "http://localhost:8080/admin/questions";
 
 		}
 	})

@@ -93,7 +93,7 @@ public class QuestionServiceImpl implements QuestionService {
     public List<QuestionResponseDTO> getAllQuestion(int pageNum, int pageSize) {
 	    Pageable paging = PageRequest.of(pageNum, pageSize);
 	    List<QuestionResponseDTO> questionResponseListDTO = new ArrayList<>();
-	    Page<Question> questions = questionRepository.findAllByDeletedIsFalse(paging);
+	    Page<Question> questions = questionRepository.findAllByDeletedIsFalseOrderByCreatedDateDesc(paging);
 	    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
 	    if (questions.hasContent()) {
 		    int index = pageNum * pageSize + 1;

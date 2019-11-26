@@ -3,7 +3,7 @@ $(document).ready(function () {
 
 	$('#btn-create-course').click(function () {
 		$('.modal-add-course').addClass("show");
-        var courseTypes = getCoursesList();
+        let courseTypes = getCoursesList();
         $('#type-id').empty();
         courseTypes.forEach(function (item, index ) {
             $('#type-id').append("<option value='" + item.id + "'> Hạng " + item.name + "</option>");
@@ -14,6 +14,11 @@ $(document).ready(function () {
 
 	$('.update').click(function () {
 		$('.modal-update-course').addClass("show");
+        let courseTypes = getCoursesList();
+        $('#type-id-update').empty();
+        courseTypes.forEach(function (item, index ) {
+            $('#type-id-update').append("<option value='" + item.id + "'> Hạng " + item.name + "</option>");
+        });
 	})
 
 	$('#btn-update-course').click(updateCouseInfo);

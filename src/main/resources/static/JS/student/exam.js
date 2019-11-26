@@ -53,6 +53,14 @@ $(document).ready(function () {
 $(document).keydown(function(e) {
     let current_question = Number($('.dang-lam').attr('data-question'));
 
+    if ((e.keyCode >= 48 && e.keyCode <= 57)) {
+        $('#question_' + current_question + ' [index-answer="' + (e.keyCode - 49) + '"]').click();
+    }
+
+    if ((e.keyCode >= 96 && e.keyCode <= 105)) {
+        $('#question_' + current_question + ' [index-answer="' + (e.keyCode - 97) + '"]').click();
+    }
+
     switch (e.keyCode) {
         case 37: // left arrow key
             if(current_question > 1){

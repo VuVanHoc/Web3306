@@ -13,4 +13,5 @@ public interface ExamResultRepository extends JpaRepository<ExamResult, Integer>
     List<ExamResult> findByUserIdAndCourseId(Integer userId, Integer courseId);
     Integer countAllByDeletedIsFalse();
     Integer countAllByStatusIsTrue();
+    Integer countByScoreIs(Integer score);
 }

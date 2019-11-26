@@ -10,4 +10,5 @@ public interface ExamResultService {
     RestBody getFullResults();
     RestBody getTotalRecord();
     RestBody getPass();
+    RestBody countPoint();
 }

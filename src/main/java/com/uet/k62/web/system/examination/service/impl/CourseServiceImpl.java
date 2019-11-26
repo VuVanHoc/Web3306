@@ -8,9 +8,11 @@ import com.uet.k62.web.system.examination.model.dtos.CourseDTO;
 import com.uet.k62.web.system.examination.model.dtos.UserIdListDTO;
 import com.uet.k62.web.system.examination.model.entity.Course;
 import com.uet.k62.web.system.examination.model.entity.CourseType;
+import com.uet.k62.web.system.examination.model.entity.CourseUser;
 import com.uet.k62.web.system.examination.model.entity.User;
 import com.uet.k62.web.system.examination.repository.CourseRepository;
 import com.uet.k62.web.system.examination.repository.CourseTypeRepository;
+import com.uet.k62.web.system.examination.repository.CourseUserRepository;
 import com.uet.k62.web.system.examination.repository.UserRepository;
 import com.uet.k62.web.system.examination.service.CourseService;
 import org.dozer.DozerBeanMapper;
@@ -33,6 +35,9 @@ public class CourseServiceImpl implements CourseService {
     private UserRepository userRepository;
     private CourseTypeRepository courseTypeRepository;
 
+    @Autowired
+	CourseUserRepository courseUserRepository;
+    
     @Autowired
 	DozerBeanMapper mapper;
     
@@ -155,7 +160,7 @@ public class CourseServiceImpl implements CourseService {
                     throw new UserNotFoundException("Not found user has username: " + user.getUsername() + ". Try again!");
                 } else {
                     course.getUsers().forEach(item -> {
-                        if (item.getId() == userId) {
+                        if (item.getId().equals(userId)) {
                             course.getUsers().remove(item);
                         }
                     });
@@ -169,5 +174,16 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public RestBody getTotal() {
         return RestBody.success(courseRepository.countAllByDeletedIsFalse());
+    }
+    
+    
+    @Override
+    public RestBody getAllUserInCourse(Integer courseId){
+    	List<CourseUser> courseUsers = courseUserRepository.findAllByCourseId(courseId);
+    	List<Integer> userIds = new ArrayList<>();
+    	for (CourseUser courseUser : courseUsers){
+    		userIds.add(courseUser.getUserId());
+	    }
+	    return RestBody.success(userIds);
     }
 }

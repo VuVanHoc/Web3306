@@ -8,6 +8,7 @@ import com.uet.k62.web.system.examination.model.dtos.UserDetailDTO;
 import com.uet.k62.web.system.examination.model.dtos.UserFormRegistrationDTO;
 import com.uet.k62.web.system.examination.model.entity.Course;
 import com.uet.k62.web.system.examination.model.entity.User;
+import com.uet.k62.web.system.examination.repository.CourseRepository;
 import com.uet.k62.web.system.examination.repository.UserRepository;
 import com.uet.k62.web.system.examination.service.UserService;
 import com.uet.k62.web.system.examination.utils.Constant;
@@ -40,6 +41,8 @@ public class UserServiceImpl implements UserService {
     CourseServiceImpl courseService;
     @Autowired
 	DozerBeanMapper dozerBeanMapper;
+    @Autowired
+	CourseRepository courseRepository;
     
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -70,6 +73,7 @@ public class UserServiceImpl implements UserService {
         return RestBody.success(newUser);
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public RestBody getAllUsers(Integer pageNo, Integer pageSize) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
@@ -181,7 +185,9 @@ public class UserServiceImpl implements UserService {
 	    totalDTO.setTotalAdmin(totalAdmin.size());
 	    totalDTO.setTotalOnline(totalAdmin.size() + totalStudents.size());
 	    
-	    totalDTO.setTotalCourse(5);
+	    Integer courseList = courseRepository.countAllByDeletedIsFalse();
+	    
+	    totalDTO.setTotalCourse(courseList);
 	    return RestBody.success(totalDTO);
     }
 }

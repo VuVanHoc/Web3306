@@ -104,6 +104,8 @@ form > input {
     height: 30px;
     border-radius: 3px;
     padding: 8px;
+	font-size: 14px;
+
 }
 form > input[name="username"] {
     left: 165px;
@@ -114,14 +116,21 @@ form > input[name="password"] {
     top: 118px;
 }
 .forgot-password {
-    font-size: 18px;
+    font-size: 14px;
     top: 180px;
     left: 18px;
     color: #808080;
     cursor: pointer;
 }
 .forgot-password:hover {
-    color: #545151;
+    color: #0285bb;
+}
+#submit {
+	padding: 0 12px;
+	border: none;
+	background-color: #0062b5;
+	color: white;
+
 }
 button[name="signin"] {
     width: 100px;
@@ -129,7 +138,7 @@ button[name="signin"] {
     line-height: 40px;
     text-align: center;
     background: #ebebeb;
-    top: 230px;
+    top: 200px;
     left: 165px;
     border: none;
     font-size: 15px;

@@ -43,4 +43,11 @@ public class ExamResultController {
         RestBody restBody = examResultService.getPass();
         return ResponseEntity.ok(restBody);
     }
+    
+    
+    @ApiOperation(value = "Thống kê số lượng điểm ", response = RestBody.class)
+	@GetMapping(value = "/count-point")
+	public ResponseEntity countPoint(){
+        return ResponseEntity.ok(examResultService.countPoint());
+    }
 }

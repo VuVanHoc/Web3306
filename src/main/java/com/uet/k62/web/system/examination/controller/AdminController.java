@@ -78,7 +78,7 @@ public class AdminController {
 	
 	@GetMapping(value = "/questions")
 	public String manageQuestion(Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum){
-		model.addAttribute("questions", questionService.getAllQuestion(pageNum, 25) );
+		model.addAttribute("questions", questionService.getAllQuestion(pageNum, 30) );
 		return "/admin/Questions";
 	}
 	

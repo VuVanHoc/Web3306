@@ -127,4 +127,15 @@ public class ExamResultServiceImpl implements ExamResultService {
     public RestBody getPass() {
         return  RestBody.success(examResultRepository.countAllByStatusIsTrue());
     }
+	
+	@Override
+	public RestBody countPoint() {
+    	List<Integer> points = new ArrayList<>();
+    	
+		for(int i=15; i<=30; i++){
+			points.add(examResultRepository.countByScoreIs(i));
+		}
+		
+		return RestBody.success(points);
+	}
 }

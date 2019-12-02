@@ -40,17 +40,17 @@
 						<th style="width: 200px;">Loại câu hỏi</th>
 						<th>Nội dung câu hỏi</th>
 						<th style="width: 170px">Thời gian tạo</th>
-						<th style="width: 200px">Hành động</th>
+						<th style="width: 160px">Hành động</th>
 					</tr>
 				</thead>
 				<tbody id="myTable">
 					<tr th:each="question : ${questions}">
 						<td th:text="${question.index}"></td>
 						<td th:text="${question.questionTypeCode}"></td>
-						<td style="text-align: justify"><a style="color: rgba(13,98,12,0.75)" th:text="${question.content}" th:href="@{'/admin/question/detail?id='+ ${question.id}}"></a></td>
+						<td style="text-align: justify"><a style="color: rgba(13,107,12,0.85); font-weight: 500" th:text="${question.content}" th:href="@{'/admin/question/detail?id='+ ${question.id}}"></a></td>
 						<td th:text="${question.createdDate}"></td>
-						<td><button class="btn-table update">Xem</button>
-							<button class="btn-table cancel">Xoá</button>
+						<td><button class="btn-table update" th:onclick="|viewDetailQuestion('${question.id}')|">Xem</button>
+							<button class="btn-table cancel" th:onclick="|removeQuestion('${question.id}')|">Xoá</button>
 						</td>
 					</tr>
 				</tbody>
@@ -84,6 +84,8 @@
             });
         });
 
+
+        
 		var pageNum = 0;
 		$('.page-first').click(function () {
 			pageNum = 0;
@@ -116,6 +118,24 @@
 			window.location.href = "/admin/questions/create-new-question";
 		});
 	})
+
+	function removeQuestion(id) {
+		console.log(id);
+		if(confirm("Bạn muốn xoá câu hỏi này!")){
+			$.ajax({
+				url:"/api/questions/" + id,
+				method : "DELETE",
+				success :function () {
+					alert("Xoá câu hỏi thành công!");
+					window.location.href = "http://localhost:8080/admin/questions";
+				}
+			})
+		}
+		
+	}
+	function viewDetailQuestion(id) {
+		window.location.href = "http://localhost:8080/admin/question/detail?id=" + id;
+	}
 </script>
 
 </body>
